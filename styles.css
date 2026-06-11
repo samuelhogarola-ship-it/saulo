@@ -278,6 +278,46 @@ h1 {
   border-top: 1px solid rgba(222, 200, 255, 0.08);
 }
 
+.form-footer-brand {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 0 4px;
+}
+
+.form-footer-logo {
+  width: 52px;
+  height: 52px;
+  flex: 0 0 auto;
+  border-radius: 14px;
+  object-fit: cover;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.28);
+}
+
+.form-footer-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.form-footer-eyebrow,
+.form-footer-name {
+  margin: 0;
+}
+
+.form-footer-eyebrow {
+  color: var(--accent-strong);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.form-footer-name {
+  color: var(--muted);
+  font-size: 0.96rem;
+  line-height: 1.4;
+}
+
 .field + .field,
 .field + .fieldset,
 .fieldset + .fieldset,
@@ -444,21 +484,22 @@ h1 {
 
 .submission-panel {
   margin-top: 22px;
-  padding: 20px;
+  padding: 32px 24px;
   border: 1px solid var(--line-strong);
-  border-radius: 22px;
-  background: rgba(13, 11, 22, 0.92);
+  border-radius: 28px;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(179, 95, 255, 0.18),
+      transparent 30%
+    ),
+    rgba(13, 11, 22, 0.96);
+  text-align: center;
 }
 
-#result-preview {
-  overflow: auto;
-  margin: 16px 0 0;
-  padding: 18px;
-  border-radius: 16px;
-  background: #0b0913;
-  color: #dfd5ff;
-  font-size: 0.9rem;
-  line-height: 1.55;
+.submission-panel h2 {
+  margin-bottom: 10px;
+  font-size: clamp(2rem, 4vw, 2.6rem);
 }
 
 @keyframes fadeUp {

@@ -6,7 +6,8 @@ const form = document.querySelector('#questionnaire-form');
 const progressBar = document.querySelector('#progress-bar');
 const progressText = document.querySelector('#progress-text');
 const submissionPanel = document.querySelector('#submission-panel');
-const resultPreview = document.querySelector('#result-preview');
+const formTopbar = document.querySelector('.form-topbar');
+const progressTrack = document.querySelector('.progress-track');
 const stepsWindow = document.querySelector('.steps-window');
 
 let currentStep = 0;
@@ -105,9 +106,11 @@ nextButton.addEventListener('click', () => {
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
-  const payload = buildPayload();
+  buildPayload();
+  form.hidden = true;
+  formTopbar.hidden = true;
+  progressTrack.hidden = true;
   submissionPanel.hidden = false;
-  resultPreview.textContent = JSON.stringify(payload, null, 2);
   submissionPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 

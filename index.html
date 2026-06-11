@@ -19,7 +19,11 @@
   <body>
     <main class="landing-shell">
       <section class="hero-stage" aria-labelledby="questionnaire-title">
-        <img class="wf-logo" src="./wf-logo.png" alt="Web Fuengirola Studio" />
+        <img
+          class="wf-logo"
+          src="./Captura%20de%20pantalla%202026-06-10%20a%20las%2020.40.52.png"
+          alt="Logo de Saulo Fitness"
+        />
 
         <div class="background-photo" aria-hidden="true"></div>
         <div class="background-vignette" aria-hidden="true"></div>
@@ -457,6 +461,20 @@
               ></textarea>
             </label>
 
+            <div class="form-footer-brand">
+              <img
+                class="form-footer-logo"
+                src="./wf-logo.png"
+                alt="Web Fuengirola Studio"
+              />
+              <div class="form-footer-copy">
+                <p class="form-footer-eyebrow">Web Fuengirola Studio</p>
+                <p class="form-footer-name">
+                  Diseño, estructura y automatización
+                </p>
+              </div>
+            </div>
+
             <div class="form-actions">
               <button type="button" class="ghost-button" id="prev-button">
                 Anterior
@@ -475,13 +493,12 @@
           </form>
 
           <section class="submission-panel" id="submission-panel" hidden>
-            <p class="step-label">Vista previa JSON</p>
-            <h2>Respuestas preparadas para integración</h2>
+            <p class="step-label">Envío completado</p>
+            <h2>Tu mensaje se ha enviado, muchas gracias</h2>
             <p>
-              Este es el payload base que luego enviaremos a Supabase y usaremos
-              para generar el email de Resend.
+              Hemos recibido tu cuestionario correctamente. Con esto ya podemos
+              preparar la siguiente fase del proyecto.
             </p>
-            <pre id="result-preview"></pre>
           </section>
         </section>
       </section>

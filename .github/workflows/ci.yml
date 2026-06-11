@@ -6,9 +6,16 @@ on:
       - main
   pull_request:
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   quality:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CI: true
 
     steps:
       - name: Checkout
@@ -24,7 +31,7 @@ jobs:
         run: npm ci
 
       - name: Install Playwright browser
-        run: npx playwright install --with-deps chromium
+        run: npm run playwright:install
 
       - name: Check formatting
         run: npm run format:check

@@ -225,6 +225,22 @@ h1 {
   transition: width 220ms ease;
 }
 
+.form-status {
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  border: 1px solid rgba(190, 151, 255, 0.18);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #eadbff;
+  line-height: 1.5;
+}
+
+.form-status.is-error {
+  border-color: rgba(255, 122, 122, 0.28);
+  background: rgba(115, 28, 45, 0.22);
+  color: #ffd6dd;
+}
+
 .questionnaire-form {
   display: grid;
   gap: 18px;

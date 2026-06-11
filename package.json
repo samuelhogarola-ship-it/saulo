@@ -3,13 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "http-server . -p 4173 -c-1",
+    "dev": "node server.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "precommit": "lint-staged",
     "prepare": "husky",
-    "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui",
-    "validate": "npm run format:check && npm run test:e2e"
+    "playwright:install": "playwright install --with-deps chromium",
+    "start": "node server.js",
+    "test": "npm run test:e2e",
+    "test:e2e": "node scripts/run-e2e.js",
+    "test:e2e:ui": "playwright test --ui"
   },
   "devDependencies": {
     "@playwright/test": "^1.54.1",
@@ -18,7 +21,14 @@
     "lint-staged": "^16.1.2",
     "prettier": "^3.6.2"
   },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.54.0",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "multer": "^2.0.2",
+    "resend": "^4.8.0"
+  },
   "lint-staged": {
-    "*.{html,css,js,json,md,yml,yaml}": "prettier --write"
+    "*.{html,css,js,json,md,ts,yml,yaml}": "prettier --write"
   }
 }

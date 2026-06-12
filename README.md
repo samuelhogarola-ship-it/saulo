@@ -13,6 +13,12 @@ guardar respuestas en Supabase y enviar avisos por Resend.
 - `npm run playwright:install`: instala Chromium para Playwright
 - `npm run test:e2e`: ejecuta Playwright
 
+## Validaciones incluidas
+
+- El formulario no deja avanzar si faltan campos obligatorios del bloque actual.
+- El logotipo solo admite `PNG`, `JPG`, `SVG` o `WEBP` y un máximo de `8 MB`.
+- El backend replica esas validaciones para no depender solo del navegador.
+
 ## Variables de entorno
 
 Duplica `.env.example` como `.env` y completa:
@@ -82,3 +88,6 @@ GitHub Actions ejecuta:
 - `npm run playwright:install`
 - `npm run format:check`
 - `npm run test:e2e`
+
+La suite E2E cubre tanto el recorrido visual del formulario como validaciones del
+endpoint `/api/questionnaire`.

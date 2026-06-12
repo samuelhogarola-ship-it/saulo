@@ -8,10 +8,27 @@ require('dotenv').config({ quiet: true });
 
 const app = express();
 const port = Number(process.env.PORT || 4173);
+const allowedLogoMimeTypes = new Set([
+  'image/png',
+  'image/jpeg',
+  'image/svg+xml',
+  'image/webp',
+]);
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
     fileSize: 8 * 1024 * 1024,
+  },
+  fileFilter: (_req, file, callback) => {
+    if (!allowedLogoMimeTypes.has(file.mimetype)) {
+      callback(
+        new multer.MulterError('LIMIT_UNEXPECTED_FILE', file.fieldname),
+        false,
+      );
+      return;
+    }
+
+    callback(null, true);
   },
 });
 
@@ -176,6 +193,16 @@ app.use((error, _req, res, _next) => {
     return res.status(400).json({
       ok: false,
       message: 'El archivo del logotipo supera el tamaño máximo permitido.',
+    });
+  }
+
+  if (
+    error instanceof multer.MulterError &&
+    error.code === 'LIMIT_UNEXPECTED_FILE'
+  ) {
+    return res.status(400).json({
+      ok: false,
+      message: 'El logotipo debe estar en formato PNG, JPG, SVG o WEBP.',
     });
   }
 

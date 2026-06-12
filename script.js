@@ -1,3 +1,12 @@
+const MAX_LOGO_SIZE_BYTES = 8 * 1024 * 1024;
+const allowedLogoMimeTypes = new Set([
+  'image/png',
+  'image/jpeg',
+  'image/svg+xml',
+  'image/webp',
+]);
+const allowedLogoExtensions = ['.png', '.jpg', '.jpeg', '.svg', '.webp'];
+
 const steps = [...document.querySelectorAll('.step')];
 const prevButton = document.querySelector('#prev-button');
 const nextButton = document.querySelector('#next-button');
@@ -11,15 +20,49 @@ const progressTrack = document.querySelector('.progress-track');
 const stepsWindow = document.querySelector('.steps-window');
 const formStatus = document.querySelector('#form-status');
 const formPanel = document.querySelector('.form-panel');
+const logoInput = form?.querySelector('input[name="logoFile"]');
 const formConfig = window.SAULO_FORM_CONFIG || {};
 const questionnaireEndpoint =
   formConfig.endpoint && typeof formConfig.endpoint === 'string'
     ? formConfig.endpoint
     : '/api/questionnaire';
-const successMessage = 'Muchas gracias por la informacion. Nos vemos pronto!';
+const successMessage =
+  'Muchas gracias por la informacion. Hemos recibido tu cuestionario y te contactaremos pronto.';
 
 let currentStep = 0;
 let isSubmitting = false;
+
+prevButton.addEventListener('click', () => {
+  currentStep = Math.max(0, currentStep - 1);
+  setFormStatus('', false);
+  updateStep();
+});
+
+nextButton.addEventListener('click', () => {
+  if (!validateCurrentStep()) {
+    return;
+  }
+
+  currentStep = Math.min(steps.length - 1, currentStep + 1);
+  setFormStatus('', false);
+  updateStep();
+});
+
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  if (!validateCurrentStep() || !validateLogoInput()) {
+    return;
+  }
+
+  submitQuestionnaire();
+});
+
+logoInput?.addEventListener('change', () => {
+  validateLogoInput();
+});
+
+updateStep();
 
 function updateStep() {
   steps.forEach((step, index) => {
@@ -48,24 +91,6 @@ function updateStep() {
   focusCurrentStep();
 }
 
-prevButton.addEventListener('click', () => {
-  currentStep = Math.max(0, currentStep - 1);
-  updateStep();
-});
-
-nextButton.addEventListener('click', () => {
-  currentStep = Math.min(steps.length - 1, currentStep + 1);
-  updateStep();
-});
-
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-
-  submitQuestionnaire();
-});
-
-updateStep();
-
 function focusCurrentStep() {
   const activeStep = steps[currentStep];
 
@@ -86,6 +111,78 @@ function focusCurrentStep() {
       firstFocusableField.focus({ preventScroll: true });
     }, 180);
   }
+}
+
+function validateCurrentStep() {
+  const activeStep = steps[currentStep];
+
+  if (!activeStep) {
+    return true;
+  }
+
+  if (!validateLogoInput()) {
+    return false;
+  }
+
+  const controls = activeStep.querySelectorAll('input, textarea, select');
+
+  for (const control of controls) {
+    if (
+      typeof control.checkValidity === 'function' &&
+      !control.checkValidity()
+    ) {
+      control.reportValidity();
+      setFormStatus(
+        'Revisa los campos obligatorios antes de continuar con el siguiente bloque.',
+        true,
+      );
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function validateLogoInput() {
+  if (!logoInput || !logoInput.files || logoInput.files.length === 0) {
+    if (logoInput) {
+      logoInput.setCustomValidity('');
+    }
+
+    return true;
+  }
+
+  const [file] = logoInput.files;
+  const normalizedName = file.name.toLowerCase();
+  const hasAllowedExtension = allowedLogoExtensions.some((extension) =>
+    normalizedName.endsWith(extension),
+  );
+  const hasAllowedMimeType =
+    !file.type || allowedLogoMimeTypes.has(file.type.toLowerCase());
+
+  if (!hasAllowedExtension || !hasAllowedMimeType) {
+    logoInput.value = '';
+    logoInput.setCustomValidity(
+      'El logotipo debe estar en formato PNG, JPG, SVG o WEBP.',
+    );
+    logoInput.reportValidity();
+    setFormStatus(
+      'El logotipo debe estar en formato PNG, JPG, SVG o WEBP.',
+      true,
+    );
+    return false;
+  }
+
+  if (file.size > MAX_LOGO_SIZE_BYTES) {
+    logoInput.value = '';
+    logoInput.setCustomValidity('El logotipo no puede superar los 8 MB.');
+    logoInput.reportValidity();
+    setFormStatus('El logotipo no puede superar los 8 MB.', true);
+    return false;
+  }
+
+  logoInput.setCustomValidity('');
+  return true;
 }
 
 async function submitQuestionnaire() {
@@ -116,8 +213,8 @@ async function submitQuestionnaire() {
     form.hidden = true;
     formTopbar.hidden = true;
     progressTrack.hidden = true;
+    setFormStatus(successMessage, false);
     submissionPanel.hidden = false;
-    window.alert(successMessage);
     submissionPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (error) {
     setFormStatus(
@@ -135,11 +232,12 @@ function setFormStatus(message, isError) {
   if (!message) {
     formStatus.hidden = true;
     formStatus.textContent = '';
-    formStatus.classList.remove('is-error');
+    formStatus.classList.remove('is-error', 'is-success');
     return;
   }
 
   formStatus.hidden = false;
   formStatus.textContent = message;
   formStatus.classList.toggle('is-error', Boolean(isError));
+  formStatus.classList.toggle('is-success', !isError);
 }

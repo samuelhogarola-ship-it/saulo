@@ -79,7 +79,13 @@
             <div class="progress-bar" id="progress-bar"></div>
           </div>
 
-          <p class="form-status" id="form-status" hidden></p>
+          <p
+            class="form-status"
+            id="form-status"
+            role="status"
+            aria-live="polite"
+            hidden
+          ></p>
 
           <form id="questionnaire-form" class="questionnaire-form">
             <div class="steps-window">
@@ -93,6 +99,7 @@
                     type="text"
                     name="brandName"
                     placeholder="Ej. Saulo Fitness App"
+                    autocomplete="organization"
                     required
                   />
                 </label>
@@ -103,7 +110,12 @@
                     type="file"
                     name="logoFile"
                     accept=".png,.jpg,.jpeg,.svg,.webp"
+                    aria-describedby="logo-help"
                   />
+                  <small id="logo-help" class="field-help">
+                    Formatos permitidos: PNG, JPG, SVG o WEBP. Tamaño máximo: 8
+                    MB.
+                  </small>
                 </label>
 
                 <fieldset class="field fieldset">

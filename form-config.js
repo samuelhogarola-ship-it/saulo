@@ -1,1 +1,0 @@
-window.SAULO_FORM_CONFIG = window.SAULO_FORM_CONFIG || {};

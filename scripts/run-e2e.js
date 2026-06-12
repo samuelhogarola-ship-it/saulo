@@ -9,7 +9,6 @@ const SERVER_POLL_INTERVAL_MS = 500;
 
 async function main() {
   const childEnv = createCleanEnv({
-    ALLOW_DEMO_SUBMISSIONS: 'true',
     PORT: String(PORT),
   });
 

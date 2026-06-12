@@ -10,15 +10,12 @@ module.exports = defineConfig({
   reporter: process.env.CI ? [['html'], ['list']] : 'list',
   use: {
     baseURL: 'http://127.0.0.1:4173',
+    serviceWorkers: 'block',
     trace: 'on-first-retry',
   },
   webServer: useManagedWebServer
     ? {
         command: 'npm run dev',
-        env: {
-          ...process.env,
-          ALLOW_DEMO_SUBMISSIONS: 'true',
-        },
         timeout: 120 * 1000,
         url: 'http://127.0.0.1:4173',
         reuseExistingServer: !process.env.CI,

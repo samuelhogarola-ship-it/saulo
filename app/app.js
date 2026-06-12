@@ -267,6 +267,8 @@ const heroTitle = document.querySelector('#hero-title');
 const heroCopy = document.querySelector('#hero-copy');
 const heroHighlightValue = document.querySelector('#hero-highlight-value');
 const heroHighlightMeta = document.querySelector('#hero-highlight-meta');
+const installButton = document.querySelector('#install-button');
+const installNote = document.querySelector('#install-note');
 const syncStatus = document.querySelector('#sync-status');
 const infrastructureTarget = document.querySelector('#infrastructure-target');
 const infrastructureCopy = document.querySelector('#infrastructure-copy');
@@ -281,6 +283,7 @@ const messagesList = document.querySelector('#messages-list');
 const billingList = document.querySelector('#billing-list');
 const roleButtons = [...document.querySelectorAll('.role-button')];
 const navButtons = [...document.querySelectorAll('.nav-link')];
+let deferredInstallPrompt = null;
 
 roleButtons.forEach((button) => {
   button.addEventListener('click', () => {
@@ -311,7 +314,35 @@ navButtons.forEach((button) => {
   });
 });
 
+installButton?.addEventListener('click', async () => {
+  if (!deferredInstallPrompt) {
+    return;
+  }
+
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice.catch(() => null);
+  deferredInstallPrompt = null;
+  updateInstallUi();
+});
+
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  updateInstallUi();
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  if (installNote) {
+    installNote.textContent =
+      'La demo ya está instalada. Ábrela desde el icono de Saulo Fitness.';
+  }
+  updateInstallUi();
+});
+
+registerServiceWorker();
 renderApp();
+updateInstallUi();
 
 function renderApp() {
   const currentData = appData[state.role];
@@ -486,6 +517,40 @@ function updateNavigation() {
     const isActive = button.dataset.section === state.section;
     button.classList.toggle('is-active', isActive);
   });
+}
+
+function updateInstallUi() {
+  if (!installButton || !installNote) {
+    return;
+  }
+
+  const isStandalone =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
+
+  if (isStandalone) {
+    installButton.hidden = true;
+    installNote.textContent =
+      'La demo ya está añadida al teléfono y se abre como app independiente.';
+    return;
+  }
+
+  installButton.hidden = !deferredInstallPrompt;
+  installNote.textContent = deferredInstallPrompt
+    ? 'Pulsa instalar y guarda la demo con el icono de Saulo Fitness.'
+    : 'En iPhone: comparte en Safari y pulsa "Añadir a pantalla de inicio".';
+}
+
+async function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) {
+    return;
+  }
+
+  try {
+    await navigator.serviceWorker.register('./sw.js');
+  } catch (error) {
+    console.error('No se pudo registrar el service worker', error);
+  }
 }
 
 function focusSection(sectionName) {

@@ -8,6 +8,15 @@
       name="description"
       content="Prototipo funcional de la plataforma Saulo Fitness para coach y alumnos."
     />
+    <meta name="theme-color" content="#08161d" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Saulo Fitness" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -50,7 +59,7 @@
       <main class="workspace">
         <header class="workspace-header">
           <div>
-            <p class="workspace-kicker">Demo navegable</p>
+            <p class="workspace-kicker">Demo instalable</p>
             <h2 id="workspace-title">Panel general</h2>
           </div>
 
@@ -83,6 +92,41 @@
             </div>
           </div>
         </header>
+
+        <section class="install-strip" aria-labelledby="install-strip-title">
+          <div class="install-copy">
+            <p class="workspace-kicker">Descarga rápida</p>
+            <h3 id="install-strip-title">
+              Deja esta demo en el móvil con icono propio
+            </h3>
+            <p id="install-help">
+              Instálala en la pantalla de inicio para enseñarla como app real:
+              se abre a pantalla completa y ya muestra panel, rutina y
+              seguimiento.
+            </p>
+          </div>
+
+          <div class="install-actions">
+            <div class="install-preview">
+              <img
+                class="install-preview-icon"
+                src="./icons/icon-192.png"
+                alt="Icono de Saulo Fitness"
+              />
+              <div>
+                <strong>Saulo Fitness</strong>
+                <span>Demo lista para coach y alumno</span>
+              </div>
+            </div>
+            <button class="install-button" id="install-button" hidden>
+              Instalar demo
+            </button>
+            <p class="install-note" id="install-note">
+              En iPhone: comparte en Safari y pulsa "Añadir a pantalla de
+              inicio".
+            </p>
+          </div>
+        </section>
 
         <section class="hero-panel">
           <div>

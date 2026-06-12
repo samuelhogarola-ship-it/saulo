@@ -7,6 +7,9 @@ El repo incluye también una primera versión navegable de la app real en
 `/app/`, separada de la landing para poder evolucionar producto y captación en
 paralelo.
 
+La demo de `/app/` ya se comporta como PWA instalable: incluye `manifest`,
+`service worker`, iconos y CTA para guardarla en el teléfono como acceso directo.
+
 ## Scripts
 
 - `npm run dev`: lanza la app en `http://127.0.0.1:4173`
@@ -20,7 +23,7 @@ paralelo.
 ## Rutas disponibles
 
 - `/`: landing de captación y cuestionario técnico
-- `/app/`: prototipo funcional de la app real para coach y alumno
+- `/app/`: prototipo funcional e instalable de la app real para coach y alumno
 
 ## Validaciones incluidas
 

@@ -1,0 +1,25 @@
+{
+  "name": "Saulo Fitness Demo",
+  "short_name": "Saulo Fitness",
+  "description": "Demo instalable de la app Saulo Fitness para enseñar rutina, panel y seguimiento en movil.",
+  "start_url": "/app/",
+  "scope": "/app/",
+  "display": "standalone",
+  "background_color": "#08161d",
+  "theme_color": "#08161d",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/app/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/app/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

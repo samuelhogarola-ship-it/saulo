@@ -13,6 +13,12 @@ test('renders the real app workspace with coach metrics', async ({ page }) => {
   await expect(
     page.getByRole('option', { name: /Lucia Ortega/i }),
   ).toBeVisible();
+  await expect(
+    page.getByRole('heading', {
+      name: 'Deja esta demo en el móvil con icono propio',
+    }),
+  ).toBeVisible();
+  await expect(page.getByText('Añadir a pantalla de inicio')).toBeVisible();
 });
 
 test('switches from coach mode to student mode', async ({ page }) => {

@@ -310,6 +310,7 @@ navButtons.forEach((button) => {
 
     state.section = nextSection;
     updateNavigation();
+    syncUrlState();
     focusSection(nextSection);
   });
 });
@@ -340,6 +341,7 @@ window.addEventListener('appinstalled', () => {
   updateInstallUi();
 });
 
+hydrateStateFromUrl();
 registerServiceWorker();
 renderApp();
 updateInstallUi();
@@ -373,6 +375,7 @@ function renderApp() {
   renderCollection(billingList, currentData.billing, renderBillingItem);
   updateRoleButtons();
   updateNavigation();
+  syncUrlState();
 }
 
 function renderMetrics(metrics) {
@@ -551,6 +554,40 @@ async function registerServiceWorker() {
   } catch (error) {
     console.error('No se pudo registrar el service worker', error);
   }
+}
+
+function hydrateStateFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const requestedRole = params.get('role');
+  const requestedSection = params.get('section');
+  const validSections = new Set([
+    'overview',
+    'students',
+    'plans',
+    'checkins',
+    'messages',
+    'billing',
+  ]);
+
+  if (requestedRole === 'coach' || requestedRole === 'student') {
+    state.role = requestedRole;
+    state.selectedStudentId = appData[requestedRole].students[0].id;
+  }
+
+  if (requestedSection && validSections.has(requestedSection)) {
+    state.section = requestedSection;
+  }
+}
+
+function syncUrlState() {
+  const params = new URLSearchParams(window.location.search);
+  params.set('role', state.role);
+  params.set('section', state.section);
+  window.history.replaceState(
+    {},
+    '',
+    `${window.location.pathname}?${params.toString()}`,
+  );
 }
 
 function focusSection(sectionName) {

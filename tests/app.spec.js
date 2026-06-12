@@ -43,3 +43,15 @@ test('navigates to the billing panel from the sidebar', async ({ page }) => {
   ).toBeVisible();
   await expect(page.getByText('Plan Premium mensual')).toBeVisible();
 });
+
+test('supports direct links to the student routine demo', async ({ page }) => {
+  await page.goto('/app/?role=student&section=plans');
+
+  await expect(
+    page.getByRole('heading', { name: 'Mi area personal' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Rutina activa' }),
+  ).toBeVisible();
+  await expect(page.getByText('Hoy: Pierna fuerza')).toBeVisible();
+});

@@ -280,6 +280,34 @@ body {
   display: none;
 }
 
+.demo-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.demo-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.demo-link:hover {
+  transform: translateY(-1px);
+  border-color: var(--line-strong);
+  background: var(--accent-soft);
+}
+
 .install-note {
   margin: 0;
   font-size: 0.94rem;

@@ -55,13 +55,52 @@
 
         <nav class="sidebar-nav" aria-label="Secciones de alumno">
           <button class="side-link is-active" data-section="routines">
+            <span class="side-link-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="presentation">
+                <path d="M3.75 8.5v7" />
+                <path d="M6 7v10" />
+                <path d="M8.5 9.5v5" />
+                <path d="M15.5 9.5v5" />
+                <path d="M18 7v10" />
+                <path d="M20.25 8.5v7" />
+                <path d="M8.5 12h7" />
+              </svg>
+            </span>
             Rutinas
           </button>
-          <button class="side-link" data-section="messages">Mensajes</button>
+          <button class="side-link" data-section="messages">
+            <span class="side-link-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="presentation">
+                <path d="M4.5 7.5 12 13l7.5-5.5" />
+                <path
+                  d="M6.5 5.5h11a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z"
+                />
+              </svg>
+            </span>
+            Mensajes
+          </button>
           <button class="side-link" data-section="subscription">
+            <span class="side-link-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="presentation">
+                <path d="M8 4.5h8" />
+                <path
+                  d="M7 6.5h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2z"
+                />
+                <path d="M8.5 10.5h7" />
+                <path d="M8.5 14h7" />
+              </svg>
+            </span>
             Suscripción
           </button>
-          <button class="side-link" data-section="profile">Perfil</button>
+          <button class="side-link" data-section="profile">
+            <span class="side-link-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="presentation">
+                <path d="M12 12.5a4 4 0 1 0-4-4 4 4 0 0 0 4 4z" />
+                <path d="M5.5 19a6.5 6.5 0 0 1 13 0" />
+              </svg>
+            </span>
+            Perfil
+          </button>
         </nav>
       </aside>
 
@@ -80,32 +119,6 @@
           id="context-nav"
           aria-label="Opciones de contexto"
         ></nav>
-
-        <section class="app-hero">
-          <div>
-            <p class="brand-kicker">Vista pública</p>
-            <h3 id="hero-title">Una rutina clara, premium y accionable.</h3>
-            <p id="hero-copy">
-              Todo lo importante del alumno en una sola experiencia: entrenar,
-              reportar sensaciones, revisar mensajes y controlar membresía.
-            </p>
-          </div>
-
-          <div class="hero-stat-grid" id="hero-stat-grid">
-            <article class="hero-stat">
-              <span>Entrenos semana</span>
-              <strong>4</strong>
-            </article>
-            <article class="hero-stat">
-              <span>Próximo check-in</span>
-              <strong>Mañana</strong>
-            </article>
-            <article class="hero-stat">
-              <span>Membresía activa</span>
-              <strong>Hasta 30 Jun</strong>
-            </article>
-          </div>
-        </section>
 
         <section
           class="content-section is-active"
@@ -139,24 +152,10 @@
                   Entrenamiento finalizado
                 </button>
                 <p class="routine-helper">
-                  Al finalizar se genera un informe/resumen en la demo y se
-                  guarda como mensaje enviado.
+                  Al finalizar se genera un resumen y se guarda en Mensajes >
+                  Enviados con su fecha.
                 </p>
               </div>
-            </article>
-
-            <article class="summary-panel">
-              <div class="section-header section-header-compact">
-                <div>
-                  <p class="brand-kicker">Informe generado</p>
-                  <h4>Resumen del entrenamiento</h4>
-                </div>
-              </div>
-              <div class="summary-empty" id="summary-empty">
-                Completa comentarios y pulsa "Entrenamiento finalizado" para ver
-                aquí el informe creado.
-              </div>
-              <div class="summary-report" id="summary-report" hidden></div>
             </article>
           </div>
         </section>
@@ -178,11 +177,7 @@
               Los mensajes se revisan martes y viernes de cada semana. Mientras
               tanto, resuelve tus dudas con nuestro chat.
             </p>
-            <a
-              href="mailto:hola@saulofitness.com?subject=Chat%20personalizado%20Saulo%20Fitness"
-            >
-              Abrir chat personalizado
-            </a>
+            <a href="#" id="support-chat-trigger"> Abrir chat personalizado </a>
           </div>
 
           <article
@@ -319,23 +314,54 @@
             </article>
             <article class="info-card info-card-wide" id="profile-photos-card">
               <span>Fotos mensuales</span>
-              <strong>Se suben 1 vez al mes</strong>
+              <strong>Histórico mensual</strong>
               <p>
-                Fecha: 30 de junio de 2026. 4 fotos: izquierda, derecha, frente
-                y espalda.
+                Seguimiento ficticio ya subido. 4 fotos: izquierda, derecha,
+                frente y espalda.
               </p>
-              <div class="photo-grid" aria-label="Fotos de seguimiento">
-                <div>Izquierda</div>
-                <div>Derecha</div>
-                <div>Frente</div>
-                <div>Espalda</div>
-              </div>
+              <div
+                class="photo-history"
+                id="profile-photos-gallery"
+                aria-label="Histórico de fotos de seguimiento"
+              ></div>
             </article>
           </div>
         </section>
       </main>
     </div>
 
+    <script>
+      (function () {
+        if (!window.chatbase || window.chatbase('getState') !== 'initialized') {
+          window.chatbase = (...arguments) => {
+            if (!window.chatbase.q) {
+              window.chatbase.q = [];
+            }
+            window.chatbase.q.push(arguments);
+          };
+          window.chatbase = new Proxy(window.chatbase, {
+            get(target, prop) {
+              if (prop === 'q') {
+                return target.q;
+              }
+              return (...args) => target(prop, ...args);
+            },
+          });
+        }
+        const onLoad = function () {
+          const script = document.createElement('script');
+          script.src = 'https://www.chatbase.co/embed.min.js';
+          script.id = 'h_f0xkPpXu0hX4aU1cNkQ';
+          script.domain = 'www.chatbase.co';
+          document.body.appendChild(script);
+        };
+        if (document.readyState === 'complete') {
+          onLoad();
+        } else {
+          window.addEventListener('load', onLoad);
+        }
+      })();
+    </script>
     <script src="./app.js?v=saulo-v3" defer></script>
   </body>
 </html>

@@ -11,7 +11,7 @@ No incluye ya el formulario de presupuesto/cuestionario ni su backend asociado.
 
 ## Scripts
 
-- `npm run dev`: lanza la app en `http://127.0.0.1:4173`
+- `npm run dev`: lanza la app en `http://127.0.0.1:4173` y la expone tambien en tu red local para probarla desde el movil
 - `npm run start`: arranca el servidor Node en modo normal
 - `npm run format`: formatea el proyecto con Prettier
 - `npm run format:check`: comprueba formato sin reescribir

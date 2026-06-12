@@ -24,7 +24,8 @@ const routinesByDay = {
     exercises: [
       {
         name: 'Hip thrust',
-        video: 'Sin vídeo',
+        video: 'Ver vídeo',
+        videoUrl: 'https://www.youtube.com/shorts/rVMsqygXtG4',
         reps: '4 x 10',
         load: '75%',
         rest: '90 s',
@@ -193,14 +194,14 @@ const state = {
         tag: 'Recibido',
         date: 'Hoy · 08:45',
         source: 'Email',
-        body: 'Mantén el tempo en hip thrust y sube comentario al terminar.',
+        body: 'Esta semana treinaste muito duro. Lembra-te de descansar e hidratar-te bem nos dias de descanso ativo.',
       },
       {
         title: 'Coach Saulo',
         tag: 'Recibido',
         date: 'Ayer · 19:10',
         source: 'Email',
-        body: 'Muy bien la adherencia. Esta semana buscamos más control técnico.',
+        body: 'Esta semana vamos procurar mais controlo técnico. Mantém o foco, dorme bem e aproveita os dias leves para recuperar sem perder ritmo.',
       },
     ],
     sent: [
@@ -233,9 +234,6 @@ const state = {
 
 const demoBanner = document.querySelector('#demo-banner');
 const topbarTitle = document.querySelector('#topbar-title');
-const heroTitle = document.querySelector('#hero-title');
-const heroCopy = document.querySelector('#hero-copy');
-const heroStatGrid = document.querySelector('#hero-stat-grid');
 const contextNav = document.querySelector('#context-nav');
 const studentName = document.querySelector('#student-name');
 const studentPlan = document.querySelector('#student-plan');
@@ -249,8 +247,6 @@ const exerciseList = document.querySelector('#exercise-list');
 const completeWorkoutButton = document.querySelector(
   '#complete-workout-button',
 );
-const summaryEmpty = document.querySelector('#summary-empty');
-const summaryReport = document.querySelector('#summary-report');
 const workoutModalRoot = document.querySelector('#workout-modal-root');
 const messagesInbox = document.querySelector('#messages-inbox');
 const messagesSent = document.querySelector('#messages-sent');
@@ -261,6 +257,8 @@ const messageComposeSubject = document.querySelector(
   '#message-compose-subject',
 );
 const messageComposeBody = document.querySelector('#message-compose-body');
+const supportChatTrigger = document.querySelector('#support-chat-trigger');
+const profilePhotosGallery = document.querySelector('#profile-photos-gallery');
 
 const contextOptionsBySection = {
   routines: [
@@ -378,7 +376,7 @@ messageComposeForm?.addEventListener('submit', (event) => {
     title: subject,
     tag: 'Enviado',
     date: 'Ahora',
-    source: 'EMAIL',
+    source: 'App',
     body,
   });
 
@@ -389,6 +387,21 @@ messageComposeForm?.addEventListener('submit', (event) => {
   state.section = 'messages';
   state.contextKey = 'messages-sent';
   renderApp();
+});
+
+supportChatTrigger?.addEventListener('click', (event) => {
+  event.preventDefault();
+
+  if (typeof window.chatbase === 'function') {
+    try {
+      window.chatbase('open');
+      return;
+    } catch (error) {
+      console.warn('No se pudo abrir Chatbase', error);
+    }
+  }
+
+  window.alert('El chat se está cargando. Prueba de nuevo en unos segundos.');
 });
 
 hydrateStateFromUrl();
@@ -406,7 +419,8 @@ function renderApp() {
   renderContextNav();
   renderRoutine();
   renderMessages();
-  renderSummaryReport();
+  renderProfilePhotos();
+  syncChatbaseVisibility();
   syncUrlState();
 }
 
@@ -437,82 +451,7 @@ function updateTopCopy() {
     profile: 'Perfil',
   };
 
-  const heroTitles = {
-    routines: 'Toca un día y revisa lo que verá tu cliente.',
-    messages: 'Mensajes limpios, directos y sin ruido.',
-    subscription: 'Estado claro y fechas visibles sin ruido.',
-    profile: 'Mide tu progreso.',
-  };
-
-  const heroCopies = {
-    routines:
-      'La demo enseña solo lo que marcas: rutina activa, recuperación y seguimiento básico.',
-    messages:
-      'Los mensajes se revisan martes y viernes de cada semana. Mientras tanto, resuelve dudas con nuestro chat.',
-    subscription: 'Membresía y plan quedan claros de un vistazo.',
-    profile: 'Edad, peso y objetivo visibles en limpio.',
-  };
-
   topbarTitle.textContent = titles[state.section];
-  heroTitle.textContent = heroTitles[state.section];
-  if (heroCopy) {
-    heroCopy.hidden = state.section === 'profile';
-    heroCopy.textContent = heroCopies[state.section];
-  }
-  if (heroStatGrid) {
-    if (state.section === 'profile') {
-      heroStatGrid.hidden = false;
-      heroStatGrid.innerHTML = `
-        <article class="profile-calendar" id="profile-calendar">
-          <div class="profile-calendar-head">
-            <span>Calendario</span>
-            <strong>Junio 2026</strong>
-          </div>
-          <div class="profile-calendar-grid" aria-label="Calendario de progreso">
-            <span class="calendar-day">L</span>
-            <span class="calendar-day">M</span>
-            <span class="calendar-day">X</span>
-            <span class="calendar-day">J</span>
-            <span class="calendar-day">V</span>
-            <span class="calendar-day">S</span>
-            <span class="calendar-day">D</span>
-            <span class="calendar-day">1</span>
-            <span class="calendar-day">2</span>
-            <span class="calendar-day is-complete">3</span>
-            <span class="calendar-day">4</span>
-            <span class="calendar-day is-complete">5</span>
-            <span class="calendar-day is-complete">6</span>
-            <span class="calendar-day">7</span>
-            <span class="calendar-day is-today">8</span>
-            <span class="calendar-day">9</span>
-            <span class="calendar-day is-missed">10 ×</span>
-            <span class="calendar-day">11</span>
-            <span class="calendar-day">12</span>
-            <span class="calendar-day">13</span>
-            <span class="calendar-day">14</span>
-          </div>
-          <p>Hoy en verde. El día marcado en rojo es el que toca recuperar.</p>
-        </article>
-      `;
-      return;
-    }
-
-    heroStatGrid.hidden = false;
-    heroStatGrid.innerHTML = `
-      <article class="hero-stat">
-        <span>Entrenos semana</span>
-        <strong>4/5</strong>
-      </article>
-      <article class="hero-stat">
-        <span>Próximo check-in</span>
-        <strong>Mañana</strong>
-      </article>
-      <article class="hero-stat">
-        <span>Membresía activa</span>
-        <strong>Hasta 30 Jun</strong>
-      </article>
-    `;
-  }
 }
 
 function renderContextNav() {
@@ -588,8 +527,32 @@ function renderRoutine() {
             <div>
               <p class="brand-kicker">Ejercicio ${index + 1}</p>
               <h5>${escapeHtml(exercise.name)}</h5>
+              ${
+                exercise.videoUrl
+                  ? '<p class="exercise-video-note">Video disponible en este ejercicio</p>'
+                  : ''
+              }
             </div>
-            <div class="exercise-video">${escapeHtml(exercise.video)}</div>
+            <button
+              class="exercise-video ${exercise.videoUrl ? 'is-clickable' : ''}"
+              type="button"
+              ${exercise.videoUrl ? `data-video-url="${escapeHtml(exercise.videoUrl)}" data-video-title="${escapeHtml(exercise.name)}"` : 'disabled aria-disabled="true"'}
+            >
+              <img
+                class="exercise-video-image"
+                src="${getExerciseThumbnailSrc(exercise.name, routine.title)}"
+                alt="Vista previa del ejercicio ${escapeHtml(exercise.name)}"
+              />
+              <div class="exercise-video-overlay" aria-hidden="true">
+                ${
+                  exercise.videoUrl
+                    ? '<span class="exercise-video-status">Video disponible</span>'
+                    : ''
+                }
+                <span class="exercise-video-play"></span>
+                <span class="exercise-video-label">Ver vídeo</span>
+              </div>
+            </button>
           </div>
 
           <div class="exercise-spec-grid">
@@ -617,28 +580,136 @@ function renderRoutine() {
     .join('');
 }
 
-function renderSummaryReport() {
-  if (!state.report) {
-    summaryEmpty.hidden = false;
-    summaryReport.hidden = true;
-    summaryReport.innerHTML = '';
+exerciseList?.addEventListener('click', (event) => {
+  const videoButton = event.target?.closest?.('[data-video-url]');
+
+  if (!videoButton) {
     return;
   }
 
-  summaryEmpty.hidden = true;
-  summaryReport.hidden = false;
-  summaryReport.innerHTML = `
-    <h5>${escapeHtml(state.report.title)}</h5>
-    <p>${escapeHtml(state.report.meta)}</p>
-    <ul>
-      ${state.report.notes
-        .map(
-          (note) =>
-            `<li><strong>${escapeHtml(note.name)}:</strong> ${escapeHtml(note.comment)}</li>`,
-        )
-        .join('')}
-    </ul>
+  const videoUrl = videoButton.dataset.videoUrl;
+  const videoTitle = videoButton.dataset.videoTitle || 'Vídeo del ejercicio';
+
+  if (!videoUrl) {
+    return;
+  }
+
+  renderVideoModal(videoTitle, videoUrl);
+});
+
+function getExerciseThumbnailSrc(exerciseName, routineTitle) {
+  const theme = getExerciseThumbnailTheme(exerciseName);
+  const safeExerciseName = escapeHtml(exerciseName);
+  const safeRoutineTitle = escapeHtml(routineTitle);
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="${safeExerciseName}">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#111114" />
+          <stop offset="55%" stop-color="#1a1a20" />
+          <stop offset="100%" stop-color="#060608" />
+        </linearGradient>
+        <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="${theme.glow}" stop-opacity="0.9" />
+          <stop offset="100%" stop-color="${theme.glowSecondary}" stop-opacity="0.15" />
+        </linearGradient>
+      </defs>
+      <rect width="320" height="180" rx="24" fill="url(#bg)" />
+      <circle cx="74" cy="54" r="58" fill="url(#glow)" opacity="0.55" />
+      <circle cx="262" cy="34" r="40" fill="${theme.glowSecondary}" opacity="0.16" />
+      <rect x="0" y="138" width="320" height="42" fill="#0c0c0f" />
+      <rect x="22" y="138" width="276" height="2" fill="rgba(255,255,255,0.08)" />
+      ${theme.scene}
+      <rect x="18" y="18" width="112" height="24" rx="12" fill="rgba(255,255,255,0.08)" />
+      <text x="32" y="34" fill="#ffffff" font-size="12" font-family="Arial, sans-serif" font-weight="700">${safeRoutineTitle}</text>
+      <rect x="18" y="146" width="158" height="20" rx="10" fill="rgba(255,255,255,0.08)" />
+      <text x="30" y="160" fill="#ffffff" font-size="12" font-family="Arial, sans-serif" font-weight="700">${safeExerciseName}</text>
+    </svg>
   `;
+
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function getExerciseThumbnailTheme(exerciseName) {
+  const name = exerciseName.toLowerCase();
+
+  if (
+    name.includes('sentadilla') ||
+    name.includes('hip thrust') ||
+    name.includes('peso muerto')
+  ) {
+    return {
+      glow: '#7c4dff',
+      glowSecondary: '#ffffff',
+      scene: `
+        <rect x="198" y="64" width="6" height="70" rx="3" fill="#2b2b31" />
+        <rect x="118" y="102" width="104" height="6" rx="3" fill="#d8d8de" />
+        <rect x="104" y="96" width="12" height="18" rx="4" fill="#5a5a65" />
+        <rect x="224" y="96" width="12" height="18" rx="4" fill="#5a5a65" />
+        <circle cx="152" cy="74" r="12" fill="#f3d7c4" />
+        <rect x="144" y="86" width="20" height="28" rx="10" fill="#1d4ed8" />
+        <rect x="133" y="92" width="16" height="10" rx="5" fill="#f3d7c4" />
+        <rect x="159" y="92" width="26" height="8" rx="4" fill="#f3d7c4" />
+        <rect x="146" y="112" width="8" height="24" rx="4" fill="#f3d7c4" />
+        <rect x="157" y="112" width="8" height="24" rx="4" fill="#f3d7c4" />
+      `,
+    };
+  }
+
+  if (
+    name.includes('jalón') ||
+    name.includes('remo') ||
+    name.includes('curl')
+  ) {
+    return {
+      glow: '#8b5cf6',
+      glowSecondary: '#60a5fa',
+      scene: `
+        <rect x="214" y="34" width="8" height="102" rx="4" fill="#2d2d34" />
+        <rect x="196" y="46" width="44" height="6" rx="3" fill="#4a4a53" />
+        <rect x="214" y="52" width="2" height="24" fill="#b9b9c5" />
+        <rect x="206" y="76" width="18" height="4" rx="2" fill="#d9d9e0" />
+        <circle cx="140" cy="72" r="12" fill="#f3d7c4" />
+        <rect x="132" y="84" width="20" height="30" rx="10" fill="#2563eb" />
+        <rect x="144" y="114" width="8" height="24" rx="4" fill="#f3d7c4" />
+        <rect x="156" y="90" width="36" height="8" rx="4" fill="#f3d7c4" />
+        <rect x="131" y="95" width="18" height="8" rx="4" fill="#f3d7c4" />
+      `,
+    };
+  }
+
+  if (name.includes('press')) {
+    return {
+      glow: '#6d28d9',
+      glowSecondary: '#93c5fd',
+      scene: `
+        <rect x="92" y="112" width="120" height="8" rx="4" fill="#3c3c45" />
+        <rect x="110" y="96" width="48" height="12" rx="6" fill="#4f4f58" />
+        <rect x="126" y="90" width="84" height="6" rx="3" fill="#dadbe1" />
+        <rect x="116" y="84" width="12" height="18" rx="4" fill="#61616c" />
+        <rect x="210" y="84" width="12" height="18" rx="4" fill="#61616c" />
+        <circle cx="150" cy="74" r="11" fill="#f3d7c4" />
+        <rect x="142" y="84" width="20" height="22" rx="10" fill="#2563eb" />
+        <rect x="135" y="93" width="16" height="8" rx="4" fill="#f3d7c4" />
+        <rect x="160" y="93" width="18" height="8" rx="4" fill="#f3d7c4" />
+      `,
+    };
+  }
+
+  return {
+    glow: '#7c3aed',
+    glowSecondary: '#34d399',
+    scene: `
+      <circle cx="148" cy="74" r="12" fill="#f3d7c4" />
+      <rect x="140" y="86" width="20" height="32" rx="10" fill="#2563eb" />
+      <rect x="129" y="92" width="16" height="8" rx="4" fill="#f3d7c4" />
+      <rect x="156" y="92" width="18" height="8" rx="4" fill="#f3d7c4" />
+      <rect x="144" y="118" width="8" height="18" rx="4" fill="#f3d7c4" />
+      <rect x="154" y="118" width="8" height="18" rx="4" fill="#f3d7c4" />
+      <rect x="196" y="92" width="44" height="8" rx="4" fill="#3f3f47" />
+      <rect x="84" y="104" width="50" height="8" rx="4" fill="#3f3f47" />
+    `,
+  };
 }
 
 function renderWorkoutModal() {
@@ -670,6 +741,40 @@ function renderWorkoutModal() {
   `;
 }
 
+function renderVideoModal(title, videoUrl) {
+  if (!workoutModalRoot) {
+    return;
+  }
+
+  const embedUrl = getYoutubeEmbedUrl(videoUrl);
+
+  if (!embedUrl) {
+    window.alert('No se pudo abrir este vídeo.');
+    return;
+  }
+
+  workoutModalRoot.hidden = false;
+  workoutModalRoot.innerHTML = `
+    <div class="workout-modal workout-modal-video" role="dialog" aria-modal="true" aria-labelledby="video-modal-title">
+      <button class="workout-modal-close" type="button" data-close-workout-modal aria-label="Cerrar">
+        ×
+      </button>
+      <p class="brand-kicker">Vídeo del ejercicio</p>
+      <h3 id="video-modal-title">${escapeHtml(title)}</h3>
+      <div class="video-frame">
+        <iframe
+          src="${escapeHtml(embedUrl)}"
+          title="${escapeHtml(title)}"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      </div>
+    </div>
+  `;
+}
+
 function closeWorkoutModal() {
   if (!workoutModalRoot) {
     return;
@@ -695,18 +800,23 @@ function buildWorkoutReport(feedback) {
   });
 
   state.report = {
-    title: `${activeRoutine.label} finalizado`,
+    title: 'Resumen de entrenamiento',
     meta: `${activeRoutine.title} · ${feedback.toLowerCase()}`,
     notes,
   };
 
   state.messages.sent.unshift({
-    title: `Informe ${activeRoutine.label}`,
-    meta: 'Enviado ahora',
-    body: notes.map((item) => `${item.name}: ${item.comment}`).join(' | '),
+    title: 'Resumen de entrenamiento',
+    tag: 'Enviado',
+    date: getSentMessageDate(),
+    source: 'App',
+    body: `${activeRoutine.label} · ${activeRoutine.title} · ${feedback}. ${notes
+      .map((item) => `${item.name}: ${item.comment}`)
+      .join(' | ')}`,
   });
 
-  state.section = 'routines';
+  state.section = 'messages';
+  state.contextKey = 'messages-sent';
   renderApp();
 }
 
@@ -740,6 +850,17 @@ workoutModalRoot?.addEventListener('click', (event) => {
   }
 
   if (event.target?.matches?.('[data-close-workout-modal]')) {
+    closeWorkoutModal();
+    return;
+  }
+
+  if (event.target === workoutModalRoot) {
+    closeWorkoutModal();
+  }
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !workoutModalRoot?.hidden) {
     closeWorkoutModal();
   }
 });
@@ -784,22 +905,179 @@ function renderMessages() {
   }
 }
 
+function renderProfilePhotos() {
+  if (!profilePhotosGallery) {
+    return;
+  }
+
+  const monthlyPhotos = [
+    { label: 'Izquierda', tone: 'side-left' },
+    { label: 'Derecha', tone: 'side-right' },
+    { label: 'Frente', tone: 'front' },
+    { label: 'Espalda', tone: 'back' },
+  ];
+
+  profilePhotosGallery.innerHTML = `
+    <article class="photo-history-card">
+      <div class="photo-history-top">
+        <div>
+          <p class="brand-kicker">Junio 2026</p>
+          <h4>Lucía Ortega · Seguimiento mensual</h4>
+        </div>
+        <span class="section-badge">4 fotos subidas</span>
+      </div>
+      <p class="photo-history-copy">
+        Registro ficticio del 30 de junio de 2026 para comparar definición y postura.
+      </p>
+      <div class="photo-grid">
+        ${monthlyPhotos
+          .map(
+            (photo) => `
+              <figure class="photo-shot">
+                <img
+                  src="${getProgressPhotoSrc(photo.label, photo.tone)}"
+                  alt="Foto de progreso ${escapeHtml(photo.label)} de Lucía Ortega"
+                />
+                <figcaption>${escapeHtml(photo.label)}</figcaption>
+              </figure>
+            `,
+          )
+          .join('')}
+      </div>
+    </article>
+  `;
+}
+
+function syncChatbaseVisibility() {
+  const shouldShowChat = state.section === 'messages';
+  const bubbleButton = document.querySelector('#chatbase-bubble-button');
+  const bubbleWindow = document.querySelector('#chatbase-bubble-window');
+
+  if (!shouldShowChat && typeof window.chatbase === 'function') {
+    try {
+      window.chatbase('close');
+    } catch (error) {
+      console.warn('No se pudo cerrar Chatbase', error);
+    }
+  }
+
+  [bubbleButton, bubbleWindow].forEach((node) => {
+    if (!node) {
+      return;
+    }
+
+    node.style.display = shouldShowChat ? '' : 'none';
+    node.style.visibility = shouldShowChat ? 'visible' : 'hidden';
+    node.style.pointerEvents = shouldShowChat ? 'auto' : 'none';
+  });
+}
+
 function renderMessageList(container, items) {
   container.innerHTML = items
     .map(
       (item) => `
-        <article class="message-item">
+        <article class="message-item ${getMessageVariantClass(item)}">
           <div class="message-item-top">
-            <span>${escapeHtml(item.tag)}</span>
+            <span>${escapeHtml(item.title)}</span>
             <time>${escapeHtml(item.date)}</time>
           </div>
-          <strong>${escapeHtml(item.title)}</strong>
+          <strong>${escapeHtml(item.tag)}</strong>
           <p>${escapeHtml(item.body)}</p>
-          <div class="message-item-bottom">${escapeHtml(item.source)}</div>
         </article>
       `,
     )
     .join('');
+}
+
+function getMessageVariantClass(item) {
+  const tag = item.tag.toLowerCase();
+
+  if (tag.includes('enviado')) {
+    return 'message-item-sent';
+  }
+
+  if (tag.includes('recordatorio')) {
+    return 'message-item-reminder';
+  }
+
+  return 'message-item-received';
+}
+
+function getProgressPhotoSrc(label, tone) {
+  const scene = getProgressPhotoScene(tone);
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 300" role="img" aria-label="${escapeHtml(label)}">
+      <defs>
+        <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#f7f4ff" />
+          <stop offset="100%" stop-color="#ece7ff" />
+        </linearGradient>
+        <linearGradient id="floor" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#111114" />
+          <stop offset="100%" stop-color="#1f1f25" />
+        </linearGradient>
+      </defs>
+      <rect width="220" height="300" rx="24" fill="url(#wall)" />
+      <rect y="228" width="220" height="72" fill="url(#floor)" />
+      <rect x="22" y="24" width="176" height="242" rx="18" fill="rgba(255,255,255,0.44)" stroke="rgba(111,44,255,0.18)" />
+      ${scene}
+      <rect x="18" y="18" width="52" height="18" rx="9" fill="rgba(17,17,20,0.08)" />
+      <text x="28" y="31" fill="#111114" font-size="11" font-family="Arial, sans-serif" font-weight="700">${escapeHtml(label)}</text>
+    </svg>
+  `;
+
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function getProgressPhotoScene(tone) {
+  const base = `
+    <ellipse cx="110" cy="248" rx="42" ry="10" fill="rgba(17,17,20,0.18)" />
+    <circle cx="110" cy="86" r="24" fill="#f1cdb8" />
+    <rect x="90" y="110" width="40" height="70" rx="20" fill="#1a1a1f" />
+    <rect x="94" y="114" width="32" height="64" rx="16" fill="#5b2cff" />
+    <rect x="82" y="118" width="14" height="58" rx="7" fill="#f1cdb8" />
+    <rect x="124" y="118" width="14" height="58" rx="7" fill="#f1cdb8" />
+    <rect x="96" y="178" width="13" height="58" rx="7" fill="#f1cdb8" />
+    <rect x="111" y="178" width="13" height="58" rx="7" fill="#f1cdb8" />
+  `;
+
+  if (tone === 'side-left') {
+    return `
+      <ellipse cx="110" cy="70" rx="18" ry="8" fill="#1b1b1f" opacity="0.35" />
+      <circle cx="104" cy="86" r="24" fill="#f1cdb8" />
+      <rect x="92" y="110" width="34" height="70" rx="17" fill="#5b2cff" />
+      <rect x="122" y="122" width="12" height="52" rx="6" fill="#f1cdb8" />
+      <rect x="99" y="178" width="12" height="58" rx="6" fill="#f1cdb8" />
+      <rect x="113" y="178" width="12" height="58" rx="6" fill="#f1cdb8" />
+      <rect x="88" y="118" width="12" height="54" rx="6" fill="#f1cdb8" />
+    `;
+  }
+
+  if (tone === 'side-right') {
+    return `
+      <ellipse cx="110" cy="70" rx="18" ry="8" fill="#1b1b1f" opacity="0.35" />
+      <circle cx="116" cy="86" r="24" fill="#f1cdb8" />
+      <rect x="94" y="110" width="34" height="70" rx="17" fill="#5b2cff" />
+      <rect x="86" y="122" width="12" height="52" rx="6" fill="#f1cdb8" />
+      <rect x="97" y="178" width="12" height="58" rx="6" fill="#f1cdb8" />
+      <rect x="111" y="178" width="12" height="58" rx="6" fill="#f1cdb8" />
+      <rect x="122" y="118" width="12" height="54" rx="6" fill="#f1cdb8" />
+    `;
+  }
+
+  if (tone === 'back') {
+    return `
+      <ellipse cx="110" cy="70" rx="18" ry="8" fill="#1b1b1f" opacity="0.35" />
+      <circle cx="110" cy="86" r="24" fill="#d8b49e" />
+      <rect x="90" y="110" width="40" height="70" rx="20" fill="#4320c7" />
+      <rect x="82" y="118" width="14" height="58" rx="7" fill="#d8b49e" />
+      <rect x="124" y="118" width="14" height="58" rx="7" fill="#d8b49e" />
+      <rect x="96" y="178" width="13" height="58" rx="7" fill="#d8b49e" />
+      <rect x="111" y="178" width="13" height="58" rx="7" fill="#d8b49e" />
+    `;
+  }
+
+  return base;
 }
 
 function getExistingComment(exerciseName) {
@@ -811,6 +1089,13 @@ function getExistingComment(exerciseName) {
     (note) => note.name === exerciseName,
   );
   return previousNote ? previousNote.comment : '';
+}
+
+function getSentMessageDate() {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  return `Hoy · ${hours}:${minutes}`;
 }
 
 async function registerServiceWorker() {
@@ -890,6 +1175,31 @@ function getDefaultContextKey(section) {
 
 function getContextOption(section, key) {
   return contextOptionsBySection[section]?.find((option) => option.key === key);
+}
+
+function getYoutubeEmbedUrl(url) {
+  try {
+    const parsedUrl = new URL(url);
+
+    if (parsedUrl.hostname.includes('youtu.be')) {
+      const videoId = parsedUrl.pathname.split('/').filter(Boolean)[0];
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+    }
+
+    if (parsedUrl.hostname.includes('youtube.com')) {
+      const shortsMatch = parsedUrl.pathname.match(/^\/shorts\/([^/?]+)/);
+      if (shortsMatch) {
+        return `https://www.youtube.com/embed/${shortsMatch[1]}`;
+      }
+
+      const videoId = parsedUrl.searchParams.get('v');
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+    }
+
+    return null;
+  } catch (error) {
+    return null;
+  }
 }
 
 function escapeHtml(value) {

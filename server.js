@@ -1,8 +1,10 @@
 const express = require('express');
+const os = require('node:os');
 const path = require('node:path');
 
 const app = express();
 const port = Number(process.env.PORT || 4173);
+const host = process.env.HOST || '0.0.0.0';
 const publicDir = __dirname;
 const demoLinks = new Map([
   [
@@ -81,8 +83,15 @@ app.post('/api/demo-links/:token/claim', (req, res) => {
   });
 });
 
-app.listen(port, () => {
+app.listen(port, host, () => {
+  const networkUrls = getNetworkUrls(port);
+
   console.log(`Saulo app listening on http://127.0.0.1:${port}`);
+
+  if (networkUrls.length) {
+    console.log('Available on local network:');
+    networkUrls.forEach((url) => console.log(`- ${url}`));
+  }
 });
 
 function renderInvalidDemoLinkPage(message) {
@@ -139,4 +148,21 @@ function escapeHtml(value) {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#039;');
+}
+
+function getNetworkUrls(port) {
+  const interfaces = os.networkInterfaces();
+  const urls = [];
+
+  Object.values(interfaces).forEach((entries) => {
+    entries?.forEach((entry) => {
+      if (!entry || entry.internal || entry.family !== 'IPv4') {
+        return;
+      }
+
+      urls.push(`http://${entry.address}:${port}`);
+    });
+  });
+
+  return [...new Set(urls)];
 }

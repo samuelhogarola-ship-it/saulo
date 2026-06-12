@@ -73,7 +73,8 @@ test('creates a workout report when training is completed', async ({
     .locator('#context-nav')
     .getByRole('button', { name: 'Enviados' })
     .click();
-  await expect(page.getByText('Informe Día 1')).toBeVisible();
+  await expect(page.getByText('Resumen de entrenamiento')).toBeVisible();
+  await expect(page.getByText(/Hoy · \d{2}:\d{2}/)).toBeVisible();
 });
 
 test('renders message columns and profile/subscription sections', async ({

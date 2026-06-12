@@ -167,6 +167,29 @@ h1 {
   text-transform: uppercase;
 }
 
+.app-preview-link {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 20px;
+  padding: 12px 18px;
+  border: 1px solid rgba(210, 169, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #f6f1ff;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.app-preview-link:hover {
+  border-color: rgba(210, 169, 255, 0.4);
+  background: rgba(143, 44, 255, 0.18);
+  transform: translateY(-1px);
+}
+
 .form-panel {
   position: relative;
   z-index: 3;

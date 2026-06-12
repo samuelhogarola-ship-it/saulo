@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saulo Fitness App</title>
+    <meta
+      name="description"
+      content="Prototipo funcional de la plataforma Saulo Fitness para coach y alumnos."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <p class="sidebar-kicker">Saulo Fitness</p>
+          <h1>Coach OS</h1>
+          <p class="sidebar-copy">
+            Base real de la app para gestionar alumnos, rutinas y seguimiento.
+          </p>
+        </div>
+
+        <nav class="sidebar-nav" aria-label="Secciones principales">
+          <button class="nav-link is-active" data-section="overview">
+            Resumen
+          </button>
+          <button class="nav-link" data-section="students">Alumnos</button>
+          <button class="nav-link" data-section="plans">Rutinas</button>
+          <button class="nav-link" data-section="checkins">Check-ins</button>
+          <button class="nav-link" data-section="messages">Mensajes</button>
+          <button class="nav-link" data-section="billing">Pagos</button>
+        </nav>
+
+        <section class="sidebar-card">
+          <p class="sidebar-card-label">Infraestructura</p>
+          <strong id="infrastructure-target">100-150 alumnos activos</strong>
+          <p id="infrastructure-copy">
+            Banco de vídeos, histórico anual y mensajería básica ya previstos.
+          </p>
+        </section>
+      </aside>
+
+      <main class="workspace">
+        <header class="workspace-header">
+          <div>
+            <p class="workspace-kicker">Demo navegable</p>
+            <h2 id="workspace-title">Panel general</h2>
+          </div>
+
+          <div class="workspace-controls">
+            <div
+              class="role-switch"
+              role="tablist"
+              aria-label="Modo de visualización"
+            >
+              <button
+                class="role-button is-active"
+                data-role="coach"
+                role="tab"
+                aria-selected="true"
+              >
+                Coach
+              </button>
+              <button
+                class="role-button"
+                data-role="student"
+                role="tab"
+                aria-selected="false"
+              >
+                Alumno
+              </button>
+            </div>
+
+            <div class="workspace-badge" id="sync-status">
+              Datos mock listos para conectar
+            </div>
+          </div>
+        </header>
+
+        <section class="hero-panel">
+          <div>
+            <p class="hero-kicker">Estado actual</p>
+            <h3 id="hero-title">Centro de operaciones del entrenador</h3>
+            <p id="hero-copy">
+              Control diario del negocio: alumnos activos, renovaciones,
+              seguimiento y respuestas pendientes.
+            </p>
+          </div>
+
+          <div class="hero-highlight">
+            <p class="hero-highlight-label">Siguiente entrega técnica</p>
+            <strong id="hero-highlight-value"
+              >Conectar autenticación y panel</strong
+            >
+            <span id="hero-highlight-meta">Base lista para Supabase Auth</span>
+          </div>
+        </section>
+
+        <section
+          class="metrics-grid"
+          id="metrics-grid"
+          aria-label="Indicadores"
+        ></section>
+
+        <section class="content-grid">
+          <article class="panel panel-wide" data-panel="students">
+            <div class="panel-header">
+              <div>
+                <p class="panel-kicker">Personas</p>
+                <h3 id="students-panel-title">Vista de alumnos</h3>
+              </div>
+              <span class="panel-pill" id="students-panel-pill"
+                >Coach view</span
+              >
+            </div>
+
+            <div class="student-layout">
+              <div
+                class="student-list"
+                id="student-list"
+                role="listbox"
+                aria-label="Lista de perfiles"
+              ></div>
+              <div class="student-detail" id="student-detail"></div>
+            </div>
+          </article>
+
+          <article class="panel" data-panel="plans">
+            <div class="panel-header">
+              <div>
+                <p class="panel-kicker">Plan semanal</p>
+                <h3>Rutina activa</h3>
+              </div>
+            </div>
+            <div class="stack-list" id="plans-list"></div>
+          </article>
+
+          <article class="panel" data-panel="checkins">
+            <div class="panel-header">
+              <div>
+                <p class="panel-kicker">Seguimiento</p>
+                <h3>Check-ins y progreso</h3>
+              </div>
+            </div>
+            <div class="timeline-list" id="checkins-list"></div>
+          </article>
+
+          <article class="panel" data-panel="messages">
+            <div class="panel-header">
+              <div>
+                <p class="panel-kicker">Comunicación</p>
+                <h3>Bandeja priorizada</h3>
+              </div>
+            </div>
+            <div class="message-list" id="messages-list"></div>
+          </article>
+
+          <article class="panel" data-panel="billing">
+            <div class="panel-header">
+              <div>
+                <p class="panel-kicker">Pagos</p>
+                <h3>Renovaciones</h3>
+              </div>
+            </div>
+            <div class="billing-list" id="billing-list"></div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>

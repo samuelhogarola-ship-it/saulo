@@ -3,6 +3,10 @@
 Landing temporal para el formulario técnico de Saulo Fitness, ya preparada para
 guardar respuestas en Supabase y enviar avisos por Resend.
 
+El repo incluye también una primera versión navegable de la app real en
+`/app/`, separada de la landing para poder evolucionar producto y captación en
+paralelo.
+
 ## Scripts
 
 - `npm run dev`: lanza la app en `http://127.0.0.1:4173`
@@ -12,6 +16,11 @@ guardar respuestas en Supabase y enviar avisos por Resend.
 - `npm run precommit`: ejecuta `lint-staged` sobre archivos cambiados
 - `npm run playwright:install`: instala Chromium para Playwright
 - `npm run test:e2e`: ejecuta Playwright
+
+## Rutas disponibles
+
+- `/`: landing de captación y cuestionario técnico
+- `/app/`: prototipo funcional de la app real para coach y alumno
 
 ## Validaciones incluidas
 
@@ -90,4 +99,4 @@ GitHub Actions ejecuta:
 - `npm run test:e2e`
 
 La suite E2E cubre tanto el recorrido visual del formulario como validaciones del
-endpoint `/api/questionnaire`.
+endpoint `/api/questionnaire`, además de la base navegable de `/app/`.

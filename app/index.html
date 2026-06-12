@@ -3,230 +3,292 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Saulo Fitness App</title>
+    <title>Saulo Fitness APP</title>
     <meta
       name="description"
-      content="Prototipo funcional de la plataforma Saulo Fitness para coach y alumnos."
+      content="Demo pública e instalable de Saulo Fitness APP para mostrar la experiencia del alumno."
     />
-    <meta name="theme-color" content="#08161d" />
+    <meta name="theme-color" content="#f4f1eb" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
-    <meta name="apple-mobile-web-app-title" content="Saulo Fitness" />
-    <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+    <meta name="apple-mobile-web-app-title" content="Saulo Fitness APP" />
+    <link rel="manifest" href="./manifest.webmanifest?v=saulo-v3" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png?v=saulo-v3" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=saulo-v3" />
   </head>
   <body>
-    <div class="app-shell">
-      <aside class="sidebar">
+    <div class="modal-root" id="workout-modal-root" hidden></div>
+    <div class="student-app">
+      <aside class="student-sidebar">
         <div class="sidebar-brand">
-          <p class="sidebar-kicker">Saulo Fitness</p>
-          <h1>Coach OS</h1>
-          <p class="sidebar-copy">
-            Base real de la app para gestionar alumnos, rutinas y seguimiento.
+          <p class="brand-kicker">Saulo Fitness</p>
+          <h1>Saulo Fitness APP</h1>
+          <p class="brand-copy">
+            Demo pública del alumno para enseñar rutina, seguimiento y
+            suscripción desde móvil.
           </p>
         </div>
 
-        <nav class="sidebar-nav" aria-label="Secciones principales">
-          <button class="nav-link is-active" data-section="overview">
-            Resumen
-          </button>
-          <button class="nav-link" data-section="students">Alumnos</button>
-          <button class="nav-link" data-section="plans">Rutinas</button>
-          <button class="nav-link" data-section="checkins">Check-ins</button>
-          <button class="nav-link" data-section="messages">Mensajes</button>
-          <button class="nav-link" data-section="billing">Pagos</button>
-        </nav>
-
-        <section class="sidebar-card">
-          <p class="sidebar-card-label">Infraestructura</p>
-          <strong id="infrastructure-target">100-150 alumnos activos</strong>
-          <p id="infrastructure-copy">
-            Banco de vídeos, histórico anual y mensajería básica ya previstos.
-          </p>
+        <section class="student-card">
+          <div class="student-card-top">
+            <img
+              class="student-avatar"
+              src="./icons/icon-192.png?v=saulo-v2"
+              alt="Avatar de demo Saulo Fitness APP"
+            />
+            <div>
+              <p class="student-name" id="student-name">Lucía Ortega</p>
+              <p class="student-plan" id="student-plan">Definición avanzada</p>
+            </div>
+          </div>
+          <p class="student-summary" id="student-summary">Hoy toca sumar.</p>
         </section>
+
+        <nav class="sidebar-nav" aria-label="Secciones de alumno">
+          <button class="side-link is-active" data-section="routines">
+            Rutinas
+          </button>
+          <button class="side-link" data-section="messages">Mensajes</button>
+          <button class="side-link" data-section="subscription">
+            Suscripción
+          </button>
+          <button class="side-link" data-section="profile">Perfil</button>
+        </nav>
       </aside>
 
-      <main class="workspace">
-        <header class="workspace-header">
+      <main class="student-workspace">
+        <section class="demo-banner" id="demo-banner" hidden></section>
+
+        <header class="topbar">
           <div>
-            <p class="workspace-kicker">Demo instalable</p>
-            <h2 id="workspace-title">Panel general</h2>
-          </div>
-
-          <div class="workspace-controls">
-            <div
-              class="role-switch"
-              role="tablist"
-              aria-label="Modo de visualización"
-            >
-              <button
-                class="role-button is-active"
-                data-role="coach"
-                role="tab"
-                aria-selected="true"
-              >
-                Coach
-              </button>
-              <button
-                class="role-button"
-                data-role="student"
-                role="tab"
-                aria-selected="false"
-              >
-                Alumno
-              </button>
-            </div>
-
-            <div class="workspace-badge" id="sync-status">
-              Datos mock listos para conectar
-            </div>
+            <p class="brand-kicker">Experiencia alumno</p>
+            <h2 id="topbar-title">Rutinas del alumno</h2>
           </div>
         </header>
 
-        <section class="install-strip" aria-labelledby="install-strip-title">
-          <div class="install-copy">
-            <p class="workspace-kicker">Descarga rápida</p>
-            <h3 id="install-strip-title">
-              Deja esta demo en el móvil con icono propio
-            </h3>
-            <p id="install-help">
-              Instálala en la pantalla de inicio para enseñarla como app real:
-              se abre a pantalla completa y ya muestra panel, rutina y
-              seguimiento.
-            </p>
-          </div>
+        <nav
+          class="context-nav"
+          id="context-nav"
+          aria-label="Opciones de contexto"
+        ></nav>
 
-          <div class="install-actions">
-            <div class="install-preview">
-              <img
-                class="install-preview-icon"
-                src="./icons/icon-192.png"
-                alt="Icono de Saulo Fitness"
-              />
-              <div>
-                <strong>Saulo Fitness</strong>
-                <span>Demo lista para coach y alumno</span>
-              </div>
-            </div>
-            <button class="install-button" id="install-button" hidden>
-              Instalar demo
-            </button>
-            <div class="demo-links" aria-label="Accesos rápidos de demo">
-              <a class="demo-link" href="/app/?role=coach&section=overview">
-                Abrir panel coach
-              </a>
-              <a class="demo-link" href="/app/?role=student&section=plans">
-                Abrir rutina alumno
-              </a>
-            </div>
-            <p class="install-note" id="install-note">
-              En iPhone: comparte en Safari y pulsa "Añadir a pantalla de
-              inicio".
-            </p>
-          </div>
-        </section>
-
-        <section class="hero-panel">
+        <section class="app-hero">
           <div>
-            <p class="hero-kicker">Estado actual</p>
-            <h3 id="hero-title">Centro de operaciones del entrenador</h3>
+            <p class="brand-kicker">Vista pública</p>
+            <h3 id="hero-title">Una rutina clara, premium y accionable.</h3>
             <p id="hero-copy">
-              Control diario del negocio: alumnos activos, renovaciones,
-              seguimiento y respuestas pendientes.
+              Todo lo importante del alumno en una sola experiencia: entrenar,
+              reportar sensaciones, revisar mensajes y controlar membresía.
             </p>
           </div>
 
-          <div class="hero-highlight">
-            <p class="hero-highlight-label">Siguiente entrega técnica</p>
-            <strong id="hero-highlight-value"
-              >Conectar autenticación y panel</strong
-            >
-            <span id="hero-highlight-meta">Base lista para Supabase Auth</span>
+          <div class="hero-stat-grid" id="hero-stat-grid">
+            <article class="hero-stat">
+              <span>Entrenos semana</span>
+              <strong>4</strong>
+            </article>
+            <article class="hero-stat">
+              <span>Próximo check-in</span>
+              <strong>Mañana</strong>
+            </article>
+            <article class="hero-stat">
+              <span>Membresía activa</span>
+              <strong>Hasta 30 Jun</strong>
+            </article>
           </div>
         </section>
 
         <section
-          class="metrics-grid"
-          id="metrics-grid"
-          aria-label="Indicadores"
-        ></section>
+          class="content-section is-active"
+          data-section-panel="routines"
+          aria-labelledby="routines-title"
+        >
+          <div class="section-header">
+            <div>
+              <p class="brand-kicker">Sección</p>
+              <h3 id="routines-title">Rutinas</h3>
+            </div>
+            <span class="section-badge">Configurable por entrenador</span>
+          </div>
 
-        <section class="content-grid">
-          <article class="panel panel-wide" data-panel="students">
-            <div class="panel-header">
-              <div>
-                <p class="panel-kicker">Personas</p>
-                <h3 id="students-panel-title">Vista de alumnos</h3>
+          <div class="routine-layout">
+            <article class="routine-panel">
+              <div class="routine-heading" id="routine-day-panel">
+                <div>
+                  <p class="brand-kicker" id="routine-day-label">Día 1</p>
+                  <h4 id="routine-day-title">Pierna + glúteo</h4>
+                </div>
+                <span class="section-badge" id="routine-day-meta">
+                  Semana actual
+                </span>
               </div>
-              <span class="panel-pill" id="students-panel-pill"
-                >Coach view</span
-              >
-            </div>
 
-            <div class="student-layout">
-              <div
-                class="student-list"
-                id="student-list"
-                role="listbox"
-                aria-label="Lista de perfiles"
-              ></div>
-              <div class="student-detail" id="student-detail"></div>
-            </div>
-          </article>
+              <div class="exercise-list" id="exercise-list"></div>
 
-          <article class="panel" data-panel="plans">
-            <div class="panel-header">
-              <div>
-                <p class="panel-kicker">Plan semanal</p>
-                <h3>Rutina activa</h3>
+              <div class="routine-footer">
+                <button class="complete-button" id="complete-workout-button">
+                  Entrenamiento finalizado
+                </button>
+                <p class="routine-helper">
+                  Al finalizar se genera un informe/resumen en la demo y se
+                  guarda como mensaje enviado.
+                </p>
               </div>
-            </div>
-            <div class="stack-list" id="plans-list"></div>
-          </article>
+            </article>
 
-          <article class="panel" data-panel="checkins">
-            <div class="panel-header">
-              <div>
-                <p class="panel-kicker">Seguimiento</p>
-                <h3>Check-ins y progreso</h3>
+            <article class="summary-panel">
+              <div class="section-header section-header-compact">
+                <div>
+                  <p class="brand-kicker">Informe generado</p>
+                  <h4>Resumen del entrenamiento</h4>
+                </div>
               </div>
-            </div>
-            <div class="timeline-list" id="checkins-list"></div>
-          </article>
+              <div class="summary-empty" id="summary-empty">
+                Completa comentarios y pulsa "Entrenamiento finalizado" para ver
+                aquí el informe creado.
+              </div>
+              <div class="summary-report" id="summary-report" hidden></div>
+            </article>
+          </div>
+        </section>
 
-          <article class="panel" data-panel="messages">
-            <div class="panel-header">
-              <div>
-                <p class="panel-kicker">Comunicación</p>
-                <h3>Bandeja priorizada</h3>
-              </div>
+        <section
+          class="content-section"
+          data-section-panel="messages"
+          aria-labelledby="messages-title"
+        >
+          <div class="section-header">
+            <div>
+              <p class="brand-kicker">Sección</p>
+              <h3 id="messages-title">Mensajes</h3>
             </div>
-            <div class="message-list" id="messages-list"></div>
-          </article>
+          </div>
 
-          <article class="panel" data-panel="billing">
-            <div class="panel-header">
-              <div>
-                <p class="panel-kicker">Pagos</p>
-                <h3>Renovaciones</h3>
+          <div class="messages-note">
+            <p>
+              Los mensajes se revisan martes y viernes de cada semana. Mientras
+              tanto, resuelve tus dudas con nuestro chat.
+            </p>
+            <a
+              href="mailto:hola@saulofitness.com?subject=Chat%20personalizado%20Saulo%20Fitness"
+            >
+              Abrir chat personalizado
+            </a>
+          </div>
+
+          <div class="message-columns">
+            <article class="message-column" id="messages-inbox-panel">
+              <div class="section-header section-header-compact">
+                <h4>Recibidos</h4>
               </div>
+              <div class="message-list" id="messages-inbox"></div>
+            </article>
+
+            <article class="message-column" id="messages-sent-panel">
+              <div class="section-header section-header-compact">
+                <h4>Enviados</h4>
+              </div>
+              <div class="message-list" id="messages-sent"></div>
+            </article>
+
+            <article class="message-column" id="messages-reminders-panel">
+              <div class="section-header section-header-compact">
+                <h4>Recordatorios</h4>
+              </div>
+              <div class="message-list" id="messages-reminders"></div>
+            </article>
+          </div>
+        </section>
+
+        <section
+          class="content-section"
+          data-section-panel="subscription"
+          aria-labelledby="subscription-title"
+        >
+          <div class="section-header">
+            <div>
+              <p class="brand-kicker">Sección</p>
+              <h3 id="subscription-title">Suscripción</h3>
             </div>
-            <div class="billing-list" id="billing-list"></div>
-          </article>
+          </div>
+
+          <div class="info-grid">
+            <article class="info-card" id="subscription-start-card">
+              <span>Estado actual</span>
+              <strong>Membresía activa</strong>
+              <p>Acceso completo a rutina, mensajes y seguimiento.</p>
+            </article>
+            <article class="info-card" id="subscription-plan-card">
+              <span>Válida hasta</span>
+              <strong>30 de junio de 2026</strong>
+              <p>Renovación prevista antes de la fecha de corte.</p>
+            </article>
+            <article class="info-card" id="subscription-end-card">
+              <span>Fin del plan</span>
+              <strong>8 de julio de 2026</strong>
+              <p>Última semana activa del bloque de entrenamiento actual.</p>
+            </article>
+          </div>
+        </section>
+
+        <section
+          class="content-section"
+          data-section-panel="profile"
+          aria-labelledby="profile-title"
+        >
+          <div class="section-header">
+            <div>
+              <p class="brand-kicker">Sección</p>
+              <h3 id="profile-title">Perfil</h3>
+            </div>
+          </div>
+
+          <div class="profile-grid">
+            <article class="info-card" id="profile-age-card">
+              <span>Edad</span>
+              <strong>31 años</strong>
+            </article>
+            <article class="info-card" id="profile-weight-card">
+              <span>Peso</span>
+              <strong>63,4 kg</strong>
+            </article>
+            <article class="info-card" id="profile-goal-card">
+              <span>Objetivo</span>
+              <strong>Bajar grasa y mantener fuerza</strong>
+            </article>
+            <article class="info-card info-card-wide">
+              <span>Notas de perfil</span>
+              <strong>Adherencia alta con feedback rápido</strong>
+              <p>Practica natación y cuida la rodilla tras una lesión.</p>
+            </article>
+            <article class="info-card info-card-wide" id="profile-photos-card">
+              <span>Fotos mensuales</span>
+              <strong>Se suben 1 vez al mes</strong>
+              <p>
+                Fecha: 30 de junio de 2026. 4 fotos: izquierda, derecha, frente
+                y espalda.
+              </p>
+              <div class="photo-grid" aria-label="Fotos de seguimiento">
+                <div>Izquierda</div>
+                <div>Derecha</div>
+                <div>Frente</div>
+                <div>Espalda</div>
+              </div>
+            </article>
+          </div>
         </section>
       </main>
     </div>
 
-    <script src="./app.js" defer></script>
+    <script src="./app.js?v=saulo-v3" defer></script>
   </body>
 </html>

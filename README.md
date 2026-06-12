@@ -1,14 +1,13 @@
 # Saulo
 
-Landing temporal para el formulario técnico de Saulo Fitness, ya preparada para
-guardar respuestas en Supabase y enviar avisos por Resend.
+Web principal de `saulofitness.com` y demo publica de `Saulo Fitness APP`.
 
-El repo incluye también una primera versión navegable de la app real en
-`/app/`, separada de la landing para poder evolucionar producto y captación en
-paralelo.
+Este repo queda centrado en dos superficies:
 
-La demo de `/app/` ya se comporta como PWA instalable: incluye `manifest`,
-`service worker`, iconos y CTA para guardarla en el teléfono como acceso directo.
+- `/`: landing principal de marca
+- `/app/`: demo publica e instalable del panel de alumno
+
+No incluye ya el formulario de presupuesto/cuestionario ni su backend asociado.
 
 ## Scripts
 
@@ -20,70 +19,13 @@ La demo de `/app/` ya se comporta como PWA instalable: incluye `manifest`,
 - `npm run playwright:install`: instala Chromium para Playwright
 - `npm run test:e2e`: ejecuta Playwright
 
-## Rutas disponibles
+## Demo alumno incluida
 
-- `/`: landing de captación y cuestionario técnico
-- `/app/`: prototipo funcional e instalable de la app real para coach y alumno
-
-## Validaciones incluidas
-
-- El formulario no deja avanzar si faltan campos obligatorios del bloque actual.
-- El logotipo solo admite `PNG`, `JPG`, `SVG` o `WEBP` y un máximo de `8 MB`.
-- El backend replica esas validaciones para no depender solo del navegador.
-
-## Variables de entorno
-
-Duplica `.env.example` como `.env` y completa:
-
-- `SUPABASE_URL`
-- `SUPABASE_SERVICE_ROLE_KEY`
-- `SUPABASE_STORAGE_BUCKET`
-- `RESEND_API_KEY`
-- `RESEND_FROM_EMAIL`
-- `RESEND_TO_EMAIL`
-
-`ALLOW_DEMO_SUBMISSIONS=true` permite probar el envío local sin tocar Supabase ni
-Resend.
-
-## Patrón recomendado para webs estáticas
-
-Para landings que se publican en hostings HTML puros sin Node:
-
-1. la web estática publica el frontend
-2. el formulario envía a una `Supabase Edge Function`
-3. la Edge Function guarda en Supabase y envía el email por Resend
-
-En este proyecto, esa función está en:
-
-- [supabase/functions/submit-questionnaire/index.ts](/Users/sam/Desktop/webs/SAULO/repo-saulo/supabase/functions/submit-questionnaire/index.ts)
-
-Para desplegarla como endpoint público:
-
-```bash
-supabase functions deploy submit-questionnaire --no-verify-jwt
-```
-
-Y en el frontend estático configura:
-
-```js
-window.SAULO_FORM_CONFIG = {
-  endpoint:
-    'https://owlcmhlfuszyuwqxuhpb.supabase.co/functions/v1/submit-questionnaire',
-};
-```
-
-## Supabase
-
-1. Crea un bucket llamado `questionnaire-assets` o usa el nombre que pongas en
-   `SUPABASE_STORAGE_BUCKET`.
-2. Ejecuta [supabase/schema.sql](/Users/sam/Desktop/webs/SAULO/repo-saulo/supabase/schema.sql)
-   para crear la tabla `questionnaire_submissions`.
-3. Usa la service role key solo en servidor, nunca en el frontend.
-
-## Resend
-
-El servidor envía un email resumen al destinatario definido en
-`RESEND_TO_EMAIL`. Si el usuario adjunta logotipo, se adjunta también al correo.
+- Navegacion lateral y superior con `Rutinas`, `Mensajes`, `Suscripcion` y
+  `Perfil`
+- Rutinas por `Dia 1-7` con deep links publicos
+- Comentarios por ejercicio y generacion visual de informe al finalizar
+- PWA instalable con icono, `manifest` y `service worker`
 
 ## Git hooks
 
@@ -101,5 +43,4 @@ GitHub Actions ejecuta:
 - `npm run format:check`
 - `npm run test:e2e`
 
-La suite E2E cubre tanto el recorrido visual del formulario como validaciones del
-endpoint `/api/questionnaire`, además de la base navegable de `/app/`.
+La suite E2E cubre la landing publica y la demo de alumno en `/app/`.

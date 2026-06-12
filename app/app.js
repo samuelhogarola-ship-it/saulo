@@ -1,306 +1,340 @@
-const appData = {
-  coach: {
-    title: 'Panel general',
-    heroTitle: 'Centro de operaciones del entrenador',
-    heroCopy:
-      'Control diario del negocio: alumnos activos, renovaciones, seguimiento y respuestas pendientes.',
-    heroHighlightValue: 'Conectar autenticacion y panel coach',
-    heroHighlightMeta: 'Base lista para Supabase Auth y roles',
-    syncStatus: 'Datos mock listos para conectar',
-    infrastructureTarget: '100-150 alumnos activos',
-    infrastructureCopy:
-      'Banco de videos, historico anual y mensajeria basica ya previstos.',
-    studentPanelTitle: 'Vista de alumnos',
-    studentPanelPill: 'Coach view',
-    metrics: [
+const studentProfile = {
+  name: 'Lucía Ortega',
+  plan: 'Definición',
+  age: '31 años',
+  weight: '63,4 kg',
+  goal: 'Bajar grasa y mantener fuerza',
+};
+
+const batteryByDay = {
+  1: { level: 84, label: 'Alta', note: 'Solo tú marcas tus límites.' },
+  2: { level: 42, label: 'Media', note: 'Recupera para volver más fuerte.' },
+  3: { level: 88, label: 'Alta', note: 'Hoy vas un paso más allá.' },
+  4: { level: 36, label: 'Media', note: 'Sigue sumando con calma.' },
+  5: { level: 92, label: 'Muy alta', note: 'Hoy toca apretar de verdad.' },
+  6: { level: 32, label: 'Media', note: 'Mueve el cuerpo y respira.' },
+  7: { level: 24, label: 'Baja', note: 'Descansa y vuelve con hambre.' },
+};
+
+const routinesByDay = {
+  1: {
+    label: 'Día 1',
+    title: 'Pierna + glúteo',
+    meta: 'Activa · Ganancia muscular',
+    exercises: [
       {
-        label: 'Alumnos activos',
-        value: '84',
-        detail: '12 onboarding esta semana',
+        name: 'Hip thrust',
+        video: 'Sin vídeo',
+        reps: '4 x 10',
+        load: '75%',
+        rest: '90 s',
       },
       {
-        label: 'Rutinas por revisar',
-        value: '19',
-        detail: '7 necesitan ajuste hoy',
+        name: 'Sentadilla búlgara',
+        video: 'Sin vídeo',
+        reps: '3 x 12',
+        load: '14 kg',
+        rest: '75 s',
       },
       {
-        label: 'Mensajes pendientes',
-        value: '26',
-        detail: 'Prioridad alta: 4',
-      },
-      {
-        label: 'Renovaciones cercanas',
-        value: '11',
-        detail: '3 vencen en 48h',
-      },
-    ],
-    students: [
-      {
-        id: 'lucia',
-        name: 'Lucia Ortega',
-        plan: 'Definicion avanzada',
-        attendance: '5/5 sesiones',
-        status: { tone: 'is-good', text: 'En ritmo' },
-        objective: 'Bajar al 18% de grasa sin perder fuerza',
-        phase: 'Semana 6 de 10',
-        communication: 'WhatsApp prioritario',
-        checkin: 'Fotos entregadas ayer',
-        latestNote: 'Responder sobre ajuste de cardio post entreno.',
-        today: 'Actualizar macros y responder dudas del viernes.',
-      },
-      {
-        id: 'alvaro',
-        name: 'Alvaro Ruiz',
-        plan: 'Volumen limpio',
-        attendance: '4/5 sesiones',
-        status: { tone: 'is-warn', text: 'Seguimiento' },
-        objective: 'Ganar 3 kg manteniendo cintura estable',
-        phase: 'Semana 3 de 8',
-        communication: 'Chat interno',
-        checkin: 'Video tecnico pendiente',
-        latestNote: 'Necesita feedback sobre sentadilla frontal.',
-        today: 'Pedir video y reagendar check-in del lunes.',
-      },
-      {
-        id: 'marta',
-        name: 'Marta Perez',
-        plan: 'Recomposicion',
-        attendance: '2/5 sesiones',
-        status: { tone: 'is-alert', text: 'Riesgo de baja' },
-        objective: 'Recuperar constancia tras viaje de trabajo',
-        phase: 'Semana 2 de relanzamiento',
-        communication: 'Llamada + WhatsApp',
-        checkin: 'Sin completar esta semana',
-        latestNote: 'Enviar mensaje proactivo antes de renovacion.',
-        today: 'Preparar toque personal y version ligera de rutina.',
-      },
-    ],
-    plans: [
-      {
-        title: 'Pierna fuerza',
-        meta: 'Lunes • 7 ejercicios • Lucia / Alvaro',
-        state: 'Actualizar video de hip thrust',
-      },
-      {
-        title: 'Torso hipertrofia',
-        meta: 'Martes • 8 ejercicios • 14 alumnos',
-        state: 'Biblioteca completa',
-      },
-      {
-        title: 'Full body express',
-        meta: 'Viernes • 5 ejercicios • Marta',
-        state: 'Version adherencia baja fatiga',
-      },
-    ],
-    checkins: [
-      {
-        title: 'Lucia envio progreso',
-        meta: 'Hace 4h • fotos + peso + energia',
-        state: 'Revisar antes de las 18:00',
-      },
-      {
-        title: 'Alvaro debe grabar tecnica',
-        meta: 'Pendiente • sentadilla frontal',
-        state: 'Enviar recordatorio',
-      },
-      {
-        title: 'Marta sin check-in',
-        meta: '2 dias tarde',
-        state: 'Activar protocolo retencion',
-      },
-    ],
-    messages: [
-      {
-        title: 'Lucia Ortega',
-        meta: 'Pregunta sobre macros pre-entreno',
-        preview: 'Quiere saber si mover carbohidratos a la comida 2.',
-      },
-      {
-        title: 'Alvaro Ruiz',
-        meta: 'No encuentra video de referencia',
-        preview: 'Necesita enlace rapido a la sentadilla frontal.',
-      },
-      {
-        title: 'Marta Perez',
-        meta: 'Pide semana mas flexible',
-        preview: 'Solicita adaptar la rutina al viaje de trabajo.',
-      },
-    ],
-    billing: [
-      {
-        title: 'Plan Premium mensual',
-        meta: '3 renovaciones en 48h',
-        status: 'Cobro automatico listo',
-      },
-      {
-        title: 'Plan seguimiento basico',
-        meta: '5 renovaciones esta semana',
-        status: '2 requieren confirmacion manual',
-      },
-      {
-        title: 'Onboarding nuevo',
-        meta: '4 pagos iniciales pendientes',
-        status: 'Preparar enlace externo',
+        name: 'Peso muerto rumano',
+        video: 'Sin vídeo',
+        reps: '4 x 8',
+        load: '70%',
+        rest: '90 s',
       },
     ],
   },
-  student: {
-    title: 'Mi area personal',
-    heroTitle: 'Todo lo que el alumno necesita sin friccion',
-    heroCopy:
-      'Rutina activa, progreso, mensajeria y seguimiento en una sola vista clara.',
-    heroHighlightValue: 'Acceso por PIN o magic link',
-    heroHighlightMeta: 'Entrada rapida sin soporte por password',
-    syncStatus: 'Vista alumno preparada para login real',
-    infrastructureTarget: 'Experiencia de uso diaria',
-    infrastructureCopy:
-      'Entrar, entrenar, reportar progreso y contactar con el coach desde el mismo flujo.',
-    studentPanelTitle: 'Mi perfil y progreso',
-    studentPanelPill: 'Alumno view',
-    metrics: [
+  2: {
+    label: 'Día 2',
+    title: 'Descanso activo',
+    meta: 'Recuperación · Cardio ligero',
+    exercises: [
       {
-        label: 'Entrenos esta semana',
-        value: '4/5',
-        detail: '1 sesion pendiente hoy',
+        name: 'Caminata rápida',
+        video: 'Sin vídeo',
+        reps: '25 min',
+        load: 'Z2',
+        rest: 'Continuo',
       },
       {
-        label: 'Check-in siguiente',
-        value: '24h',
-        detail: 'Mañana a las 09:00',
-      },
-      {
-        label: 'Mensajes sin leer',
-        value: '2',
-        detail: 'Coach respondio esta mañana',
-      },
-      {
-        label: 'Proxima renovacion',
-        value: '7 dias',
-        detail: 'Plan premium mensual',
+        name: 'Movilidad de cadera',
+        video: 'Sin vídeo',
+        reps: '8 min',
+        load: 'Suave',
+        rest: 'Continuo',
       },
     ],
-    students: [
+  },
+  3: {
+    label: 'Día 3',
+    title: 'Espalda + bíceps',
+    meta: 'Activa · Ganancia muscular',
+    exercises: [
       {
-        id: 'self',
-        name: 'Tu perfil',
-        plan: 'Definicion avanzada',
-        attendance: '4/5 sesiones',
-        status: { tone: 'is-good', text: 'Buen ritmo' },
-        objective: 'Perder grasa manteniendo fuerza',
-        phase: 'Semana 6 de 10',
-        communication: 'Boton directo a WhatsApp',
-        checkin: 'Mañana a las 09:00',
-        latestNote: 'Tu coach revisara tus fotos y ajustes nutricionales.',
-        today: 'Completar sesion pierna y registrar energia.',
+        name: 'Jalón al pecho',
+        video: 'Sin vídeo',
+        reps: '4 x 10',
+        load: '68%',
+        rest: '90 s',
+      },
+      {
+        name: 'Remo con mancuerna',
+        video: 'Sin vídeo',
+        reps: '3 x 12',
+        load: '22 kg',
+        rest: '75 s',
+      },
+      {
+        name: 'Curl inclinado',
+        video: 'Sin vídeo',
+        reps: '3 x 15',
+        load: '10 kg',
+        rest: '60 s',
       },
     ],
-    plans: [
+  },
+  4: {
+    label: 'Día 4',
+    title: 'Descanso activo',
+    meta: 'Recuperación · Cardio ligero',
+    exercises: [
       {
-        title: 'Hoy: Pierna fuerza',
-        meta: '7 ejercicios • 65 minutos',
-        state: 'Incluye video y tiempos de descanso',
+        name: 'Bicicleta ligera',
+        video: 'Sin vídeo',
+        reps: '20 min',
+        load: 'Suave',
+        rest: 'Continuo',
       },
       {
-        title: 'Mañana: Cardio suave + movilidad',
-        meta: '25 minutos',
-        state: 'Objetivo de recuperacion',
-      },
-      {
-        title: 'Viernes: Torso hipertrofia',
-        meta: '8 ejercicios • 70 minutos',
-        state: 'Carga guiada por RIR',
-      },
-    ],
-    checkins: [
-      {
-        title: 'Fotos de progreso',
-        meta: 'Pendiente mañana',
-        state: 'Sube 4 fotos desde la app',
-      },
-      {
-        title: 'Peso y sensaciones',
-        meta: 'Registro semanal',
-        state: '2 minutos para completar',
-      },
-      {
-        title: 'Video tecnico opcional',
-        meta: 'Sentadilla frontal',
-        state: 'Puedes enviarlo por WhatsApp',
+        name: 'Movilidad torácica',
+        video: 'Sin vídeo',
+        reps: '6 min',
+        load: 'Suave',
+        rest: 'Continuo',
       },
     ],
-    messages: [
+  },
+  5: {
+    label: 'Día 5',
+    title: 'Push + core',
+    meta: 'Activa · Ganancia muscular',
+    exercises: [
       {
-        title: 'Coach Saulo',
-        meta: 'Respuesta nueva',
-        preview:
-          'Mantén los carbohidratos pre-entreno y recorta la cena ligera.',
+        name: 'Press inclinado',
+        video: 'Sin vídeo',
+        reps: '4 x 8',
+        load: '72%',
+        rest: '120 s',
       },
       {
-        title: 'Recordatorio automatico',
-        meta: 'Check-in mañana',
-        preview: 'No olvides subir fotos, peso y energía general.',
+        name: 'Press militar',
+        video: 'Sin vídeo',
+        reps: '3 x 10',
+        load: '24 kg',
+        rest: '90 s',
       },
     ],
-    billing: [
+  },
+  6: {
+    label: 'Día 6',
+    title: 'Descanso activo',
+    meta: 'Recuperación · Cardio ligero',
+    exercises: [
       {
-        title: 'Tu plan actual',
-        meta: 'Premium mensual',
-        status: 'Renovacion prevista en 7 dias',
+        name: 'Paseo suave',
+        video: 'Sin vídeo',
+        reps: '30 min',
+        load: 'Muy suave',
+        rest: 'Continuo',
       },
       {
-        title: 'Metodo de pago',
-        meta: 'Enlace externo activo',
-        status: 'Cambio a suscripcion automatica disponible',
+        name: 'Movilidad de hombro',
+        video: 'Sin vídeo',
+        reps: '8 min',
+        load: 'Suave',
+        rest: 'Continuo',
+      },
+    ],
+  },
+  7: {
+    label: 'Día 7',
+    title: 'Descanso activo',
+    meta: 'Recuperación · Cardio ligero',
+    exercises: [
+      {
+        name: 'Cardio suave',
+        video: 'Sin vídeo',
+        reps: '20 min',
+        load: 'Suave',
+        rest: 'Continuo',
+      },
+      {
+        name: 'Respiración',
+        video: 'Sin vídeo',
+        reps: '5 min',
+        load: 'Control',
+        rest: 'Continuo',
       },
     ],
   },
 };
 
 const state = {
-  role: 'coach',
-  section: 'overview',
-  selectedStudentId: appData.coach.students[0].id,
+  section: 'routines',
+  day: 1,
+  report: null,
+  demoToken: null,
+  contextKey: 'day-1',
+  messages: {
+    inbox: [
+      {
+        title: 'Coach Saulo',
+        tag: 'Recibido',
+        date: 'Hoy · 08:45',
+        source: 'Email',
+        body: 'Mantén el tempo en hip thrust y sube comentario al terminar.',
+      },
+      {
+        title: 'Coach Saulo',
+        tag: 'Recibido',
+        date: 'Ayer · 19:10',
+        source: 'Email',
+        body: 'Muy bien la adherencia. Esta semana buscamos más control técnico.',
+      },
+    ],
+    sent: [
+      {
+        title: 'Consulta nutrición',
+        tag: 'Enviado',
+        date: 'Ayer · 20:15',
+        source: 'Email',
+        body: 'Pregunté si mover carbohidratos al pre-entreno.',
+      },
+    ],
+    reminders: [
+      {
+        title: 'Check-in semanal',
+        tag: 'Recordatorio',
+        date: 'Martes · 09:00',
+        source: 'App',
+        body: 'Sube peso, sensaciones y 4 fotos de progreso.',
+      },
+      {
+        title: 'Renovación próxima',
+        tag: 'Recordatorio',
+        date: 'Viernes · 18:00',
+        source: 'App',
+        body: 'Tu plan actual finaliza el 30 de junio de 2026.',
+      },
+    ],
+  },
 };
 
-const workspaceTitle = document.querySelector('#workspace-title');
+const demoBanner = document.querySelector('#demo-banner');
+const topbarTitle = document.querySelector('#topbar-title');
 const heroTitle = document.querySelector('#hero-title');
 const heroCopy = document.querySelector('#hero-copy');
-const heroHighlightValue = document.querySelector('#hero-highlight-value');
-const heroHighlightMeta = document.querySelector('#hero-highlight-meta');
-const installButton = document.querySelector('#install-button');
-const installNote = document.querySelector('#install-note');
-const syncStatus = document.querySelector('#sync-status');
-const infrastructureTarget = document.querySelector('#infrastructure-target');
-const infrastructureCopy = document.querySelector('#infrastructure-copy');
-const studentsPanelTitle = document.querySelector('#students-panel-title');
-const studentsPanelPill = document.querySelector('#students-panel-pill');
-const metricsGrid = document.querySelector('#metrics-grid');
-const studentList = document.querySelector('#student-list');
-const studentDetail = document.querySelector('#student-detail');
-const plansList = document.querySelector('#plans-list');
-const checkinsList = document.querySelector('#checkins-list');
-const messagesList = document.querySelector('#messages-list');
-const billingList = document.querySelector('#billing-list');
-const roleButtons = [...document.querySelectorAll('.role-button')];
-const navButtons = [...document.querySelectorAll('.nav-link')];
-let deferredInstallPrompt = null;
+const heroStatGrid = document.querySelector('#hero-stat-grid');
+const contextNav = document.querySelector('#context-nav');
+const studentName = document.querySelector('#student-name');
+const studentPlan = document.querySelector('#student-plan');
+const studentSummary = document.querySelector('#student-summary');
+const sideLinks = [...document.querySelectorAll('.side-link')];
+const sectionPanels = [...document.querySelectorAll('[data-section-panel]')];
+const routineDayLabel = document.querySelector('#routine-day-label');
+const routineDayTitle = document.querySelector('#routine-day-title');
+const routineDayMeta = document.querySelector('#routine-day-meta');
+const exerciseList = document.querySelector('#exercise-list');
+const completeWorkoutButton = document.querySelector(
+  '#complete-workout-button',
+);
+const summaryEmpty = document.querySelector('#summary-empty');
+const summaryReport = document.querySelector('#summary-report');
+const workoutModalRoot = document.querySelector('#workout-modal-root');
+const messagesInbox = document.querySelector('#messages-inbox');
+const messagesSent = document.querySelector('#messages-sent');
+const messagesReminders = document.querySelector('#messages-reminders');
 
-roleButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    const nextRole = button.dataset.role;
+const contextOptionsBySection = {
+  routines: [
+    { key: 'day-1', label: 'Día 1', type: 'day', day: 1 },
+    { key: 'day-3', label: 'Día 3', type: 'day', day: 3 },
+    { key: 'day-5', label: 'Día 5', type: 'day', day: 5 },
+    { key: 'day-2', label: 'Día 2', type: 'day', day: 2 },
+    { key: 'day-4', label: 'Día 4', type: 'day', day: 4 },
+    { key: 'day-6', label: 'Día 6', type: 'day', day: 6 },
+    { key: 'day-7', label: 'Día 7', type: 'day', day: 7 },
+  ],
+  messages: [
+    {
+      key: 'messages-inbox',
+      label: 'Buzón de entrada',
+      type: 'anchor',
+      target: '#messages-inbox-panel',
+    },
+    {
+      key: 'messages-sent',
+      label: 'Enviados',
+      type: 'anchor',
+      target: '#messages-sent-panel',
+    },
+    {
+      key: 'messages-reminders',
+      label: 'Recordatorios',
+      type: 'anchor',
+      target: '#messages-reminders-panel',
+    },
+  ],
+  subscription: [
+    {
+      key: 'subscription-start',
+      label: 'Inicio',
+      type: 'anchor',
+      target: '#subscription-start-card',
+    },
+    {
+      key: 'subscription-plan',
+      label: 'Plan 30 días',
+      type: 'anchor',
+      target: '#subscription-plan-card',
+    },
+    {
+      key: 'subscription-end',
+      label: 'Fin',
+      type: 'anchor',
+      target: '#subscription-end-card',
+    },
+  ],
+  profile: [
+    {
+      key: 'profile-age',
+      label: 'Edad',
+      type: 'anchor',
+      target: '#profile-age-card',
+    },
+    {
+      key: 'profile-weight',
+      label: 'Peso',
+      type: 'anchor',
+      target: '#profile-weight-card',
+    },
+    {
+      key: 'profile-goal',
+      label: 'Objetivo',
+      type: 'anchor',
+      target: '#profile-goal-card',
+    },
+    {
+      key: 'profile-photos',
+      label: 'Fotos',
+      type: 'anchor',
+      target: '#profile-photos-card',
+    },
+  ],
+};
 
-    if (!nextRole || nextRole === state.role) {
-      return;
-    }
-
-    state.role = nextRole;
-    state.section = 'overview';
-    state.selectedStudentId = appData[nextRole].students[0].id;
-    renderApp();
-  });
-});
-
-navButtons.forEach((button) => {
+sideLinks.forEach((button) => {
   button.addEventListener('click', () => {
     const nextSection = button.dataset.section;
 
@@ -309,239 +343,401 @@ navButtons.forEach((button) => {
     }
 
     state.section = nextSection;
-    updateNavigation();
-    syncUrlState();
-    focusSection(nextSection);
+    state.contextKey = getDefaultContextKey(nextSection);
+    renderApp();
   });
 });
 
-installButton?.addEventListener('click', async () => {
-  if (!deferredInstallPrompt) {
-    return;
-  }
-
-  deferredInstallPrompt.prompt();
-  await deferredInstallPrompt.userChoice.catch(() => null);
-  deferredInstallPrompt = null;
-  updateInstallUi();
-});
-
-window.addEventListener('beforeinstallprompt', (event) => {
-  event.preventDefault();
-  deferredInstallPrompt = event;
-  updateInstallUi();
-});
-
-window.addEventListener('appinstalled', () => {
-  deferredInstallPrompt = null;
-  if (installNote) {
-    installNote.textContent =
-      'La demo ya está instalada. Ábrela desde el icono de Saulo Fitness.';
-  }
-  updateInstallUi();
+completeWorkoutButton?.addEventListener('click', () => {
+  renderWorkoutModal();
 });
 
 hydrateStateFromUrl();
 registerServiceWorker();
 renderApp();
-updateInstallUi();
 
 function renderApp() {
-  const currentData = appData[state.role];
-  const selectedStudent =
-    currentData.students.find(
-      (student) => student.id === state.selectedStudentId,
-    ) || currentData.students[0];
+  studentName.textContent = studentProfile.name;
+  studentPlan.textContent = studentProfile.plan;
+  renderStudentBattery();
 
-  state.selectedStudentId = selectedStudent.id;
-
-  workspaceTitle.textContent = currentData.title;
-  heroTitle.textContent = currentData.heroTitle;
-  heroCopy.textContent = currentData.heroCopy;
-  heroHighlightValue.textContent = currentData.heroHighlightValue;
-  heroHighlightMeta.textContent = currentData.heroHighlightMeta;
-  syncStatus.textContent = currentData.syncStatus;
-  infrastructureTarget.textContent = currentData.infrastructureTarget;
-  infrastructureCopy.textContent = currentData.infrastructureCopy;
-  studentsPanelTitle.textContent = currentData.studentPanelTitle;
-  studentsPanelPill.textContent = currentData.studentPanelPill;
-
-  renderMetrics(currentData.metrics);
-  renderStudents(currentData.students, selectedStudent.id);
-  renderStudentDetail(selectedStudent);
-  renderCollection(plansList, currentData.plans, renderStackItem);
-  renderCollection(checkinsList, currentData.checkins, renderTimelineItem);
-  renderCollection(messagesList, currentData.messages, renderMessageItem);
-  renderCollection(billingList, currentData.billing, renderBillingItem);
-  updateRoleButtons();
-  updateNavigation();
+  renderDemoBanner();
+  updateSectionNavigation();
+  updateTopCopy();
+  renderContextNav();
+  renderRoutine();
+  renderMessages();
+  renderSummaryReport();
   syncUrlState();
 }
 
-function renderMetrics(metrics) {
-  metricsGrid.innerHTML = metrics
+function renderStudentBattery() {
+  const battery = batteryByDay[state.day] ?? batteryByDay[1];
+
+  studentSummary.textContent = battery.note;
+}
+
+function updateSectionNavigation() {
+  sideLinks.forEach((link) => {
+    link.classList.toggle('is-active', link.dataset.section === state.section);
+  });
+
+  sectionPanels.forEach((panel) => {
+    panel.classList.toggle(
+      'is-active',
+      panel.dataset.sectionPanel === state.section,
+    );
+  });
+}
+
+function updateTopCopy() {
+  const titles = {
+    routines: 'Rutinas del alumno',
+    messages: 'Mensajes',
+    subscription: 'Suscripción',
+    profile: 'Perfil',
+  };
+
+  const heroTitles = {
+    routines: 'Toca un día y revisa lo que verá tu cliente.',
+    messages: 'Mensajes limpios, directos y sin ruido.',
+    subscription: 'Estado claro y fechas visibles sin ruido.',
+    profile: 'Mide tu progreso.',
+  };
+
+  const heroCopies = {
+    routines:
+      'La demo enseña solo lo que marcas: rutina activa, recuperación y seguimiento básico.',
+    messages:
+      'Los mensajes se revisan martes y viernes de cada semana. Mientras tanto, resuelve dudas con nuestro chat.',
+    subscription: 'Membresía y plan quedan claros de un vistazo.',
+    profile: 'Edad, peso y objetivo visibles en limpio.',
+  };
+
+  topbarTitle.textContent = titles[state.section];
+  heroTitle.textContent = heroTitles[state.section];
+  if (heroCopy) {
+    heroCopy.hidden = state.section === 'profile';
+    heroCopy.textContent = heroCopies[state.section];
+  }
+  if (heroStatGrid) {
+    if (state.section === 'profile') {
+      heroStatGrid.hidden = false;
+      heroStatGrid.innerHTML = `
+        <article class="profile-calendar" id="profile-calendar">
+          <div class="profile-calendar-head">
+            <span>Calendario</span>
+            <strong>Junio 2026</strong>
+          </div>
+          <div class="profile-calendar-grid" aria-label="Calendario de progreso">
+            <span class="calendar-day">L</span>
+            <span class="calendar-day">M</span>
+            <span class="calendar-day">X</span>
+            <span class="calendar-day">J</span>
+            <span class="calendar-day">V</span>
+            <span class="calendar-day">S</span>
+            <span class="calendar-day">D</span>
+            <span class="calendar-day">1</span>
+            <span class="calendar-day">2</span>
+            <span class="calendar-day is-complete">3</span>
+            <span class="calendar-day">4</span>
+            <span class="calendar-day is-complete">5</span>
+            <span class="calendar-day is-complete">6</span>
+            <span class="calendar-day">7</span>
+            <span class="calendar-day is-today">8</span>
+            <span class="calendar-day">9</span>
+            <span class="calendar-day is-missed">10 ×</span>
+            <span class="calendar-day">11</span>
+            <span class="calendar-day">12</span>
+            <span class="calendar-day">13</span>
+            <span class="calendar-day">14</span>
+          </div>
+          <p>Hoy en verde. El día marcado en rojo es el que toca recuperar.</p>
+        </article>
+      `;
+      return;
+    }
+
+    heroStatGrid.hidden = false;
+    heroStatGrid.innerHTML = `
+      <article class="hero-stat">
+        <span>Entrenos semana</span>
+        <strong>4/5</strong>
+      </article>
+      <article class="hero-stat">
+        <span>Próximo check-in</span>
+        <strong>Mañana</strong>
+      </article>
+      <article class="hero-stat">
+        <span>Membresía activa</span>
+        <strong>Hasta 30 Jun</strong>
+      </article>
+    `;
+  }
+}
+
+function renderContextNav() {
+  const options = contextOptionsBySection[state.section] ?? [];
+
+  if (!contextNav || !options.length) {
+    return;
+  }
+
+  if (state.section === 'routines') {
+    state.contextKey = `day-${state.day}`;
+  } else if (!options.some((option) => option.key === state.contextKey)) {
+    state.contextKey = options[0].key;
+  }
+
+  contextNav.innerHTML = options
     .map(
-      (metric) => `
-        <article class="metric-card">
-          <span class="metric-label">${escapeHtml(metric.label)}</span>
-          <strong class="metric-value">${escapeHtml(metric.value)}</strong>
-          <p class="metric-detail">${escapeHtml(metric.detail)}</p>
+      (option) => `
+        <button
+          class="context-chip ${option.key === state.contextKey ? 'is-active' : ''}"
+          data-context-key="${escapeHtml(option.key)}"
+        >
+          ${escapeHtml(option.label)}
+        </button>
+      `,
+    )
+    .join('');
+
+  [...contextNav.querySelectorAll('[data-context-key]')].forEach((button) => {
+    button.addEventListener('click', () => {
+      const nextKey = button.dataset.contextKey;
+      const nextOption = options.find((option) => option.key === nextKey);
+
+      if (!nextOption) {
+        return;
+      }
+
+      if (nextOption.type === 'day') {
+        state.section = 'routines';
+        state.day = nextOption.day;
+        state.contextKey = nextOption.key;
+        renderApp();
+        return;
+      }
+
+      state.contextKey = nextOption.key;
+      renderApp();
+
+      if (nextOption.target) {
+        window.requestAnimationFrame(() => {
+          document.querySelector(nextOption.target)?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          });
+        });
+      }
+    });
+  });
+}
+
+function renderRoutine() {
+  const routine = routinesByDay[state.day];
+
+  routineDayLabel.textContent = routine.label;
+  routineDayTitle.textContent = routine.title;
+  routineDayMeta.textContent = routine.meta;
+
+  exerciseList.innerHTML = routine.exercises
+    .map(
+      (exercise, index) => `
+        <article class="exercise-card" data-exercise-name="${escapeHtml(exercise.name)}">
+          <div class="exercise-top">
+            <div>
+              <p class="brand-kicker">Ejercicio ${index + 1}</p>
+              <h5>${escapeHtml(exercise.name)}</h5>
+            </div>
+            <div class="exercise-video">${escapeHtml(exercise.video)}</div>
+          </div>
+
+          <div class="exercise-spec-grid">
+            <div class="exercise-spec">
+              Repeticiones
+              <strong>${escapeHtml(exercise.reps)}</strong>
+            </div>
+            <div class="exercise-spec">
+              Peso / %
+              <strong>${escapeHtml(exercise.load)}</strong>
+            </div>
+            <div class="exercise-spec">
+              Descanso
+              <strong>${escapeHtml(exercise.rest)}</strong>
+            </div>
+          </div>
+
+          <textarea
+            class="exercise-comment"
+            placeholder="Comentario de este ejercicio para guardarlo al finalizar..."
+          >${getExistingComment(exercise.name)}</textarea>
         </article>
       `,
     )
     .join('');
 }
 
-function renderStudents(students, selectedStudentId) {
-  studentList.innerHTML = students
-    .map((student) => {
-      const isActive = student.id === selectedStudentId;
+function renderSummaryReport() {
+  if (!state.report) {
+    summaryEmpty.hidden = false;
+    summaryReport.hidden = true;
+    summaryReport.innerHTML = '';
+    return;
+  }
 
-      return `
-        <button
-          class="student-card ${isActive ? 'is-active' : ''}"
-          data-student-id="${escapeHtml(student.id)}"
-          role="option"
-          aria-selected="${isActive ? 'true' : 'false'}"
-        >
-          <strong>${escapeHtml(student.name)}</strong>
-          <p class="student-meta">${escapeHtml(student.plan)}</p>
-          <p class="student-meta">${escapeHtml(student.attendance)}</p>
-          <span class="status-pill ${escapeHtml(student.status.tone)}">${escapeHtml(student.status.text)}</span>
+  summaryEmpty.hidden = true;
+  summaryReport.hidden = false;
+  summaryReport.innerHTML = `
+    <h5>${escapeHtml(state.report.title)}</h5>
+    <p>${escapeHtml(state.report.meta)}</p>
+    <ul>
+      ${state.report.notes
+        .map(
+          (note) =>
+            `<li><strong>${escapeHtml(note.name)}:</strong> ${escapeHtml(note.comment)}</li>`,
+        )
+        .join('')}
+    </ul>
+  `;
+}
+
+function renderWorkoutModal() {
+  if (!workoutModalRoot) {
+    return;
+  }
+
+  workoutModalRoot.hidden = false;
+  workoutModalRoot.innerHTML = `
+    <div class="workout-modal" role="dialog" aria-modal="true" aria-labelledby="workout-modal-title">
+      <button class="workout-modal-close" type="button" data-close-workout-modal aria-label="Cerrar">
+        ×
+      </button>
+      <p class="brand-kicker">Rutina completada</p>
+      <h3 id="workout-modal-title">¿Qué tal fue la rutina?</h3>
+      <p>Elige cómo te ha ido para dejarlo registrado en el informe de la demo.</p>
+      <div class="workout-modal-actions">
+        <button class="complete-button" type="button" data-workout-feedback="Bien">
+          Bien
         </button>
-      `;
-    })
+        <button class="complete-button" type="button" data-workout-feedback="Regular">
+          Regular
+        </button>
+        <button class="complete-button" type="button" data-workout-feedback="Intensa">
+          Intensa
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function closeWorkoutModal() {
+  if (!workoutModalRoot) {
+    return;
+  }
+
+  workoutModalRoot.hidden = true;
+  workoutModalRoot.innerHTML = '';
+}
+
+function buildWorkoutReport(feedback) {
+  const activeRoutine = routinesByDay[state.day];
+  const exerciseCards = [
+    ...exerciseList.querySelectorAll('[data-exercise-name]'),
+  ];
+  const notes = exerciseCards.map((card) => {
+    const name = card.dataset.exerciseName;
+    const textarea = card.querySelector('textarea');
+    const comment = textarea ? textarea.value.trim() : '';
+    return {
+      name,
+      comment: comment || 'Sin comentario',
+    };
+  });
+
+  state.report = {
+    title: `${activeRoutine.label} finalizado`,
+    meta: `${activeRoutine.title} · ${feedback.toLowerCase()}`,
+    notes,
+  };
+
+  state.messages.sent.unshift({
+    title: `Informe ${activeRoutine.label}`,
+    meta: 'Enviado ahora',
+    body: notes.map((item) => `${item.name}: ${item.comment}`).join(' | '),
+  });
+
+  state.section = 'routines';
+  renderApp();
+}
+
+function renderDemoBanner() {
+  if (!demoBanner) {
+    return;
+  }
+
+  if (state.demoToken !== '101') {
+    demoBanner.hidden = true;
+    demoBanner.textContent = '';
+    return;
+  }
+
+  demoBanner.hidden = false;
+  demoBanner.innerHTML = `
+    <strong>Hola Saulo, listo para comprobar la primera demo?</strong>
+    <p>1. Mira las opciones disponibles. 2. Revisa Rutinas, Suscripcion y Perfil. 3. Comprueba el funcionamiento como lo veria tu cliente.</p>
+  `;
+}
+
+workoutModalRoot?.addEventListener('click', (event) => {
+  const feedbackButton = event.target?.closest?.('[data-workout-feedback]');
+  if (feedbackButton) {
+    const feedback = feedbackButton.dataset.workoutFeedback;
+    closeWorkoutModal();
+    if (feedback) {
+      buildWorkoutReport(feedback);
+    }
+    return;
+  }
+
+  if (event.target?.matches?.('[data-close-workout-modal]')) {
+    closeWorkoutModal();
+  }
+});
+
+function renderMessages() {
+  renderMessageList(messagesInbox, state.messages.inbox);
+  renderMessageList(messagesSent, state.messages.sent);
+  renderMessageList(messagesReminders, state.messages.reminders);
+}
+
+function renderMessageList(container, items) {
+  container.innerHTML = items
+    .map(
+      (item) => `
+        <article class="message-item">
+          <div class="message-item-top">
+            <span>${escapeHtml(item.tag)}</span>
+            <time>${escapeHtml(item.date)}</time>
+          </div>
+          <strong>${escapeHtml(item.title)}</strong>
+          <p>${escapeHtml(item.body)}</p>
+          <div class="message-item-bottom">${escapeHtml(item.source)}</div>
+        </article>
+      `,
+    )
     .join('');
-
-  [...studentList.querySelectorAll('[data-student-id]')].forEach((button) => {
-    button.addEventListener('click', () => {
-      const nextStudentId = button.dataset.studentId;
-
-      if (!nextStudentId) {
-        return;
-      }
-
-      state.selectedStudentId = nextStudentId;
-      renderApp();
-    });
-  });
 }
 
-function renderStudentDetail(student) {
-  studentDetail.innerHTML = `
-    <article class="detail-card">
-      <span class="status-pill ${escapeHtml(student.status.tone)}">${escapeHtml(student.status.text)}</span>
-      <h3>${escapeHtml(student.name)}</h3>
-      <p class="student-meta">${escapeHtml(student.latestNote)}</p>
-
-      <div class="detail-grid">
-        <div>
-          <span>Objetivo</span>
-          <strong>${escapeHtml(student.objective)}</strong>
-        </div>
-        <div>
-          <span>Fase actual</span>
-          <strong>${escapeHtml(student.phase)}</strong>
-        </div>
-        <div>
-          <span>Comunicacion</span>
-          <strong>${escapeHtml(student.communication)}</strong>
-        </div>
-      </div>
-
-      <div class="detail-list">
-        <div>
-          <span>Check-in</span>
-          <strong>${escapeHtml(student.checkin)}</strong>
-        </div>
-        <div>
-          <span>Hoy toca</span>
-          <strong>${escapeHtml(student.today)}</strong>
-        </div>
-      </div>
-    </article>
-  `;
-}
-
-function renderCollection(container, items, renderer) {
-  container.innerHTML = items.map(renderer).join('');
-}
-
-function renderStackItem(item) {
-  return `
-    <article class="stack-item">
-      <strong>${escapeHtml(item.title)}</strong>
-      <p class="item-meta">${escapeHtml(item.meta)}</p>
-      <p class="item-meta">${escapeHtml(item.state)}</p>
-    </article>
-  `;
-}
-
-function renderTimelineItem(item) {
-  return `
-    <article class="timeline-item">
-      <strong>${escapeHtml(item.title)}</strong>
-      <p class="item-meta">${escapeHtml(item.meta)}</p>
-      <p class="item-meta">${escapeHtml(item.state)}</p>
-    </article>
-  `;
-}
-
-function renderMessageItem(item) {
-  return `
-    <article class="message-item">
-      <strong>${escapeHtml(item.title)}</strong>
-      <p class="item-meta">${escapeHtml(item.meta)}</p>
-      <p class="message-preview">${escapeHtml(item.preview)}</p>
-    </article>
-  `;
-}
-
-function renderBillingItem(item) {
-  return `
-    <article class="billing-item">
-      <strong>${escapeHtml(item.title)}</strong>
-      <p class="billing-meta">${escapeHtml(item.meta)}</p>
-      <p class="billing-meta">${escapeHtml(item.status)}</p>
-    </article>
-  `;
-}
-
-function updateRoleButtons() {
-  roleButtons.forEach((button) => {
-    const isActive = button.dataset.role === state.role;
-    button.classList.toggle('is-active', isActive);
-    button.setAttribute('aria-selected', isActive ? 'true' : 'false');
-  });
-}
-
-function updateNavigation() {
-  navButtons.forEach((button) => {
-    const isActive = button.dataset.section === state.section;
-    button.classList.toggle('is-active', isActive);
-  });
-}
-
-function updateInstallUi() {
-  if (!installButton || !installNote) {
-    return;
+function getExistingComment(exerciseName) {
+  if (!state.report) {
+    return '';
   }
 
-  const isStandalone =
-    window.matchMedia('(display-mode: standalone)').matches ||
-    window.navigator.standalone === true;
-
-  if (isStandalone) {
-    installButton.hidden = true;
-    installNote.textContent =
-      'La demo ya está añadida al teléfono y se abre como app independiente.';
-    return;
-  }
-
-  installButton.hidden = !deferredInstallPrompt;
-  installNote.textContent = deferredInstallPrompt
-    ? 'Pulsa instalar y guarda la demo con el icono de Saulo Fitness.'
-    : 'En iPhone: comparte en Safari y pulsa "Añadir a pantalla de inicio".';
+  const previousNote = state.report.notes.find(
+    (note) => note.name === exerciseName,
+  );
+  return previousNote ? previousNote.comment : '';
 }
 
 async function registerServiceWorker() {
@@ -550,7 +746,10 @@ async function registerServiceWorker() {
   }
 
   try {
-    await navigator.serviceWorker.register('./sw.js');
+    await navigator.serviceWorker.register('./sw.js?v=saulo-v3', {
+      scope: './',
+      updateViaCache: 'none',
+    });
   } catch (error) {
     console.error('No se pudo registrar el service worker', error);
   }
@@ -558,31 +757,53 @@ async function registerServiceWorker() {
 
 function hydrateStateFromUrl() {
   const params = new URLSearchParams(window.location.search);
-  const requestedRole = params.get('role');
   const requestedSection = params.get('section');
+  const requestedDay = Number(params.get('day'));
+  const requestedDemo = params.get('demo');
+  const requestedFocus = params.get('focus');
   const validSections = new Set([
-    'overview',
-    'students',
-    'plans',
-    'checkins',
+    'routines',
     'messages',
-    'billing',
+    'subscription',
+    'profile',
   ]);
-
-  if (requestedRole === 'coach' || requestedRole === 'student') {
-    state.role = requestedRole;
-    state.selectedStudentId = appData[requestedRole].students[0].id;
-  }
 
   if (requestedSection && validSections.has(requestedSection)) {
     state.section = requestedSection;
+  }
+
+  if (Number.isInteger(requestedDay) && routinesByDay[requestedDay]) {
+    state.day = requestedDay;
+  }
+
+  if (requestedDemo) {
+    state.demoToken = requestedDemo;
+  }
+
+  if (requestedFocus) {
+    state.contextKey = requestedFocus;
+  }
+
+  if (state.section === 'routines') {
+    state.contextKey = `day-${state.day}`;
+  } else if (!getContextOption(state.section, state.contextKey)) {
+    state.contextKey = getDefaultContextKey(state.section);
   }
 }
 
 function syncUrlState() {
   const params = new URLSearchParams(window.location.search);
-  params.set('role', state.role);
   params.set('section', state.section);
+  if (state.section === 'routines') {
+    params.set('day', String(state.day));
+  } else {
+    params.delete('day');
+  }
+  if (state.contextKey) {
+    params.set('focus', state.contextKey);
+  } else {
+    params.delete('focus');
+  }
   window.history.replaceState(
     {},
     '',
@@ -590,12 +811,12 @@ function syncUrlState() {
   );
 }
 
-function focusSection(sectionName) {
-  const section = document.querySelector(`[data-panel="${sectionName}"]`);
+function getDefaultContextKey(section) {
+  return contextOptionsBySection[section]?.[0]?.key ?? null;
+}
 
-  if (section) {
-    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+function getContextOption(section, key) {
+  return contextOptionsBySection[section]?.find((option) => option.key === key);
 }
 
 function escapeHtml(value) {

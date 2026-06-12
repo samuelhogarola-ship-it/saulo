@@ -3,33 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cuestionario Saulo Fitness</title>
+    <title>Saulo Fitness APP</title>
     <meta
       name="description"
-      content="Formulario previo para el proyecto personalizado de Saulo Fitness."
+      content="Saulo Fitness APP: tu mejor version, nuestra mision."
     />
-    <meta property="og:title" content="Cuestionario Saulo Fitness" />
+    <meta property="og:title" content="Saulo Fitness APP" />
     <meta
       property="og:description"
-      content="Formulario previo para el proyecto personalizado de Saulo Fitness."
+      content="La landing principal de Saulo Fitness APP con acceso directo a la demo del alumno."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://webfuengirola.com/saulofitness/" />
-    <meta
-      property="og:image"
-      content="https://webfuengirola.com/saulofitness/aaa.png"
-    />
-    <meta property="og:image:alt" content="Vista previa de Saulo Fitness" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Cuestionario Saulo Fitness" />
-    <meta
-      name="twitter:description"
-      content="Formulario previo para el proyecto personalizado de Saulo Fitness."
-    />
-    <meta
-      name="twitter:image"
-      content="https://webfuengirola.com/saulofitness/aaa.png"
-    />
+    <meta property="og:image" content="https://saulofitness.com/aaa.png" />
+    <meta name="theme-color" content="#09030f" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -40,510 +26,103 @@
   </head>
   <body>
     <main class="landing-shell">
-      <section class="hero-stage" aria-labelledby="questionnaire-title">
-        <img
-          class="wf-logo"
-          src="./Captura%20de%20pantalla%202026-06-10%20a%20las%2020.40.52.png"
-          alt="Logo de Saulo Fitness"
-        />
-
+      <section class="hero-stage" aria-labelledby="landing-title">
         <div class="background-photo" aria-hidden="true"></div>
         <div class="background-vignette" aria-hidden="true"></div>
         <div class="background-glow glow-top" aria-hidden="true"></div>
         <div class="background-glow glow-bottom" aria-hidden="true"></div>
 
-        <div class="brand-copy">
-          <p class="brand-eyebrow">Saulo Fitness</p>
-          <h1 id="questionnaire-title">
-            Cuestionario técnico para tu plataforma
+        <img
+          class="brand-mark"
+          src="./Captura%20de%20pantalla%202026-06-10%20a%20las%2020.40.52.png"
+          alt="Logo de Saulo Fitness"
+        />
+
+        <div class="hero-copy">
+          <p class="brand-eyebrow">Saulo Fitness APP</p>
+          <h1 id="landing-title">
+            Tu <span>mejor</span> version, nuestra <span>mision</span>.
           </h1>
           <p class="brand-lead">
-            Definimos contigo la estructura de la app, el acceso de tus alumnos
-            y la base que luego conectaremos con Supabase y Resend.
+            Entrena con proposito, sigue un plan integral y consigue resultados
+            reales. Todo desde una sola app.
           </p>
-          <p class="brand-claim">Tu mejor versión, nuestra misión.</p>
-          <a class="app-preview-link" href="/app/">
-            Ver prototipo funcional de la app
-          </a>
+
+          <div class="hero-actions">
+            <a
+              class="primary-link"
+              href="/app/?demo=101&section=routines&day=1"
+            >
+              APP - EMPEZAR
+            </a>
+            <a class="secondary-link" href="/app/">Ver demo alumno</a>
+          </div>
         </div>
 
-        <section class="form-panel">
-          <div class="form-topbar">
+        <section class="feature-row" aria-label="Beneficios principales">
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">◎</div>
+            <h2>Seguimiento real</h2>
+            <p>
+              Ajustamos tu plan en funcion de tu progreso, no de suposiciones.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">◔</div>
+            <h2>Planes integrales</h2>
+            <p>
+              Entrenamiento, nutricion y habitos. Todo conectado, todo
+              personalizado.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">↗</div>
+            <h2>No rutinas genericas</h2>
+            <p>Cada plan es unico. Disenado para ti, no para cualquiera.</p>
+          </article>
+        </section>
+
+        <footer class="site-footer" aria-label="Pie de pagina">
+          <div class="footer-brand">
+            <p class="footer-kicker">Saulo Fitness APP</p>
+            <p class="footer-copy">Copyright Saulo Fitness 2026.</p>
+          </div>
+
+          <div class="footer-links">
             <div>
-              <p class="form-kicker">Landing temporal</p>
-              <p class="form-title">Formulario multipaso</p>
-            </div>
-            <div class="progress-chip">
-              <span id="progress-text">Paso 1 de 7</span>
-            </div>
-          </div>
-
-          <div class="progress-track" aria-hidden="true">
-            <div class="progress-bar" id="progress-bar"></div>
-          </div>
-
-          <p
-            class="form-status"
-            id="form-status"
-            role="status"
-            aria-live="polite"
-            hidden
-          ></p>
-
-          <form id="questionnaire-form" class="questionnaire-form">
-            <div class="steps-window">
-              <section class="step is-active" data-step="1">
-                <p class="step-label">Bloque 1</p>
-                <h2>Identidad y acceso</h2>
-
-                <label class="field">
-                  <span>1. Nombre del proyecto app</span>
-                  <input
-                    type="text"
-                    name="brandName"
-                    placeholder="Ej. Saulo Fitness App"
-                    autocomplete="organization"
-                    required
-                  />
-                </label>
-
-                <label class="field">
-                  <span>Logotipo para utilizar en la plataforma</span>
-                  <input
-                    type="file"
-                    name="logoFile"
-                    accept=".png,.jpg,.jpeg,.svg,.webp"
-                    aria-describedby="logo-help"
-                  />
-                  <small id="logo-help" class="field-help">
-                    Formatos permitidos: PNG, JPG, SVG o WEBP. Tamaño máximo: 8
-                    MB.
-                  </small>
-                </label>
-
-                <fieldset class="field fieldset">
-                  <legend>2. Sistema de acceso para tus alumnos</legend>
-                  <label class="choice-card">
-                    <input
-                      type="radio"
-                      name="accessSystem"
-                      value="pin"
-                      checked
-                    />
-                    <span>
-                      <strong>Nombre + PIN de 4 dígitos</strong>
-                      <small>
-                        Recomendado para reducir incidencias por contraseñas
-                        olvidadas.
-                      </small>
-                    </span>
-                  </label>
-                  <label class="choice-card">
-                    <input
-                      type="radio"
-                      name="accessSystem"
-                      value="magic-link"
-                    />
-                    <span>
-                      <strong>Enlace único con acceso directo a la app</strong>
-                      <small>
-                        El alumno entra desde un enlace personal sin gestionar
-                        contraseña.
-                      </small>
-                    </span>
-                  </label>
-                </fieldset>
-              </section>
-
-              <section class="step" data-step="2">
-                <p class="step-label">Bloque 2</p>
-                <h2>Volumen del negocio y escalabilidad</h2>
-
-                <fieldset class="field fieldset">
-                  <legend>3. Número de alumnos previstos en 12 meses</legend>
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="studentVolume"
-                      value="under-50"
-                      checked
-                    />Menos de 50 alumnos</label
-                  >
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="studentVolume"
-                      value="50-100"
-                    />Entre 50 y 100 alumnos</label
-                  >
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="studentVolume"
-                      value="100-150"
-                    />Entre 100 y 150 alumnos</label
-                  >
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="studentVolume"
-                      value="150-250"
-                    />Entre 150 y 250 alumnos</label
-                  >
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="studentVolume"
-                      value="250-plus"
-                    />Más de 250 alumnos</label
-                  >
-                </fieldset>
-
-                <aside class="info-panel">
-                  <h3>Infraestructura estándar incluida</h3>
-                  <ul>
-                    <li>Entre 100 y 150 alumnos activos</li>
-                    <li>Hasta 50 vídeos de ejercicios</li>
-                    <li>4 fotografías mensuales por alumno</li>
-                    <li>Historial de al menos 12 meses</li>
-                    <li>Mensajería básica</li>
-                  </ul>
-                  <p>
-                    Si se supera este volumen, la ampliación estimada parte de
-                    35€/mes.
-                  </p>
-                </aside>
-              </section>
-
-              <section class="step" data-step="3">
-                <p class="step-label">Bloque 3</p>
-                <h2>Banco de vídeos y rutinas</h2>
-
-                <fieldset class="field fieldset">
-                  <legend>4. Gestión de vídeos de ejercicios</legend>
-                  <label class="choice-card">
-                    <input
-                      type="radio"
-                      name="videoManagement"
-                      value="uploaded-platform"
-                      checked
-                    />
-                    <span>
-                      <strong>Vídeos subidos directamente</strong>
-                      <small
-                        >Reproductor integrado dentro de la aplicación.</small
-                      >
-                    </span>
-                  </label>
-                  <label class="choice-card">
-                    <input
-                      type="radio"
-                      name="videoManagement"
-                      value="external-links"
-                    />
-                    <span>
-                      <strong>Enlaces externos</strong>
-                      <small>
-                        YouTube, Vimeo u otras plataformas privadas u ocultas.
-                      </small>
-                    </span>
-                  </label>
-                </fieldset>
-
-                <fieldset class="field fieldset">
-                  <legend>5. Variables configurables en las rutinas</legend>
-                  <label class="choice-row"
-                    ><input
-                      type="checkbox"
-                      name="routineVariables"
-                      value="training-days"
-                      checked
-                    />Días de entrenamiento</label
-                  >
-                  <label class="choice-row"
-                    ><input
-                      type="checkbox"
-                      name="routineVariables"
-                      value="sets-reps"
-                      checked
-                    />Series y repeticiones</label
-                  >
-                  <label class="choice-row"
-                    ><input
-                      type="checkbox"
-                      name="routineVariables"
-                      value="load-type"
-                      checked
-                    />Tipo de carga (%RM, peso directo, RIR, RPE)</label
-                  >
-                  <label class="choice-row"
-                    ><input
-                      type="checkbox"
-                      name="routineVariables"
-                      value="rest-time"
-                    />Tiempo de descanso</label
-                  >
-                  <label class="choice-row"
-                    ><input
-                      type="checkbox"
-                      name="routineVariables"
-                      value="notes-comments"
-                    />Notas o comentarios para el alumno</label
-                  >
-                </fieldset>
-              </section>
-
-              <section class="step" data-step="4">
-                <p class="step-label">Bloque 4</p>
-                <h2>Seguimiento del alumno</h2>
-
-                <fieldset class="field fieldset">
-                  <legend>6. Frecuencia de fotografías de progreso</legend>
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="photoFrequency"
-                      value="monthly"
-                      checked
-                    />Mensual (hasta 4 fotografías)</label
-                  >
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="photoFrequency"
-                      value="weekly"
-                    />Semanal (hasta 4 fotografías por semana)</label
-                  >
-                </fieldset>
-
-                <fieldset class="field fieldset">
-                  <legend>7. Envío de vídeos para corrección técnica</legend>
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="techniqueVideos"
-                      value="no"
-                      checked
-                    />No</label
-                  >
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="techniqueVideos"
-                      value="whatsapp"
-                    />Sí, mediante WhatsApp</label
-                  >
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="techniqueVideos"
-                      value="in-app"
-                    />Sí, directamente dentro de la aplicación</label
-                  >
-                </fieldset>
-
-                <aside class="info-panel">
-                  <h3>Recomendación</h3>
-                  <p>
-                    WhatsApp suele ser la solución más práctica para vídeos
-                    largos y reduce el coste mensual de almacenamiento y
-                    mantenimiento.
-                  </p>
-                </aside>
-              </section>
-
-              <section class="step" data-step="5">
-                <p class="step-label">Bloque 5</p>
-                <h2>Comunicación y soporte</h2>
-
-                <fieldset class="field fieldset">
-                  <legend>8. Canal principal de comunicación</legend>
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="mainCommunication"
-                      value="whatsapp"
-                      checked
-                    />Botón directo a WhatsApp</label
-                  >
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="mainCommunication"
-                      value="internal-chat"
-                    />Chat interno integrado</label
-                  >
-                </fieldset>
-
-                <fieldset class="field fieldset">
-                  <legend>9. Co-Entrenador Virtual con IA</legend>
-                  <label class="choice-card">
-                    <input type="radio" name="aiAssistant" value="no" checked />
-                    <span>
-                      <strong>No</strong>
-                      <small>
-                        Prefiero responder personalmente todas las consultas.
-                      </small>
-                    </span>
-                  </label>
-                  <label class="choice-card">
-                    <input type="radio" name="aiAssistant" value="yes" />
-                    <span>
-                      <strong>Sí, quiero un asistente inteligente</strong>
-                      <small>
-                        Entrenado con mi metodología para preguntas frecuentes.
-                      </small>
-                    </span>
-                  </label>
-                </fieldset>
-
-                <aside class="info-panel">
-                  <h3>Coste orientativo IA</h3>
-                  <p>
-                    Configuración inicial 400€ y mantenimiento/consumo estimado
-                    50€/mes.
-                  </p>
-                </aside>
-              </section>
-
-              <section class="step" data-step="6">
-                <p class="step-label">Bloque 6</p>
-                <h2>Cobros y renovaciones</h2>
-
-                <fieldset class="field fieldset">
-                  <legend>10. Gestión de pagos</legend>
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="payments"
-                      value="outside-platform"
-                      checked
-                    />Fuera de la plataforma</label
-                  >
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="payments"
-                      value="external-link"
-                    />Mediante enlace de pago externo</label
-                  >
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="payments"
-                      value="in-platform-subscription"
-                    />Dentro de la plataforma con suscripción automática</label
-                  >
-                </fieldset>
-
-                <fieldset class="field fieldset">
-                  <legend>11. Sistema de renovación de clientes</legend>
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="renewalSystem"
-                      value="manual"
-                      checked
-                    />Activación manual desde panel</label
-                  >
-                  <label class="choice-row"
-                    ><input
-                      type="radio"
-                      name="renewalSystem"
-                      value="automatic"
-                    />Renovación automática mediante suscripción</label
-                  >
-                </fieldset>
-              </section>
-
-              <section class="step" data-step="7">
-                <p class="step-label">Bloque 7</p>
-                <h2>Cierre del proyecto</h2>
-
-                <div class="field two-columns">
-                  <label>
-                    <span>12. Fecha propuesta para la reunión final</span>
-                    <input type="date" name="meetingDate" />
-                  </label>
-                  <label>
-                    <span>Hora propuesta</span>
-                    <input type="time" name="meetingTime" />
-                  </label>
-                </div>
-
-                <label class="field">
-                  <span>Notas adicionales</span>
-                  <textarea
-                    name="extraNotes"
-                    rows="5"
-                    placeholder="Necesidades especiales, dudas, prioridades o matices que quieras incluir."
-                  ></textarea>
-                </label>
-
-                <div class="summary-box">
-                  <h3>Qué haremos después</h3>
-                  <p>
-                    Esta estructura nos deja listos para guardar respuestas en
-                    Supabase y disparar un correo de resumen con Resend cuando
-                    conectemos la capa backend.
-                  </p>
-                </div>
-              </section>
-            </div>
-
-            <label class="field custom-request-field">
-              <span>Si falta algo, añádelo aquí</span>
-              <textarea
-                name="customRequests"
-                rows="4"
-                placeholder="Escribe aquí cualquier funcionalidad, condición o comentario que no esté contemplado en las opciones."
-              ></textarea>
-            </label>
-
-            <div class="form-footer-brand">
-              <img
-                class="form-footer-logo"
-                src="./wf-logo.png"
-                alt="Web Fuengirola Studio"
-              />
-              <div class="form-footer-copy">
-                <p class="form-footer-eyebrow">Web Fuengirola Studio</p>
-                <p class="form-footer-name">
-                  Diseño, estructura y automatización
-                </p>
+              <p class="footer-title">Legal</p>
+              <div class="footer-list">
+                <span>Aviso legal</span>
+                <span>Privacidad</span>
+                <span>Cookies</span>
               </div>
             </div>
 
-            <div class="form-actions">
-              <button type="button" class="ghost-button" id="prev-button">
-                Anterior
-              </button>
-              <button type="button" class="primary-button" id="next-button">
-                Siguiente
-              </button>
-              <button
-                type="submit"
-                class="primary-button is-hidden"
-                id="submit-button"
-              >
-                Enviar cuestionario
-              </button>
+            <div>
+              <p class="footer-title">Contacto</p>
+              <div class="footer-list">
+                <a href="mailto:hola@saulofitness.com">hola@saulofitness.com</a>
+                <a href="https://saulofitness.com/app/?section=messages">
+                  Mensajes de la demo
+                </a>
+              </div>
             </div>
-          </form>
+          </div>
 
-          <section class="submission-panel" id="submission-panel" hidden>
-            <p class="step-label">Envío completado</p>
-            <h2>Tu mensaje se ha enviado, muchas gracias</h2>
-            <p>
-              Hemos recibido tu cuestionario correctamente. Con esto ya podemos
-              preparar la siguiente fase del proyecto.
-            </p>
-          </section>
-        </section>
+          <div class="footer-credit">
+            Diseñado por
+            <a
+              href="https://webfuengirola.com"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Web Fuengirola Studio
+            </a>
+          </div>
+        </footer>
       </section>
     </main>
-
-    <script src="./form-config.js?v=2"></script>
-    <script src="./script.js?v=2"></script>
   </body>
 </html>

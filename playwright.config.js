@@ -15,10 +15,6 @@ module.exports = defineConfig({
   webServer: useManagedWebServer
     ? {
         command: 'npm run dev',
-        env: {
-          ...process.env,
-          ALLOW_DEMO_SUBMISSIONS: 'true',
-        },
         timeout: 120 * 1000,
         url: 'http://127.0.0.1:4173',
         reuseExistingServer: !process.env.CI,

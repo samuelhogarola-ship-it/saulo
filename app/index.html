@@ -185,22 +185,69 @@
             </a>
           </div>
 
+          <article
+            class="message-compose"
+            id="messages-compose-panel"
+            data-message-panel="messages-compose"
+          >
+            <div class="section-header section-header-compact">
+              <h4>Enviar mensaje</h4>
+            </div>
+            <form class="compose-form" id="message-compose-form">
+              <label>
+                Asunto
+                <input
+                  type="text"
+                  name="subject"
+                  id="message-compose-subject"
+                  placeholder="Escribe un asunto breve"
+                  required
+                />
+              </label>
+              <label>
+                Mensaje
+                <textarea
+                  name="body"
+                  id="message-compose-body"
+                  placeholder="Escribe tu mensaje"
+                  rows="4"
+                  required
+                ></textarea>
+              </label>
+              <button class="complete-button" type="submit">
+                Enviar mensaje
+              </button>
+            </form>
+          </article>
+
           <div class="message-columns">
-            <article class="message-column" id="messages-inbox-panel">
+            <article
+              class="message-column"
+              id="messages-inbox-panel"
+              data-message-panel="messages-inbox"
+            >
               <div class="section-header section-header-compact">
                 <h4>Recibidos</h4>
               </div>
               <div class="message-list" id="messages-inbox"></div>
             </article>
 
-            <article class="message-column" id="messages-sent-panel">
+            <article
+              class="message-column"
+              id="messages-sent-panel"
+              data-message-panel="messages-sent"
+            >
               <div class="section-header section-header-compact">
                 <h4>Enviados</h4>
               </div>
               <div class="message-list" id="messages-sent"></div>
             </article>
 
-            <article class="message-column" id="messages-reminders-panel">
+            <article
+              class="message-column"
+              id="messages-reminders-panel"
+              data-message-panel="messages-reminders"
+            >
               <div class="section-header section-header-compact">
                 <h4>Recordatorios</h4>
               </div>

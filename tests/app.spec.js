@@ -69,6 +69,10 @@ test('creates a workout report when training is completed', async ({
     .getByLabel('Secciones de alumno')
     .getByRole('button', { name: 'Mensajes' })
     .click();
+  await page
+    .locator('#context-nav')
+    .getByRole('button', { name: 'Enviados' })
+    .click();
   await expect(page.getByText('Informe Día 1')).toBeVisible();
 });
 
@@ -86,12 +90,37 @@ test('renders message columns and profile/subscription sections', async ({
   await expect(
     page.getByRole('heading', { name: 'Recibidos', exact: true }),
   ).toBeVisible();
+  await expect(page.locator('#messages-sent-panel')).toBeHidden();
+  await expect(page.locator('#messages-reminders-panel')).toBeHidden();
+
+  await page
+    .locator('#context-nav')
+    .getByRole('button', { name: 'Enviados' })
+    .click();
   await expect(
     page.getByRole('heading', { name: 'Enviados', exact: true }),
   ).toBeVisible();
-  await expect(
-    page.getByRole('heading', { name: 'Recordatorios', exact: true }),
-  ).toBeVisible();
+  await expect(page.locator('#messages-inbox-panel')).toBeHidden();
+  await expect(page.locator('#messages-reminders-panel')).toBeHidden();
+
+  await page
+    .locator('#context-nav')
+    .getByRole('button', { name: 'Enviar mensaje' })
+    .click();
+  await expect(page.locator('#messages-compose-panel')).toBeVisible();
+  await page.locator('#message-compose-subject').fill('Duda rápida');
+  await page
+    .locator('#message-compose-body')
+    .fill('¿Podemos mover la sesión de mañana a la tarde?');
+  await page
+    .locator('#messages-compose-panel')
+    .getByRole('button', { name: 'Enviar mensaje' })
+    .click();
+  await page
+    .locator('#context-nav')
+    .getByRole('button', { name: 'Enviados' })
+    .click();
+  await expect(page.getByText('Duda rápida')).toBeVisible();
 
   await page
     .getByLabel('Secciones de alumno')

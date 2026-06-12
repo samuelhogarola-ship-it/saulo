@@ -255,6 +255,12 @@ const workoutModalRoot = document.querySelector('#workout-modal-root');
 const messagesInbox = document.querySelector('#messages-inbox');
 const messagesSent = document.querySelector('#messages-sent');
 const messagesReminders = document.querySelector('#messages-reminders');
+const messagePanels = [...document.querySelectorAll('[data-message-panel]')];
+const messageComposeForm = document.querySelector('#message-compose-form');
+const messageComposeSubject = document.querySelector(
+  '#message-compose-subject',
+);
+const messageComposeBody = document.querySelector('#message-compose-body');
 
 const contextOptionsBySection = {
   routines: [
@@ -284,6 +290,12 @@ const contextOptionsBySection = {
       label: 'Recordatorios',
       type: 'anchor',
       target: '#messages-reminders-panel',
+    },
+    {
+      key: 'messages-compose',
+      label: 'Enviar mensaje',
+      type: 'anchor',
+      target: '#messages-compose-panel',
     },
   ],
   subscription: [
@@ -350,6 +362,33 @@ sideLinks.forEach((button) => {
 
 completeWorkoutButton?.addEventListener('click', () => {
   renderWorkoutModal();
+});
+
+messageComposeForm?.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const subject = messageComposeSubject?.value.trim();
+  const body = messageComposeBody?.value.trim();
+
+  if (!subject || !body) {
+    return;
+  }
+
+  state.messages.sent.unshift({
+    title: subject,
+    tag: 'Enviado',
+    date: 'Ahora',
+    source: 'EMAIL',
+    body,
+  });
+
+  if (messageComposeForm instanceof HTMLFormElement) {
+    messageComposeForm.reset();
+  }
+
+  state.section = 'messages';
+  state.contextKey = 'messages-sent';
+  renderApp();
 });
 
 hydrateStateFromUrl();
@@ -706,9 +745,43 @@ workoutModalRoot?.addEventListener('click', (event) => {
 });
 
 function renderMessages() {
-  renderMessageList(messagesInbox, state.messages.inbox);
-  renderMessageList(messagesSent, state.messages.sent);
-  renderMessageList(messagesReminders, state.messages.reminders);
+  const panelMap = {
+    'messages-inbox': {
+      panel: document.querySelector('#messages-inbox-panel'),
+      container: messagesInbox,
+      items: state.messages.inbox,
+    },
+    'messages-sent': {
+      panel: document.querySelector('#messages-sent-panel'),
+      container: messagesSent,
+      items: state.messages.sent,
+    },
+    'messages-reminders': {
+      panel: document.querySelector('#messages-reminders-panel'),
+      container: messagesReminders,
+      items: state.messages.reminders,
+    },
+    'messages-compose': {
+      panel: document.querySelector('#messages-compose-panel'),
+      container: null,
+      items: [],
+    },
+  };
+
+  const activeKey =
+    state.section === 'messages' && contextOptionsBySection.messages
+      ? state.contextKey
+      : 'messages-inbox';
+
+  messagePanels.forEach((panel) => {
+    const key = panel.dataset.messagePanel;
+    panel.hidden = key !== activeKey;
+  });
+
+  const activePanel = panelMap[activeKey] ?? panelMap['messages-inbox'];
+  if (activePanel && activePanel.container) {
+    renderMessageList(activePanel.container, activePanel.items);
+  }
 }
 
 function renderMessageList(container, items) {

@@ -612,6 +612,42 @@ body {
   font-weight: 700;
 }
 
+.message-compose {
+  padding: 18px;
+  margin: 0 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.compose-form {
+  display: grid;
+  gap: 12px;
+}
+
+.compose-form label {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.compose-form input,
+.compose-form textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: white;
+  color: var(--text);
+  font: inherit;
+}
+
+.compose-form textarea {
+  resize: vertical;
+}
+
 .message-item,
 .info-card {
   padding: 16px;

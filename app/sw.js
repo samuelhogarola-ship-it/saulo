@@ -1,12 +1,12 @@
-const CACHE_NAME = 'saulo-fitness-demo-v3';
+const CACHE_NAME = 'saulo-fitness-demo-v4';
 const APP_SHELL = [
   '/app/',
   '/app/index.html',
-  '/app/styles.css?v=saulo-v3',
-  '/app/app.js?v=saulo-v3',
-  '/app/manifest.webmanifest?v=saulo-v3',
-  '/app/icons/icon-192.png?v=saulo-v3',
-  '/app/icons/icon-512.png?v=saulo-v3',
+  '/app/styles.css?v=saulo-v4',
+  '/app/app.js?v=saulo-v4',
+  '/app/manifest.webmanifest?v=saulo-v4',
+  '/app/icons/icon-192.png?v=saulo-v4',
+  '/app/icons/icon-512.png?v=saulo-v4',
 ];
 
 self.addEventListener('install', (event) => {

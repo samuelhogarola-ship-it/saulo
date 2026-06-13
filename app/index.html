@@ -15,15 +15,15 @@
       content="black-translucent"
     />
     <meta name="apple-mobile-web-app-title" content="Saulo Fitness APP" />
-    <link rel="manifest" href="./manifest.webmanifest?v=saulo-v3" />
-    <link rel="apple-touch-icon" href="./icons/icon-192.png?v=saulo-v3" />
+    <link rel="manifest" href="./manifest.webmanifest?v=saulo-v4" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png?v=saulo-v4" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=saulo-v3" />
+    <link rel="stylesheet" href="./styles.css?v=saulo-v4" />
   </head>
   <body>
     <div class="modal-root" id="workout-modal-root" hidden></div>
@@ -42,7 +42,7 @@
           <div class="student-card-top">
             <img
               class="student-avatar"
-              src="./icons/icon-192.png?v=saulo-v2"
+              src="./icons/icon-192.png?v=saulo-v4"
               alt="Avatar de demo Saulo Fitness APP"
             />
             <div>
@@ -330,38 +330,6 @@
       </main>
     </div>
 
-    <script>
-      (function () {
-        if (!window.chatbase || window.chatbase('getState') !== 'initialized') {
-          window.chatbase = (...arguments) => {
-            if (!window.chatbase.q) {
-              window.chatbase.q = [];
-            }
-            window.chatbase.q.push(arguments);
-          };
-          window.chatbase = new Proxy(window.chatbase, {
-            get(target, prop) {
-              if (prop === 'q') {
-                return target.q;
-              }
-              return (...args) => target(prop, ...args);
-            },
-          });
-        }
-        const onLoad = function () {
-          const script = document.createElement('script');
-          script.src = 'https://www.chatbase.co/embed.min.js';
-          script.id = 'h_f0xkPpXu0hX4aU1cNkQ';
-          script.domain = 'www.chatbase.co';
-          document.body.appendChild(script);
-        };
-        if (document.readyState === 'complete') {
-          onLoad();
-        } else {
-          window.addEventListener('load', onLoad);
-        }
-      })();
-    </script>
-    <script src="./app.js?v=saulo-v3" defer></script>
+    <script src="./app.js?v=saulo-v4" defer></script>
   </body>
 </html>

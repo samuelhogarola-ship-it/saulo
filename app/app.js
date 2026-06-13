@@ -258,6 +258,8 @@ const messageComposeSubject = document.querySelector(
 );
 const messageComposeBody = document.querySelector('#message-compose-body');
 const supportChatTrigger = document.querySelector('#support-chat-trigger');
+const CHATBASE_SCRIPT_ID = 'h_f0xkPpXu0hX4aU1cNkQ';
+let chatbaseLoaderPromise = null;
 const profilePhotosGallery = document.querySelector('#profile-photos-gallery');
 
 const contextOptionsBySection = {
@@ -391,17 +393,7 @@ messageComposeForm?.addEventListener('submit', (event) => {
 
 supportChatTrigger?.addEventListener('click', (event) => {
   event.preventDefault();
-
-  if (typeof window.chatbase === 'function') {
-    try {
-      window.chatbase('open');
-      return;
-    } catch (error) {
-      console.warn('No se pudo abrir Chatbase', error);
-    }
-  }
-
-  window.alert('El chat se está cargando. Prueba de nuevo en unos segundos.');
+  openSupportChat();
 });
 
 hydrateStateFromUrl();
@@ -422,6 +414,16 @@ function renderApp() {
   renderProfilePhotos();
   syncChatbaseVisibility();
   syncUrlState();
+}
+
+async function openSupportChat() {
+  try {
+    await ensureChatbaseLoaded();
+    window.chatbase('open');
+  } catch (error) {
+    console.warn('No se pudo abrir Chatbase', error);
+    window.alert('El chat se está cargando. Prueba de nuevo en unos segundos.');
+  }
 }
 
 function renderStudentBattery() {
@@ -949,9 +951,16 @@ function renderProfilePhotos() {
 }
 
 function syncChatbaseVisibility() {
-  const shouldShowChat = state.section === 'messages';
+  const shouldShowChat =
+    state.section === 'messages' && state.contextKey === 'messages-compose';
   const bubbleButton = document.querySelector('#chatbase-bubble-button');
   const bubbleWindow = document.querySelector('#chatbase-bubble-window');
+
+  if (shouldShowChat) {
+    ensureChatbaseLoaded().catch((error) => {
+      console.warn('No se pudo cargar Chatbase', error);
+    });
+  }
 
   if (!shouldShowChat && typeof window.chatbase === 'function') {
     try {
@@ -970,6 +979,66 @@ function syncChatbaseVisibility() {
     node.style.visibility = shouldShowChat ? 'visible' : 'hidden';
     node.style.pointerEvents = shouldShowChat ? 'auto' : 'none';
   });
+}
+
+function ensureChatbaseLoaded() {
+  if (typeof window === 'undefined') {
+    return Promise.reject(new Error('Chatbase no está disponible.'));
+  }
+
+  if (typeof window.chatbase === 'function') {
+    try {
+      if (window.chatbase('getState') === 'initialized') {
+        return Promise.resolve();
+      }
+    } catch (error) {
+      console.warn('Estado de Chatbase no disponible todavía', error);
+    }
+  }
+
+  if (chatbaseLoaderPromise) {
+    return chatbaseLoaderPromise;
+  }
+
+  if (
+    !window.chatbase ||
+    (typeof window.chatbase === 'function' &&
+      window.chatbase('getState') !== 'initialized')
+  ) {
+    window.chatbase = (...arguments) => {
+      if (!window.chatbase.q) {
+        window.chatbase.q = [];
+      }
+      window.chatbase.q.push(arguments);
+    };
+    window.chatbase = new Proxy(window.chatbase, {
+      get(target, prop) {
+        if (prop === 'q') {
+          return target.q;
+        }
+        return (...args) => target(prop, ...args);
+      },
+    });
+  }
+
+  chatbaseLoaderPromise = new Promise((resolve, reject) => {
+    const existingScript = document.getElementById(CHATBASE_SCRIPT_ID);
+
+    if (existingScript) {
+      resolve();
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://www.chatbase.co/embed.min.js';
+    script.id = CHATBASE_SCRIPT_ID;
+    script.domain = 'www.chatbase.co';
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error('No se pudo cargar Chatbase.'));
+    document.body.appendChild(script);
+  });
+
+  return chatbaseLoaderPromise;
 }
 
 function renderMessageList(container, items) {
@@ -1104,12 +1173,23 @@ async function registerServiceWorker() {
   }
 
   try {
-    await navigator.serviceWorker.register('./sw.js?v=saulo-v3', {
-      scope: './',
-      updateViaCache: 'none',
-    });
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    await Promise.all(
+      registrations
+        .filter((registration) => registration.scope.includes('/app/'))
+        .map((registration) => registration.unregister()),
+    );
+
+    if ('caches' in window) {
+      const cacheKeys = await window.caches.keys();
+      await Promise.all(
+        cacheKeys
+          .filter((key) => key.startsWith('saulo-fitness-demo-'))
+          .map((key) => window.caches.delete(key)),
+      );
+    }
   } catch (error) {
-    console.error('No se pudo registrar el service worker', error);
+    console.error('No se pudo limpiar el service worker', error);
   }
 }
 

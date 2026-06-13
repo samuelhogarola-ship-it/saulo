@@ -1,17 +1,17 @@
 :root {
   --bg: #ffffff;
-  --bg-soft: #f5f7fb;
-  --surface: rgba(255, 255, 255, 0.9);
-  --surface-strong: rgba(255, 255, 255, 0.98);
-  --line: rgba(15, 15, 16, 0.08);
-  --line-strong: rgba(15, 15, 16, 0.16);
-  --text: #111111;
-  --muted: #5b5d66;
-  --accent: #6f2cff;
-  --accent-soft: rgba(111, 44, 255, 0.08);
-  --black: #0f0f10;
-  --shadow: 0 26px 70px rgba(15, 15, 16, 0.08);
-  --shadow-soft: 0 12px 30px rgba(15, 15, 16, 0.05);
+  --bg-soft: #f5f5f7;
+  --surface: rgba(255, 255, 255, 0.96);
+  --surface-strong: #ffffff;
+  --line: rgba(10, 10, 10, 0.08);
+  --line-strong: rgba(10, 10, 10, 0.16);
+  --text: #0a0a0a;
+  --muted: rgba(10, 10, 10, 0.56);
+  --accent: #7c3aed;
+  --accent-soft: rgba(167, 139, 250, 0.18);
+  --black: #0a0a0a;
+  --shadow: 0 24px 60px rgba(10, 10, 10, 0.06);
+  --shadow-soft: 0 10px 28px rgba(10, 10, 10, 0.045);
 }
 
 * {
@@ -32,12 +32,11 @@ body {
   overflow-x: hidden;
   background:
     radial-gradient(
-      circle at 10% 8%,
-      rgba(111, 44, 255, 0.06),
-      transparent 20%
+      circle at 12% 10%,
+      rgba(167, 139, 250, 0.12),
+      transparent 24%
     ),
-    radial-gradient(circle at 90% 10%, rgba(15, 15, 16, 0.04), transparent 18%),
-    linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%);
+    linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
   color: var(--text);
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
@@ -59,7 +58,7 @@ body::before {
   height: 280px;
   background: radial-gradient(
     circle,
-    rgba(111, 44, 255, 0.12),
+    rgba(167, 139, 250, 0.12),
     transparent 72%
   );
 }
@@ -69,7 +68,7 @@ body::after {
   bottom: 18%;
   width: 240px;
   height: 240px;
-  background: radial-gradient(circle, rgba(15, 15, 16, 0.06), transparent 72%);
+  background: radial-gradient(circle, rgba(10, 10, 10, 0.045), transparent 72%);
 }
 
 .student-app {
@@ -97,8 +96,8 @@ body::after {
   display: grid;
   place-items: center;
   padding: 24px;
-  background: rgba(15, 15, 16, 0.42);
-  backdrop-filter: blur(8px);
+  background: rgba(10, 10, 10, 0.44);
+  backdrop-filter: blur(10px);
 }
 
 .modal-root[hidden] {
@@ -108,9 +107,9 @@ body::after {
 .workout-modal {
   position: relative;
   width: min(520px, 100%);
-  padding: 26px;
-  border: 1px solid var(--line);
-  border-radius: 28px;
+  padding: 30px;
+  border: 1px solid rgba(10, 10, 10, 0.08);
+  border-radius: 32px;
   background: var(--surface-strong);
   box-shadow: var(--shadow);
 }
@@ -160,19 +159,13 @@ body::after {
   top: 0;
   align-self: start;
   min-height: 100vh;
-  padding: 26px 20px;
-  border-right: 1px solid rgba(15, 15, 16, 0.06);
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.98),
-      rgba(247, 248, 252, 0.94)
-    ),
-    rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(18px);
+  padding: 30px 22px;
+  border-right: 1px solid rgba(10, 10, 10, 0.06);
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(14px);
   box-shadow:
-    inset -1px 0 0 rgba(255, 255, 255, 0.72),
-    16px 0 32px rgba(15, 15, 16, 0.02);
+    inset -1px 0 0 rgba(255, 255, 255, 0.82),
+    14px 0 28px rgba(10, 10, 10, 0.025);
 }
 
 .brand-kicker {
@@ -180,7 +173,7 @@ body::after {
   color: var(--accent);
   font-size: 0.76rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
 }
 
@@ -194,7 +187,7 @@ body::after {
 
 .sidebar-brand h1 {
   font-family: 'Sora', sans-serif;
-  font-size: 2rem;
+  font-size: 2.15rem;
   line-height: 0.94;
   letter-spacing: -0.07em;
 }
@@ -222,15 +215,21 @@ body::after {
 .demo-banner {
   border: 1px solid var(--line);
   background: var(--surface);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-soft);
 }
 
 .student-card,
 .student-card {
-  margin-top: 20px;
-  padding: 18px;
-  border-radius: 22px;
-  box-shadow: var(--shadow-soft);
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: 26px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.98),
+    rgba(245, 245, 247, 0.9)
+  );
+  border-color: rgba(10, 10, 10, 0.06);
+  box-shadow: 0 18px 34px rgba(10, 10, 10, 0.045);
 }
 
 .student-card-top {
@@ -242,10 +241,11 @@ body::after {
 .student-avatar {
   width: 52px;
   height: 52px;
-  border-radius: 16px;
+  border-radius: 18px;
   object-fit: cover;
   background: white;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(10, 10, 10, 0.08);
+  box-shadow: 0 12px 26px rgba(124, 58, 237, 0.08);
 }
 
 .student-name,
@@ -254,8 +254,9 @@ body::after {
 }
 
 .student-name {
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 1.02rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
 .student-plan {
@@ -264,8 +265,8 @@ body::after {
 
 .sidebar-nav {
   display: grid;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 12px;
+  margin-top: 26px;
 }
 
 .side-link,
@@ -280,12 +281,13 @@ body::after {
 .side-link {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
+  gap: 13px;
+  min-height: 58px;
+  padding: 16px 18px;
+  border: 1px solid rgba(10, 10, 10, 0.06);
+  border-radius: 18px;
   text-align: left;
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.92);
   transition:
     transform 180ms ease,
     border-color 180ms ease,
@@ -314,10 +316,10 @@ body::after {
 
 .side-link.is-active,
 .day-chip.is-active {
-  border-color: var(--line-strong);
-  background: rgba(17, 17, 17, 0.96);
+  border-color: rgba(124, 58, 237, 0.22);
+  background: #0a0a0a;
   color: white;
-  box-shadow: 0 18px 30px rgba(15, 15, 16, 0.15);
+  box-shadow: 0 18px 30px rgba(10, 10, 10, 0.12);
 }
 
 .side-link.is-active .side-link-icon {
@@ -326,14 +328,14 @@ body::after {
 
 .complete-button {
   min-height: 50px;
-  padding: 0 18px;
+  padding: 0 20px;
   border-radius: 999px;
-  border: 1px solid var(--black);
-  background: linear-gradient(180deg, rgba(25, 25, 28, 0.98), rgba(7, 7, 8, 1));
+  border: 1px solid #0a0a0a;
+  background: #0a0a0a;
   color: white;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.02em;
-  box-shadow: 0 18px 30px rgba(15, 15, 16, 0.18);
+  box-shadow: 0 14px 26px rgba(10, 10, 10, 0.12);
   transition:
     transform 180ms ease,
     box-shadow 180ms ease,
@@ -343,16 +345,16 @@ body::after {
 .complete-button:hover,
 .complete-button:focus-visible {
   transform: translateY(-1px);
-  box-shadow: 0 22px 36px rgba(15, 15, 16, 0.22);
+  box-shadow: 0 18px 30px rgba(10, 10, 10, 0.16);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .side-link:hover,
   .day-chip:hover {
-    border-color: var(--line-strong);
-    background: rgba(17, 17, 17, 0.96);
+    border-color: rgba(124, 58, 237, 0.18);
+    background: rgba(10, 10, 10, 0.96);
     color: white;
-    box-shadow: 0 18px 30px rgba(15, 15, 16, 0.15);
+    box-shadow: 0 16px 26px rgba(10, 10, 10, 0.12);
   }
 
   .side-link:hover .side-link-icon {
@@ -361,7 +363,7 @@ body::after {
 }
 
 .student-workspace {
-  padding: 26px;
+  padding: 32px;
 }
 
 .topbar {
@@ -369,20 +371,16 @@ body::after {
   justify-content: space-between;
   gap: 16px;
   align-items: center;
-  padding: 20px 22px;
-  border-radius: 26px;
-  background: linear-gradient(
-    180deg,
-    rgba(20, 20, 22, 0.98),
-    rgba(11, 11, 12, 0.98)
-  );
-  border: 1px solid rgba(15, 15, 16, 0.6);
-  box-shadow: 0 26px 60px rgba(15, 15, 16, 0.18);
+  padding: 28px 30px;
+  border-radius: 32px;
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 28px 46px rgba(10, 10, 10, 0.14);
   color: white;
 }
 
 .topbar .brand-kicker {
-  color: rgba(201, 193, 255, 0.9);
+  color: #a78bfa;
 }
 
 .topbar h2 {
@@ -393,36 +391,36 @@ body::after {
   display: inline-flex;
   align-items: center;
   min-height: 46px;
-  padding: 0 16px;
+  padding: 0 18px;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
   background: white;
   color: var(--text);
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
 }
 
 .context-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 14px;
-  margin-bottom: 14px;
-  padding: 12px;
-  border: 1px solid rgba(15, 15, 16, 0.06);
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: var(--shadow-soft);
+  gap: 12px;
+  margin-top: 18px;
+  margin-bottom: 18px;
+  padding: 14px;
+  border: 1px solid rgba(10, 10, 10, 0.06);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 12px 24px rgba(10, 10, 10, 0.035);
 }
 
 .content-section {
   display: none;
-  margin-top: 18px;
-  padding: 22px;
-  border-radius: 30px;
-  background: rgba(255, 255, 255, 0.98);
-  border: 1px solid rgba(15, 15, 16, 0.08);
-  box-shadow: var(--shadow);
+  margin-top: 20px;
+  padding: 30px;
+  border-radius: 34px;
+  background: rgba(255, 255, 255, 0.985);
+  border: 1px solid rgba(10, 10, 10, 0.06);
+  box-shadow: 0 22px 44px rgba(10, 10, 10, 0.05);
 }
 
 .content-section.is-active {
@@ -434,7 +432,7 @@ body::after {
   justify-content: space-between;
   gap: 12px;
   align-items: center;
-  margin-bottom: 18px;
+  margin-bottom: 22px;
 }
 
 .section-header-compact {
@@ -444,29 +442,26 @@ body::after {
 .section-badge {
   display: inline-flex;
   align-items: center;
-  padding: 9px 13px;
+  padding: 10px 14px;
   border-radius: 999px;
-  background: linear-gradient(
-    180deg,
-    rgba(111, 44, 255, 0.1),
-    rgba(111, 44, 255, 0.06)
-  );
-  color: var(--accent);
+  background: rgba(167, 139, 250, 0.16);
+  color: #7c3aed;
   font-size: 0.88rem;
   font-weight: 700;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.76);
 }
 
 .context-chip,
 .day-chip {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  padding: 0 15px;
-  border: 1px solid var(--line);
+  min-height: 46px;
+  padding: 0 17px;
+  border: 1px solid rgba(10, 10, 10, 0.07);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.94);
-  font-weight: 600;
+  background: #ffffff;
+  font-weight: 700;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
   transition:
     transform 180ms ease,
@@ -477,9 +472,9 @@ body::after {
 
 .context-chip.is-active,
 .day-chip.is-active {
-  background: var(--black);
+  background: #0a0a0a;
   color: white;
-  border-color: var(--black);
+  border-color: #0a0a0a;
 }
 
 #messages-inbox-panel,
@@ -500,11 +495,11 @@ body::after {
 
 .routine-panel,
 .message-column {
-  padding: 18px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.98);
-  border: 1px solid rgba(15, 15, 16, 0.06);
-  box-shadow: var(--shadow-soft);
+  padding: 22px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.99);
+  border: 1px solid rgba(10, 10, 10, 0.05);
+  box-shadow: 0 16px 30px rgba(10, 10, 10, 0.04);
 }
 
 .routine-heading {
@@ -524,15 +519,18 @@ body::after {
 .info-grid,
 .profile-grid {
   display: grid;
-  gap: 14px;
+  gap: 18px;
 }
 
 .exercise-card {
-  padding: 18px;
-  border-radius: 22px;
+  position: relative;
+  padding: 22px;
+  border-radius: 28px;
   background: rgba(255, 255, 255, 0.98);
-  border: 1px solid rgba(15, 15, 16, 0.07);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(10, 10, 10, 0.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 14px 26px rgba(10, 10, 10, 0.035);
 }
 
 .exercise-top {
@@ -542,24 +540,30 @@ body::after {
   align-items: flex-start;
 }
 
+.exercise-top > div {
+  min-width: 0;
+  padding-right: 132px;
+}
+
 .exercise-video-note {
   margin: 8px 0 0;
   color: var(--accent);
-  font-size: 0.86rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
 }
 
 .exercise-video {
   position: relative;
-  width: 180px;
-  min-width: 180px;
+  width: 192px;
+  min-width: 192px;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  border: 1px solid rgba(15, 15, 16, 0.08);
-  border-radius: 18px;
-  background: linear-gradient(180deg, rgba(25, 25, 28, 0.98), rgba(8, 8, 9, 1));
-  box-shadow: 0 18px 32px rgba(15, 15, 16, 0.16);
+  border: 1px solid rgba(10, 10, 10, 0.08);
+  border-radius: 22px;
+  background: #0a0a0a;
+  box-shadow: 0 18px 36px rgba(10, 10, 10, 0.12);
   padding: 0;
   cursor: default;
 }
@@ -577,6 +581,8 @@ body::after {
   height: 100%;
   display: block;
   object-fit: cover;
+  filter: saturate(0.72) contrast(1.02) brightness(0.84);
+  transform: scale(1.02);
 }
 
 .exercise-video-overlay {
@@ -586,6 +592,11 @@ body::after {
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0.08),
+    rgba(10, 10, 10, 0.42)
+  );
 }
 
 .exercise-video-status {
@@ -597,22 +608,22 @@ body::after {
   min-height: 28px;
   padding: 0 10px;
   border-radius: 999px;
-  background: rgba(111, 44, 255, 0.92);
+  background: rgba(124, 58, 237, 0.94);
   color: white;
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  box-shadow: 0 10px 18px rgba(111, 44, 255, 0.24);
+  box-shadow: 0 10px 18px rgba(124, 58, 237, 0.18);
 }
 
 .exercise-video-play {
   position: absolute;
-  width: 54px;
-  height: 54px;
+  width: 56px;
+  height: 56px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 16px 28px rgba(15, 15, 16, 0.24);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 30px rgba(10, 10, 10, 0.2);
 }
 
 .exercise-video-play::before {
@@ -635,12 +646,12 @@ body::after {
   display: inline-flex;
   align-items: center;
   min-height: 28px;
-  padding: 0 10px;
+  padding: 0 11px;
   border-radius: 999px;
-  background: rgba(17, 17, 20, 0.86);
+  background: rgba(10, 10, 10, 0.84);
   color: white;
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.03em;
   backdrop-filter: blur(10px);
 }
@@ -663,15 +674,15 @@ body::after {
 .exercise-spec-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 14px;
+  gap: 12px;
+  margin-top: 18px;
 }
 
 .exercise-spec {
-  padding: 12px 14px;
-  border-radius: 16px;
-  background: rgba(111, 44, 255, 0.03);
-  border: 1px solid rgba(111, 44, 255, 0.08);
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: #f5f5f7;
+  border: 1px solid rgba(10, 10, 10, 0.05);
 }
 
 .exercise-spec strong {
@@ -679,20 +690,96 @@ body::after {
   margin-top: 6px;
   color: var(--text);
   letter-spacing: -0.03em;
+  font-size: 1.02rem;
 }
 
 .exercise-comment {
   width: 100%;
-  min-height: 84px;
-  margin-top: 14px;
-  padding: 14px 16px;
-  border: 1px solid rgba(15, 15, 16, 0.08);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.96);
+  min-height: 92px;
+  margin-top: 18px;
+  padding: 16px 18px;
+  border: 1px solid rgba(10, 10, 10, 0.08);
+  border-radius: 18px;
+  background: #f5f5f7;
   color: var(--text);
   font: inherit;
   resize: vertical;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.exercise-check {
+  position: absolute;
+  top: 54px;
+  left: 150px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 0;
+  padding: 8px 13px;
+  border: 1px solid rgba(10, 10, 10, 0.08);
+  border-radius: 999px;
+  background: rgba(245, 245, 247, 0.96);
+  cursor: pointer;
+  user-select: none;
+}
+
+.exercise-check-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.exercise-check-box {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid rgba(17, 17, 20, 0.16);
+  border-radius: 7px;
+  background: white;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.exercise-check-box::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 7px;
+  width: 5px;
+  height: 10px;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
+  opacity: 0;
+  transform: rotate(45deg);
+  transition: opacity 160ms ease;
+}
+
+.exercise-check-label {
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.exercise-check-input:checked + .exercise-check-box {
+  border-color: #7c3aed;
+  background: #7c3aed;
+  transform: translateY(-1px);
+}
+
+.exercise-check-input:checked + .exercise-check-box::after {
+  opacity: 1;
+}
+
+.exercise-card:has(.exercise-check-input:checked) {
+  border-color: rgba(124, 58, 237, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 18px 32px rgba(124, 58, 237, 0.06);
 }
 
 .routine-footer {
@@ -718,16 +805,12 @@ body::after {
   justify-content: space-between;
   gap: 16px;
   align-items: center;
-  margin: 0 0 18px;
-  padding: 16px 18px;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: linear-gradient(
-    135deg,
-    rgba(111, 44, 255, 0.06),
-    rgba(255, 255, 255, 0.98)
-  );
-  box-shadow: var(--shadow-soft);
+  margin: 0 0 22px;
+  padding: 18px 20px;
+  border: 1px solid rgba(10, 10, 10, 0.06);
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 12px 26px rgba(10, 10, 10, 0.04);
 }
 
 .messages-note p {
@@ -741,24 +824,24 @@ body::after {
   display: inline-flex;
   align-items: center;
   min-height: 42px;
-  padding: 0 14px;
+  padding: 0 16px;
   border-radius: 999px;
-  border: 1px solid var(--black);
-  background: linear-gradient(180deg, rgba(25, 25, 28, 0.98), rgba(8, 8, 9, 1));
+  border: 1px solid #0a0a0a;
+  background: #0a0a0a;
   color: white;
   text-decoration: none;
   white-space: nowrap;
-  font-weight: 700;
-  box-shadow: 0 14px 26px rgba(15, 15, 16, 0.16);
+  font-weight: 800;
+  box-shadow: 0 12px 24px rgba(10, 10, 10, 0.12);
 }
 
 .message-compose {
-  padding: 18px;
-  margin: 0 0 18px;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: var(--shadow-soft);
+  padding: 22px;
+  margin: 0 0 22px;
+  border: 1px solid rgba(10, 10, 10, 0.06);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.985);
+  box-shadow: 0 12px 26px rgba(10, 10, 10, 0.04);
 }
 
 .compose-form {
@@ -778,9 +861,9 @@ body::after {
 .compose-form textarea {
   width: 100%;
   padding: 14px 16px;
-  border: 1px solid rgba(15, 15, 16, 0.08);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(10, 10, 10, 0.08);
+  border-radius: 18px;
+  background: #f5f5f7;
   color: var(--text);
   font: inherit;
   transition:
@@ -795,11 +878,11 @@ body::after {
 
 .message-item,
 .info-card {
-  padding: 16px;
-  border: 1px solid rgba(15, 15, 16, 0.07);
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: var(--shadow-soft);
+  padding: 18px;
+  border: 1px solid rgba(10, 10, 10, 0.06);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.99);
+  box-shadow: 0 14px 28px rgba(10, 10, 10, 0.035);
 }
 
 .message-list {
@@ -844,8 +927,8 @@ body::after {
 .message-item {
   width: min(100%, 880px);
   max-width: 100%;
-  padding: 14px 18px;
-  border-radius: 24px;
+  padding: 16px 20px;
+  border-radius: 26px;
 }
 
 .message-item p {
@@ -855,37 +938,25 @@ body::after {
 
 .message-item-received {
   margin-right: auto;
-  border-top-left-radius: 10px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.99),
-    rgba(247, 245, 255, 0.98)
-  );
+  border-top-left-radius: 12px;
+  background: #ffffff;
 }
 
 .message-item-sent {
   width: min(100%, 820px);
   margin-left: auto;
-  border-top-right-radius: 10px;
-  border-color: rgba(111, 44, 255, 0.12);
-  background: linear-gradient(
-    180deg,
-    rgba(243, 237, 255, 0.98),
-    rgba(236, 228, 255, 0.95)
-  );
-  box-shadow: 0 18px 30px rgba(111, 44, 255, 0.08);
+  border-top-right-radius: 12px;
+  border-color: rgba(124, 58, 237, 0.14);
+  background: rgba(167, 139, 250, 0.14);
+  box-shadow: 0 16px 28px rgba(124, 58, 237, 0.05);
 }
 
 .message-item-reminder {
   width: 100%;
   max-width: 100%;
-  border-radius: 20px;
-  border-color: rgba(15, 15, 16, 0.08);
-  background: linear-gradient(
-    180deg,
-    rgba(250, 250, 252, 0.98),
-    rgba(244, 244, 247, 0.98)
-  );
+  border-radius: 22px;
+  border-color: rgba(10, 10, 10, 0.07);
+  background: #f5f5f7;
 }
 
 .message-item-received strong,
@@ -924,16 +995,16 @@ body::after {
   margin-top: 14px;
 }
 
+.photo-grid-upload {
+  margin-top: 18px;
+}
+
 .photo-history-card {
-  padding: 18px;
-  border: 1px solid rgba(15, 15, 16, 0.07);
-  border-radius: 22px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.99),
-    rgba(248, 246, 255, 0.98)
-  );
-  box-shadow: var(--shadow-soft);
+  padding: 22px;
+  border: 1px solid rgba(10, 10, 10, 0.06);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.99);
+  box-shadow: 0 14px 28px rgba(10, 10, 10, 0.035);
 }
 
 .photo-history-top {
@@ -957,10 +1028,10 @@ body::after {
 
 .photo-shot {
   margin: 0;
-  padding: 10px;
-  border: 1px solid rgba(15, 15, 16, 0.08);
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.96);
+  padding: 12px;
+  border: 1px solid rgba(10, 10, 10, 0.07);
+  border-radius: 20px;
+  background: rgba(245, 245, 247, 0.8);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
@@ -981,14 +1052,96 @@ body::after {
   text-align: center;
 }
 
+.photo-upload-slot {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  min-height: 280px;
+  padding: 12px;
+  border: 1px solid rgba(10, 10, 10, 0.07);
+  border-radius: 22px;
+  background: rgba(245, 245, 247, 0.8);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  cursor: pointer;
+}
+
+.photo-upload-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.photo-upload-placeholder,
+.photo-upload-preview {
+  display: block;
+  width: 100%;
+  aspect-ratio: 11 / 15;
+  border-radius: 16px;
+}
+
+.photo-upload-placeholder {
+  background:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.04), rgba(10, 10, 10, 0.08)),
+    repeating-linear-gradient(
+      135deg,
+      rgba(167, 139, 250, 0.12) 0 16px,
+      rgba(255, 255, 255, 0.5) 16px 32px
+    );
+  border: 1px dashed rgba(124, 58, 237, 0.22);
+}
+
+.photo-upload-preview {
+  object-fit: cover;
+  box-shadow: 0 16px 28px rgba(10, 10, 10, 0.08);
+}
+
+.photo-upload-overlay {
+  position: absolute;
+  inset: 12px 12px 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0.08),
+    rgba(10, 10, 10, 0.24)
+  );
+  pointer-events: none;
+}
+
+.photo-upload-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: rgba(10, 10, 10, 0.92);
+  color: white;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  box-shadow: 0 14px 24px rgba(10, 10, 10, 0.12);
+}
+
+.photo-upload-caption {
+  display: block;
+  margin-top: 12px;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+}
+
 .demo-banner {
   display: block;
-  margin-bottom: 14px;
-  padding: 16px 18px;
-  border-radius: 20px;
-  background: linear-gradient(180deg, rgba(17, 17, 18, 0.98), rgba(7, 7, 8, 1));
+  margin-bottom: 18px;
+  padding: 18px 22px;
+  border-radius: 24px;
+  background: #0a0a0a;
   color: white;
-  box-shadow: 0 18px 36px rgba(15, 15, 16, 0.24);
+  box-shadow: 0 20px 34px rgba(10, 10, 10, 0.14);
 }
 
 .demo-banner strong {
@@ -1012,20 +1165,20 @@ body::after {
 }
 
 .topbar h2 {
-  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-size: clamp(1.7rem, 2.2vw, 2.2rem);
 }
 
 .section-header h3 {
-  font-size: clamp(1.3rem, 1.8vw, 1.7rem);
+  font-size: clamp(1.36rem, 1.8vw, 1.8rem);
 }
 
 .routine-heading h4 {
-  font-size: 1.4rem;
+  font-size: 1.56rem;
 }
 
 .exercise-top h5 {
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.08rem;
 }
 
 .brand-kicker,
@@ -1044,10 +1197,11 @@ body::after {
 .complete-button:focus-visible,
 .messages-note a:focus-visible,
 .topbar-link:focus-visible,
-.workout-modal-close:focus-visible {
+.workout-modal-close:focus-visible,
+.exercise-comment:focus-visible {
   outline: none;
-  border-color: rgba(111, 44, 255, 0.45);
-  box-shadow: 0 0 0 4px rgba(111, 44, 255, 0.12);
+  border-color: rgba(124, 58, 237, 0.46);
+  box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.18);
 }
 
 .demo-banner[hidden] {
@@ -1077,7 +1231,7 @@ body::after {
 @media (max-width: 720px) {
   .student-sidebar,
   .student-workspace {
-    padding: 18px;
+    padding: 20px;
   }
 
   .student-app,
@@ -1098,7 +1252,7 @@ body::after {
   .message-compose,
   .message-column,
   .photo-history-card {
-    padding: 16px;
+    padding: 18px;
   }
 
   .topbar,
@@ -1118,6 +1272,10 @@ body::after {
   .exercise-spec-grid {
     grid-template-columns: 1fr;
     flex-direction: column;
+  }
+
+  .exercise-top > div {
+    padding-right: 0;
   }
 
   .section-badge,
@@ -1140,6 +1298,11 @@ body::after {
   .compose-form input,
   .compose-form textarea {
     max-width: 100%;
+  }
+
+  .exercise-check {
+    position: static;
+    margin-top: 16px;
   }
 
   .photo-grid {

@@ -187,6 +187,8 @@ const state = {
   report: null,
   demoToken: null,
   contextKey: 'day-1',
+  exerciseChecks: {},
+  profileUploads: {},
   messages: {
     inbox: [
       {
@@ -260,6 +262,7 @@ const messageComposeBody = document.querySelector('#message-compose-body');
 const supportChatTrigger = document.querySelector('#support-chat-trigger');
 const CHATBASE_SCRIPT_ID = 'h_f0xkPpXu0hX4aU1cNkQ';
 let chatbaseLoaderPromise = null;
+let supportChatRequested = false;
 const profilePhotosGallery = document.querySelector('#profile-photos-gallery');
 
 const contextOptionsBySection = {
@@ -393,6 +396,7 @@ messageComposeForm?.addEventListener('submit', (event) => {
 
 supportChatTrigger?.addEventListener('click', (event) => {
   event.preventDefault();
+  supportChatRequested = true;
   openSupportChat();
 });
 
@@ -572,6 +576,17 @@ function renderRoutine() {
             </div>
           </div>
 
+          <label class="exercise-check">
+            <input
+              class="exercise-check-input"
+              type="checkbox"
+              data-exercise-check="${escapeHtml(exercise.name)}"
+              ${isExerciseChecked(exercise.name) ? 'checked' : ''}
+            />
+            <span class="exercise-check-box" aria-hidden="true"></span>
+            <span class="exercise-check-label">Hecho</span>
+          </label>
+
           <textarea
             class="exercise-comment"
             placeholder="Comentario de este ejercicio para guardarlo al finalizar..."
@@ -597,6 +612,16 @@ exerciseList?.addEventListener('click', (event) => {
   }
 
   renderVideoModal(videoTitle, videoUrl);
+});
+
+exerciseList?.addEventListener('change', (event) => {
+  const checkInput = event.target?.closest?.('[data-exercise-check]');
+
+  if (!(checkInput instanceof HTMLInputElement)) {
+    return;
+  }
+
+  setExerciseChecked(checkInput.dataset.exerciseCheck, checkInput.checked);
 });
 
 function getExerciseThumbnailSrc(exerciseName, routineTitle) {
@@ -795,8 +820,10 @@ function buildWorkoutReport(feedback) {
     const name = card.dataset.exerciseName;
     const textarea = card.querySelector('textarea');
     const comment = textarea ? textarea.value.trim() : '';
+    const done = isExerciseChecked(name);
     return {
       name,
+      done,
       comment: comment || 'Sin comentario',
     };
   });
@@ -813,7 +840,10 @@ function buildWorkoutReport(feedback) {
     date: getSentMessageDate(),
     source: 'App',
     body: `${activeRoutine.label} · ${activeRoutine.title} · ${feedback}. ${notes
-      .map((item) => `${item.name}: ${item.comment}`)
+      .map(
+        (item) =>
+          `${item.name} (${item.done ? 'hecho' : 'pendiente'}): ${item.comment}`,
+      )
       .join(' | ')}`,
   });
 
@@ -923,6 +953,52 @@ function renderProfilePhotos() {
     <article class="photo-history-card">
       <div class="photo-history-top">
         <div>
+          <p class="brand-kicker">Próximo registro</p>
+          <h4>30 de julio de 2026</h4>
+        </div>
+        <span class="section-badge">4 fotos requeridas</span>
+      </div>
+      <p class="photo-history-copy">
+        Sube izquierda, derecha, frente y espalda para dejar preparado el siguiente check-in.
+      </p>
+      <div class="photo-grid photo-grid-upload">
+        ${monthlyPhotos
+          .map(
+            (photo) => `
+              <label class="photo-upload-slot">
+                <input
+                  class="photo-upload-input"
+                  type="file"
+                  accept="image/*"
+                  data-photo-upload="${escapeHtml(photo.label)}"
+                />
+                ${
+                  getUploadedPhotoSrc(photo.label)
+                    ? `
+                      <img
+                        class="photo-upload-preview"
+                        src="${getUploadedPhotoSrc(photo.label)}"
+                        alt="Foto subida de ${escapeHtml(photo.label)}"
+                      />
+                    `
+                    : `
+                      <div class="photo-upload-placeholder" aria-hidden="true"></div>
+                    `
+                }
+                <div class="photo-upload-overlay">
+                  <span class="photo-upload-button">Subir foto</span>
+                </div>
+                <span class="photo-upload-caption">${escapeHtml(photo.label)}</span>
+              </label>
+            `,
+          )
+          .join('')}
+      </div>
+    </article>
+
+    <article class="photo-history-card">
+      <div class="photo-history-top">
+        <div>
           <p class="brand-kicker">Junio 2026</p>
           <h4>Lucía Ortega · Seguimiento mensual</h4>
         </div>
@@ -950,16 +1026,40 @@ function renderProfilePhotos() {
   `;
 }
 
+profilePhotosGallery?.addEventListener('change', (event) => {
+  const input = event.target;
+
+  if (!(input instanceof HTMLInputElement)) {
+    return;
+  }
+
+  const slot = input.dataset.photoUpload;
+  const file = input.files?.[0];
+
+  if (!slot || !file) {
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    if (typeof reader.result !== 'string') {
+      return;
+    }
+
+    state.profileUploads[slot] = reader.result;
+    renderProfilePhotos();
+  };
+  reader.readAsDataURL(file);
+});
+
 function syncChatbaseVisibility() {
   const shouldShowChat =
-    state.section === 'messages' && state.contextKey === 'messages-compose';
-  const bubbleButton = document.querySelector('#chatbase-bubble-button');
-  const bubbleWindow = document.querySelector('#chatbase-bubble-window');
+    state.section === 'messages' &&
+    state.contextKey === 'messages-compose' &&
+    supportChatRequested;
 
-  if (shouldShowChat) {
-    ensureChatbaseLoaded().catch((error) => {
-      console.warn('No se pudo cargar Chatbase', error);
-    });
+  if (!shouldShowChat) {
+    supportChatRequested = false;
   }
 
   if (!shouldShowChat && typeof window.chatbase === 'function') {
@@ -970,7 +1070,7 @@ function syncChatbaseVisibility() {
     }
   }
 
-  [bubbleButton, bubbleWindow].forEach((node) => {
+  getChatbaseNodes().forEach((node) => {
     if (!node) {
       return;
     }
@@ -979,6 +1079,22 @@ function syncChatbaseVisibility() {
     node.style.visibility = shouldShowChat ? 'visible' : 'hidden';
     node.style.pointerEvents = shouldShowChat ? 'auto' : 'none';
   });
+}
+
+function getChatbaseNodes() {
+  return [
+    ...document.querySelectorAll(
+      [
+        '#chatbase-bubble-button',
+        '#chatbase-bubble-window',
+        '#chatbase-message-bubbles',
+        '[data-chatbase-bubble-button]',
+        '[data-chatbase-bubble-window]',
+        'iframe[src*="chatbase"]',
+        '[id^="chatbase-"]',
+      ].join(', '),
+    ),
+  ];
 }
 
 function ensureChatbaseLoaded() {
@@ -1072,6 +1188,10 @@ function getMessageVariantClass(item) {
   return 'message-item-received';
 }
 
+function getUploadedPhotoSrc(label) {
+  return state.profileUploads[label] ?? '';
+}
+
 function getProgressPhotoSrc(label, tone) {
   const scene = getProgressPhotoScene(tone);
   const svg = `
@@ -1100,49 +1220,64 @@ function getProgressPhotoSrc(label, tone) {
 
 function getProgressPhotoScene(tone) {
   const base = `
-    <ellipse cx="110" cy="248" rx="42" ry="10" fill="rgba(17,17,20,0.18)" />
-    <circle cx="110" cy="86" r="24" fill="#f1cdb8" />
-    <rect x="90" y="110" width="40" height="70" rx="20" fill="#1a1a1f" />
-    <rect x="94" y="114" width="32" height="64" rx="16" fill="#5b2cff" />
-    <rect x="82" y="118" width="14" height="58" rx="7" fill="#f1cdb8" />
-    <rect x="124" y="118" width="14" height="58" rx="7" fill="#f1cdb8" />
-    <rect x="96" y="178" width="13" height="58" rx="7" fill="#f1cdb8" />
-    <rect x="111" y="178" width="13" height="58" rx="7" fill="#f1cdb8" />
+    <ellipse cx="110" cy="248" rx="40" ry="10" fill="rgba(17,17,20,0.18)" />
+    <ellipse cx="110" cy="68" rx="22" ry="10" fill="#1a1a1f" opacity="0.38" />
+    <circle cx="110" cy="88" r="22" fill="#efc8b0" />
+    <path d="M88 112c5-10 19-16 22-16s17 6 22 16l4 20c3 14-7 28-22 28h-8c-15 0-25-14-22-28z" fill="#17171b" />
+    <path d="M93 116c6-7 14-12 17-12s11 5 17 12l3 19c2 10-5 19-16 19h-8c-11 0-18-9-16-19z" fill="#7c3aed" />
+    <rect x="80" y="118" width="12" height="56" rx="6" fill="#efc8b0" />
+    <rect x="128" y="118" width="12" height="56" rx="6" fill="#efc8b0" />
+    <path d="M96 160h11l4 43c1 12-6 28-17 33l-6 2 2-34z" fill="#efc8b0" />
+    <path d="M124 160h-11l-4 43c-1 12 6 28 17 33l6 2-2-34z" fill="#efc8b0" />
+    <rect x="89" y="233" width="14" height="6" rx="3" fill="#0a0a0a" />
+    <rect x="118" y="233" width="14" height="6" rx="3" fill="#0a0a0a" />
   `;
 
   if (tone === 'side-left') {
     return `
-      <ellipse cx="110" cy="70" rx="18" ry="8" fill="#1b1b1f" opacity="0.35" />
-      <circle cx="104" cy="86" r="24" fill="#f1cdb8" />
-      <rect x="92" y="110" width="34" height="70" rx="17" fill="#5b2cff" />
-      <rect x="122" y="122" width="12" height="52" rx="6" fill="#f1cdb8" />
-      <rect x="99" y="178" width="12" height="58" rx="6" fill="#f1cdb8" />
-      <rect x="113" y="178" width="12" height="58" rx="6" fill="#f1cdb8" />
-      <rect x="88" y="118" width="12" height="54" rx="6" fill="#f1cdb8" />
+      <ellipse cx="106" cy="248" rx="35" ry="10" fill="rgba(17,17,20,0.18)" />
+      <ellipse cx="104" cy="68" rx="20" ry="10" fill="#1a1a1f" opacity="0.38" />
+      <path d="M101 66c-11 2-18 11-18 22 0 13 8 22 20 22 7 0 13-2 17-8-7-1-11-5-11-12 0-9 5-17 13-19-4-4-12-7-21-5z" fill="#efc8b0" />
+      <path d="M96 106c8-2 19 2 26 10l6 18c4 14-6 29-22 31l-6 1c-12 1-21-8-21-20 0-20 4-33 17-40z" fill="#17171b" />
+      <path d="M98 111c7-2 16 2 21 8l4 15c3 10-4 21-16 23l-6 1c-9 1-15-6-15-15 0-15 3-25 12-32z" fill="#7c3aed" />
+      <path d="M121 119c7 7 11 19 8 32l-3 17h-10l-1-20c0-11-2-18-8-24z" fill="#efc8b0" />
+      <path d="M94 121c-4 12-5 26 0 42l4 10H88c-5-9-8-23-6-35 1-8 4-15 12-17z" fill="#efc8b0" />
+      <path d="M100 166h11l2 36c1 15-5 29-16 35l-4 2 1-33z" fill="#efc8b0" />
+      <path d="M112 166h8l1 37c1 14 4 27 12 34l-9 2c-9-7-14-20-14-34z" fill="#efc8b0" />
+      <rect x="91" y="233" width="14" height="6" rx="3" fill="#0a0a0a" />
+      <rect x="121" y="234" width="13" height="6" rx="3" fill="#0a0a0a" />
     `;
   }
 
   if (tone === 'side-right') {
     return `
-      <ellipse cx="110" cy="70" rx="18" ry="8" fill="#1b1b1f" opacity="0.35" />
-      <circle cx="116" cy="86" r="24" fill="#f1cdb8" />
-      <rect x="94" y="110" width="34" height="70" rx="17" fill="#5b2cff" />
-      <rect x="86" y="122" width="12" height="52" rx="6" fill="#f1cdb8" />
-      <rect x="97" y="178" width="12" height="58" rx="6" fill="#f1cdb8" />
-      <rect x="111" y="178" width="12" height="58" rx="6" fill="#f1cdb8" />
-      <rect x="122" y="118" width="12" height="54" rx="6" fill="#f1cdb8" />
+      <ellipse cx="114" cy="248" rx="35" ry="10" fill="rgba(17,17,20,0.18)" />
+      <ellipse cx="116" cy="68" rx="20" ry="10" fill="#1a1a1f" opacity="0.38" />
+      <path d="M119 66c11 2 18 11 18 22 0 13-8 22-20 22-7 0-13-2-17-8 7-1 11-5 11-12 0-9-5-17-13-19 4-4 12-7 21-5z" fill="#efc8b0" />
+      <path d="M124 106c-8-2-19 2-26 10l-6 18c-4 14 6 29 22 31l6 1c12 1 21-8 21-20 0-20-4-33-17-40z" fill="#17171b" />
+      <path d="M122 111c-7-2-16 2-21 8l-4 15c-3 10 4 21 16 23l6 1c9 1 15-6 15-15 0-15-3-25-12-32z" fill="#7c3aed" />
+      <path d="M99 119c-7 7-11 19-8 32l3 17h10l1-20c0-11 2-18 8-24z" fill="#efc8b0" />
+      <path d="M126 121c4 12 5 26 0 42l-4 10h10c5-9 8-23 6-35-1-8-4-15-12-17z" fill="#efc8b0" />
+      <path d="M120 166h-11l-2 36c-1 15 5 29 16 35l4 2-1-33z" fill="#efc8b0" />
+      <path d="M108 166h-8l-1 37c-1 14-4 27-12 34l9 2c9-7 14-20 14-34z" fill="#efc8b0" />
+      <rect x="115" y="233" width="14" height="6" rx="3" fill="#0a0a0a" />
+      <rect x="86" y="234" width="13" height="6" rx="3" fill="#0a0a0a" />
     `;
   }
 
   if (tone === 'back') {
     return `
-      <ellipse cx="110" cy="70" rx="18" ry="8" fill="#1b1b1f" opacity="0.35" />
-      <circle cx="110" cy="86" r="24" fill="#d8b49e" />
-      <rect x="90" y="110" width="40" height="70" rx="20" fill="#4320c7" />
-      <rect x="82" y="118" width="14" height="58" rx="7" fill="#d8b49e" />
-      <rect x="124" y="118" width="14" height="58" rx="7" fill="#d8b49e" />
-      <rect x="96" y="178" width="13" height="58" rx="7" fill="#d8b49e" />
-      <rect x="111" y="178" width="13" height="58" rx="7" fill="#d8b49e" />
+      <ellipse cx="110" cy="248" rx="40" ry="10" fill="rgba(17,17,20,0.18)" />
+      <ellipse cx="110" cy="68" rx="22" ry="10" fill="#1a1a1f" opacity="0.38" />
+      <circle cx="110" cy="88" r="22" fill="#d8b49e" />
+      <path d="M88 112c5-10 19-16 22-16s17 6 22 16l4 20c3 14-7 28-22 28h-8c-15 0-25-14-22-28z" fill="#17171b" />
+      <path d="M93 116c6-7 14-12 17-12s11 5 17 12l3 19c2 10-5 19-16 19h-8c-11 0-18-9-16-19z" fill="#6f38eb" />
+      <rect x="80" y="118" width="12" height="56" rx="6" fill="#d8b49e" />
+      <rect x="128" y="118" width="12" height="56" rx="6" fill="#d8b49e" />
+      <path d="M96 160h11l4 43c1 12-6 28-17 33l-6 2 2-34z" fill="#d8b49e" />
+      <path d="M124 160h-11l-4 43c-1 12 6 28 17 33l6 2-2-34z" fill="#d8b49e" />
+      <rect x="89" y="233" width="14" height="6" rx="3" fill="#0a0a0a" />
+      <rect x="118" y="233" width="14" height="6" rx="3" fill="#0a0a0a" />
     `;
   }
 
@@ -1158,6 +1293,22 @@ function getExistingComment(exerciseName) {
     (note) => note.name === exerciseName,
   );
   return previousNote ? previousNote.comment : '';
+}
+
+function getExerciseCheckKey(exerciseName) {
+  return `${state.day}:${exerciseName}`;
+}
+
+function isExerciseChecked(exerciseName) {
+  return state.exerciseChecks[getExerciseCheckKey(exerciseName)] === true;
+}
+
+function setExerciseChecked(exerciseName, checked) {
+  if (!exerciseName) {
+    return;
+  }
+
+  state.exerciseChecks[getExerciseCheckKey(exerciseName)] = checked;
 }
 
 function getSentMessageDate() {

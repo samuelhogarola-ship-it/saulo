@@ -186,9 +186,11 @@ const state = {
   day: 1,
   report: null,
   demoToken: null,
+  claimRequested: false,
   contextKey: 'day-1',
   exerciseChecks: {},
   profileUploads: {},
+  activation: null,
   messages: {
     inbox: [
       {
@@ -261,6 +263,8 @@ const messageComposeSubject = document.querySelector(
 const messageComposeBody = document.querySelector('#message-compose-body');
 const supportChatTrigger = document.querySelector('#support-chat-trigger');
 const CHATBASE_SCRIPT_ID = 'h_f0xkPpXu0hX4aU1cNkQ';
+const ACTIVATION_STORAGE_PREFIX = 'saulo-activation:';
+const ACTIVATION_UNLOCK_PREFIX = 'saulo-activation-unlocked:';
 let chatbaseLoaderPromise = null;
 let supportChatRequested = false;
 const profilePhotosGallery = document.querySelector('#profile-photos-gallery');
@@ -401,6 +405,7 @@ supportChatTrigger?.addEventListener('click', (event) => {
 });
 
 hydrateStateFromUrl();
+initializeActivationState();
 registerServiceWorker();
 renderApp();
 
@@ -417,7 +422,182 @@ function renderApp() {
   renderMessages();
   renderProfilePhotos();
   syncChatbaseVisibility();
+  renderActivationGate();
   syncUrlState();
+}
+
+function initializeActivationState() {
+  if (!state.demoToken) {
+    state.demoToken = getStoredActivationToken();
+  }
+
+  if (!state.demoToken) {
+    state.activation = null;
+    return;
+  }
+
+  const storedActivation = loadStoredActivation(state.demoToken);
+
+  if (state.claimRequested && !storedActivation) {
+    state.activation = {
+      mode: 'claim',
+      token: state.demoToken,
+      error: '',
+      busy: false,
+    };
+    return;
+  }
+
+  if (storedActivation && !isActivationUnlocked(state.demoToken)) {
+    state.activation = {
+      mode: 'unlock',
+      token: state.demoToken,
+      error: '',
+      busy: false,
+      claimedAt: storedActivation.claimedAt,
+    };
+    state.claimRequested = false;
+    return;
+  }
+
+  state.activation = null;
+  state.claimRequested = false;
+}
+
+function renderActivationGate() {
+  if (!workoutModalRoot) {
+    return;
+  }
+
+  if (!state.activation) {
+    if (workoutModalRoot.dataset.modalType === 'activation') {
+      workoutModalRoot.hidden = true;
+      workoutModalRoot.innerHTML = '';
+      delete workoutModalRoot.dataset.modalType;
+    }
+    return;
+  }
+
+  const isClaimMode = state.activation.mode === 'claim';
+  const title = isClaimMode
+    ? 'Activa tu acceso en este dispositivo'
+    : 'Introduce tu PIN para continuar';
+  const copy = isClaimMode
+    ? 'Este enlace solo puede usarse una vez. Crea un PIN de 4 dígitos para dejar la app lista en tu teléfono.'
+    : 'La app ya está activada en este dispositivo. Introduce tu PIN de 4 dígitos para acceder.';
+  const buttonLabel = state.activation.busy
+    ? isClaimMode
+      ? 'Activando...'
+      : 'Comprobando...'
+    : isClaimMode
+      ? 'Activar app'
+      : 'Entrar con PIN';
+
+  workoutModalRoot.hidden = false;
+  workoutModalRoot.dataset.modalType = 'activation';
+  workoutModalRoot.innerHTML = `
+    <div class="workout-modal activation-modal" role="dialog" aria-modal="true" aria-labelledby="activation-modal-title">
+      <p class="brand-kicker">Saulo Fitness APP</p>
+      <h3 id="activation-modal-title">${title}</h3>
+      <p>${copy}</p>
+      ${
+        state.activation.claimedAt
+          ? `<p class="activation-status">Activada el ${escapeHtml(formatActivationDate(state.activation.claimedAt))}</p>`
+          : ''
+      }
+      ${
+        state.activation.error
+          ? `<p class="activation-status activation-status-error">${escapeHtml(state.activation.error)}</p>`
+          : ''
+      }
+      <form class="activation-form" data-activation-form>
+        <label class="activation-label" for="activation-pin-input">
+          PIN de 4 dígitos
+        </label>
+        <input
+          id="activation-pin-input"
+          class="activation-pin-input"
+          name="pin"
+          type="password"
+          inputmode="numeric"
+          pattern="[0-9]{4}"
+          maxlength="4"
+          autocomplete="one-time-code"
+          placeholder="1234"
+          ${state.activation.busy ? 'disabled' : ''}
+          required
+        />
+        <button class="complete-button" type="submit" ${state.activation.busy ? 'disabled' : ''}>
+          ${buttonLabel}
+        </button>
+      </form>
+    </div>
+  `;
+}
+
+workoutModalRoot?.addEventListener('submit', async (event) => {
+  const activationForm = event.target?.closest?.('[data-activation-form]');
+
+  if (!(activationForm instanceof HTMLFormElement)) {
+    return;
+  }
+
+  event.preventDefault();
+
+  const formData = new FormData(activationForm);
+  const pin = String(formData.get('pin') || '').trim();
+
+  await submitActivationPin(pin);
+});
+
+async function submitActivationPin(pin) {
+  if (!state.activation || !state.demoToken) {
+    return;
+  }
+
+  if (!/^\d{4}$/.test(pin)) {
+    state.activation.error = 'El PIN debe tener exactamente 4 dígitos.';
+    renderActivationGate();
+    return;
+  }
+
+  state.activation.busy = true;
+  state.activation.error = '';
+  renderActivationGate();
+
+  const endpoint =
+    state.activation.mode === 'claim'
+      ? `/api/demo-links/${encodeURIComponent(state.demoToken)}/claim`
+      : `/api/demo-links/${encodeURIComponent(state.demoToken)}/unlock`;
+
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ pin }),
+    });
+    const payload = await response.json();
+
+    if (!response.ok || !payload.ok) {
+      throw new Error(payload.message || 'No se pudo completar la operación.');
+    }
+
+    saveStoredActivation(state.demoToken, {
+      token: state.demoToken,
+      claimedAt: payload.claimedAt,
+    });
+    markActivationUnlocked(state.demoToken);
+    state.activation = null;
+    state.claimRequested = false;
+    renderApp();
+  } catch (error) {
+    state.activation.busy = false;
+    state.activation.error =
+      error instanceof Error ? error.message : 'No se pudo validar el PIN.';
+    renderActivationGate();
+  }
 }
 
 async function openSupportChat() {
@@ -740,6 +920,10 @@ function getExerciseThumbnailTheme(exerciseName) {
 }
 
 function renderWorkoutModal() {
+  if (state.activation) {
+    return;
+  }
+
   if (!workoutModalRoot) {
     return;
   }
@@ -769,6 +953,10 @@ function renderWorkoutModal() {
 }
 
 function renderVideoModal(title, videoUrl) {
+  if (state.activation) {
+    return;
+  }
+
   if (!workoutModalRoot) {
     return;
   }
@@ -804,6 +992,11 @@ function renderVideoModal(title, videoUrl) {
 
 function closeWorkoutModal() {
   if (!workoutModalRoot) {
+    return;
+  }
+
+  if (state.activation) {
+    renderActivationGate();
     return;
   }
 
@@ -871,6 +1064,10 @@ function renderDemoBanner() {
 }
 
 workoutModalRoot?.addEventListener('click', (event) => {
+  if (state.activation) {
+    return;
+  }
+
   const feedbackButton = event.target?.closest?.('[data-workout-feedback]');
   if (feedbackButton) {
     const feedback = feedbackButton.dataset.workoutFeedback;
@@ -892,6 +1089,10 @@ workoutModalRoot?.addEventListener('click', (event) => {
 });
 
 document.addEventListener('keydown', (event) => {
+  if (state.activation) {
+    return;
+  }
+
   if (event.key === 'Escape' && !workoutModalRoot?.hidden) {
     closeWorkoutModal();
   }
@@ -1192,6 +1393,77 @@ function getUploadedPhotoSrc(label) {
   return state.profileUploads[label] ?? '';
 }
 
+function getStoredActivationToken() {
+  try {
+    const key = Object.keys(window.localStorage).find((entry) =>
+      entry.startsWith(ACTIVATION_STORAGE_PREFIX),
+    );
+
+    return key ? key.replace(ACTIVATION_STORAGE_PREFIX, '') : null;
+  } catch (error) {
+    console.warn('No se pudo leer la activación guardada', error);
+    return null;
+  }
+}
+
+function loadStoredActivation(token) {
+  try {
+    const raw = window.localStorage.getItem(
+      `${ACTIVATION_STORAGE_PREFIX}${token}`,
+    );
+
+    return raw ? JSON.parse(raw) : null;
+  } catch (error) {
+    console.warn('No se pudo cargar la activación guardada', error);
+    return null;
+  }
+}
+
+function saveStoredActivation(token, payload) {
+  try {
+    window.localStorage.setItem(
+      `${ACTIVATION_STORAGE_PREFIX}${token}`,
+      JSON.stringify(payload),
+    );
+  } catch (error) {
+    console.warn('No se pudo guardar la activación', error);
+  }
+}
+
+function markActivationUnlocked(token) {
+  try {
+    window.sessionStorage.setItem(`${ACTIVATION_UNLOCK_PREFIX}${token}`, '1');
+  } catch (error) {
+    console.warn('No se pudo guardar la sesión activa', error);
+  }
+}
+
+function isActivationUnlocked(token) {
+  try {
+    return (
+      window.sessionStorage.getItem(`${ACTIVATION_UNLOCK_PREFIX}${token}`) ===
+      '1'
+    );
+  } catch (error) {
+    console.warn('No se pudo leer la sesión activa', error);
+    return false;
+  }
+}
+
+function formatActivationDate(value) {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return date.toLocaleDateString('es-ES', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
 function getProgressPhotoSrc(label, tone) {
   const scene = getProgressPhotoScene(tone);
   const svg = `
@@ -1349,6 +1621,7 @@ function hydrateStateFromUrl() {
   const requestedSection = params.get('section');
   const requestedDay = Number(params.get('day'));
   const requestedDemo = params.get('demo');
+  const requestedClaim = params.get('claim');
   const requestedFocus = params.get('focus');
   const validSections = new Set([
     'routines',
@@ -1367,6 +1640,10 @@ function hydrateStateFromUrl() {
 
   if (requestedDemo) {
     state.demoToken = requestedDemo;
+  }
+
+  if (requestedClaim === '1') {
+    state.claimRequested = true;
   }
 
   if (requestedFocus) {
@@ -1392,6 +1669,16 @@ function syncUrlState() {
     params.set('focus', state.contextKey);
   } else {
     params.delete('focus');
+  }
+  if (state.demoToken) {
+    params.set('demo', state.demoToken);
+  } else {
+    params.delete('demo');
+  }
+  if (state.claimRequested) {
+    params.set('claim', '1');
+  } else {
+    params.delete('claim');
   }
   window.history.replaceState(
     {},

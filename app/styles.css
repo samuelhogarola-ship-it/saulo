@@ -130,6 +130,52 @@ body::after {
   line-height: 1.6;
 }
 
+.activation-modal {
+  width: min(460px, 100%);
+}
+
+.activation-form {
+  display: grid;
+  gap: 14px;
+}
+
+.activation-label {
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.activation-pin-input {
+  width: 100%;
+  min-height: 58px;
+  padding: 0 18px;
+  border: 1px solid rgba(10, 10, 10, 0.08);
+  border-radius: 18px;
+  background: #f5f5f7;
+  color: var(--text);
+  font: inherit;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  text-align: center;
+}
+
+.activation-status {
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(124, 58, 237, 0.14);
+  border-radius: 16px;
+  background: rgba(167, 139, 250, 0.12);
+  color: var(--text);
+}
+
+.activation-status-error {
+  border-color: rgba(10, 10, 10, 0.1);
+  background: rgba(10, 10, 10, 0.05);
+}
+
 .workout-modal-actions {
   display: flex;
   flex-wrap: wrap;
@@ -1191,6 +1237,7 @@ body::after {
 
 .compose-form input:focus,
 .compose-form textarea:focus,
+.activation-pin-input:focus,
 .side-link:focus-visible,
 .context-chip:focus-visible,
 .day-chip:focus-visible,

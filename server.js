@@ -1,4 +1,5 @@
 const express = require('express');
+const crypto = require('node:crypto');
 const os = require('node:os');
 const path = require('node:path');
 
@@ -13,6 +14,16 @@ const demoLinks = new Map([
       token: '101',
       used: false,
       claimedAt: null,
+      pinHash: null,
+    },
+  ],
+  [
+    '201',
+    {
+      token: '201',
+      used: false,
+      claimedAt: null,
+      pinHash: null,
     },
   ],
 ]);
@@ -75,6 +86,39 @@ app.post('/api/demo-links/:token/claim', (req, res) => {
 
   demoLink.used = true;
   demoLink.claimedAt = new Date().toISOString();
+  demoLink.pinHash = hashPin(pin);
+
+  return res.json({
+    ok: true,
+    token: demoLink.token,
+    claimedAt: demoLink.claimedAt,
+  });
+});
+
+app.post('/api/demo-links/:token/unlock', (req, res) => {
+  const demoLink = demoLinks.get(req.params.token);
+  const pin = String(req.body?.pin || '').trim();
+
+  if (!demoLink || !demoLink.used || !demoLink.pinHash) {
+    return res.status(404).json({
+      ok: false,
+      message: 'No existe una activación válida para este acceso.',
+    });
+  }
+
+  if (!/^\d{4}$/.test(pin)) {
+    return res.status(400).json({
+      ok: false,
+      message: 'El PIN debe tener exactamente 4 dígitos.',
+    });
+  }
+
+  if (demoLink.pinHash !== hashPin(pin)) {
+    return res.status(401).json({
+      ok: false,
+      message: 'El PIN no es correcto.',
+    });
+  }
 
   return res.json({
     ok: true,
@@ -165,4 +209,8 @@ function getNetworkUrls(port) {
   });
 
   return [...new Set(urls)];
+}
+
+function hashPin(pin) {
+  return crypto.createHash('sha256').update(pin).digest('hex');
 }

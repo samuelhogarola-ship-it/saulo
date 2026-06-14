@@ -55,6 +55,37 @@ test('shows the demo onboarding banner for the first client link', async ({
   );
 });
 
+test('supports activation with one-time link and unlock with PIN', async ({
+  page,
+}) => {
+  await page.goto('/app/?demo=201&claim=1&section=routines&day=1');
+
+  await expect(
+    page.getByRole('heading', { name: 'Activa tu acceso en este dispositivo' }),
+  ).toBeVisible();
+  await page.locator('#activation-pin-input').fill('1234');
+  await page.getByRole('button', { name: 'Activar app' }).click();
+
+  await expect(page.locator('#topbar-title')).toHaveText('Rutinas del alumno');
+  await expect(
+    page.getByRole('heading', { name: 'Activa tu acceso en este dispositivo' }),
+  ).toHaveCount(0);
+
+  await page.evaluate(() => window.sessionStorage.clear());
+  await page.goto('/app/');
+
+  await expect(
+    page.getByRole('heading', { name: 'Introduce tu PIN para continuar' }),
+  ).toBeVisible();
+  await page.locator('#activation-pin-input').fill('1234');
+  await page.getByRole('button', { name: 'Entrar con PIN' }).click();
+
+  await expect(page.locator('#topbar-title')).toHaveText('Rutinas del alumno');
+  await expect(
+    page.getByRole('heading', { name: 'Introduce tu PIN para continuar' }),
+  ).toHaveCount(0);
+});
+
 test('creates a workout report when training is completed', async ({
   page,
 }) => {

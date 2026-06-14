@@ -9,7 +9,8 @@
 ## Dirección del producto
 
 - Prioridad visual: blanco dominante, morado de marca y negro para contraste premium.
-- Prioridad funcional: rutina, mensajes, suscripción, perfil y demo instalable.
+- Prioridad funcional inmediata: conservar una demo sólida para enseñar al cliente sin seguir diseñando la arquitectura alrededor de ella.
+- Prioridad de producto real: construir la app alumno como PWA con activación por enlace, PIN de acceso, sesión de dispositivo y persistencia real.
 - El panel de entrenador queda fuera de esta fase.
 
 ## Decisiones cerradas
@@ -26,4 +27,5 @@
 
 ## Próximo foco
 
-- Favicon en todos los archivos y derivados.
+- Persistencia real de `token + PIN + activación`.
+- Separar cada vez más la demo pública del producto real.

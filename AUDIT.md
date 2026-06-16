@@ -10,7 +10,7 @@
 
 - Prioridad visual: blanco dominante, morado de marca y negro para contraste premium.
 - Prioridad funcional inmediata: conservar una demo sólida para enseñar al cliente sin seguir diseñando la arquitectura alrededor de ella.
-- Prioridad de producto real: construir la app alumno como PWA con activación por enlace, PIN de acceso, sesión de dispositivo y persistencia real.
+- Prioridad de producto real: construir la app alumno como PWA funcional, instalable y estable en móvil antes de reactivar acceso por enlace único + PIN.
 - El panel de entrenador queda fuera de esta fase.
 
 ## Decisiones cerradas
@@ -27,5 +27,5 @@
 
 ## Próximo foco
 
-- Persistencia real de `token + PIN + activación`.
-- Separar cada vez más la demo pública del producto real.
+- Robustecer la PWA real: instalación, cache offline básico, actualización de service worker y revisión móvil.
+- Mantener separado el acceso por enlace único + PIN hasta que la base PWA esté validada.

@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saulo Fitness APP · Trainer</title>
+    <meta
+      name="description"
+      content="Panel del entrenador conectado a la experiencia del alumno."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/trainer/styles.css?v=saulo-trainer-v3" />
+  </head>
+  <body>
+    <div class="trainer-app">
+      <aside class="trainer-sidebar">
+        <div class="trainer-brand">
+          <img
+            class="brand-logo"
+            src="/trainer/assets/saulo-mark.png"
+            alt="Saulo Fitness"
+          />
+          <div>
+            <p class="brand-kicker">Trainers · Dashboard</p>
+            <h1>Saulo Fitness APP</h1>
+          </div>
+        </div>
+
+        <nav class="trainer-nav" aria-label="Secciones del panel entrenador">
+          <button class="trainer-nav-link" data-section="clients">
+            <span class="trainer-nav-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M16 19a4 4 0 0 0-8 0"></path>
+                <circle cx="12" cy="9" r="3.25"></circle>
+                <path d="M20 19a3 3 0 0 0-3-3"></path>
+                <path d="M17 6.5a2.5 2.5 0 0 1 0 5"></path>
+              </svg>
+            </span>
+            Clientes
+          </button>
+          <button class="trainer-nav-link is-active" data-section="exercises">
+            <span class="trainer-nav-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M4.5 9.5h2.25"></path>
+                <path d="M17.25 9.5h2.25"></path>
+                <path d="M4.5 14.5h2.25"></path>
+                <path d="M17.25 14.5h2.25"></path>
+                <path d="M6.75 8v3"></path>
+                <path d="M17.25 8v3"></path>
+                <path d="M6.75 13v3"></path>
+                <path d="M17.25 13v3"></path>
+                <path d="M9.25 9.5h5.5"></path>
+                <path d="M9.25 14.5h5.5"></path>
+                <path d="M8.25 8h1v3h-1z"></path>
+                <path d="M14.75 8h1v3h-1z"></path>
+                <path d="M8.25 13h1v3h-1z"></path>
+                <path d="M14.75 13h1v3h-1z"></path>
+              </svg>
+            </span>
+            Ejercicios
+          </button>
+          <button class="trainer-nav-link" data-section="routines">
+            <span class="trainer-nav-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M3.75 8.25A2.25 2.25 0 0 1 6 6h4.25l1.5 1.75H18A2.25 2.25 0 0 1 20.25 10v7A2.25 2.25 0 0 1 18 19.25H6A2.25 2.25 0 0 1 3.75 17z"
+                ></path>
+                <path d="M3.75 10.25h16.5"></path>
+              </svg>
+            </span>
+            Rutinas
+          </button>
+          <button class="trainer-nav-link" data-section="messages">
+            <span class="trainer-nav-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3.5" y="5.5" width="17" height="13" rx="2"></rect>
+                <path d="m5.5 8 6.5 5 6.5-5"></path>
+              </svg>
+            </span>
+            Mensajes
+          </button>
+          <button class="trainer-nav-link" data-section="settings">
+            <span class="trainer-nav-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="2.8"></circle>
+                <path
+                  d="M19 12a7 7 0 0 0-.08-1l2.02-1.57-1.92-3.33-2.47.83a7.6 7.6 0 0 0-1.74-1.02l-.39-2.58h-3.84l-.39 2.58c-.62.24-1.2.59-1.74 1.02l-2.47-.83-1.92 3.33L5.08 11A7 7 0 0 0 5 12c0 .34.03.67.08 1l-2.02 1.57 1.92 3.33 2.47-.83c.54.43 1.12.78 1.74 1.02l.39 2.58h3.84l.39-2.58c.62-.24 1.2-.59 1.74-1.02l2.47.83 1.92-3.33L18.92 13c.05-.33.08-.66.08-1Z"
+                ></path>
+              </svg>
+            </span>
+            Ajustes
+          </button>
+        </nav>
+
+        <div class="sidebar-note">
+          <p class="brand-kicker">Demo conectada</p>
+          <p>
+            Lo que hagas aquí se refleja en la vista del alumno dentro del mismo
+            navegador.
+          </p>
+        </div>
+      </aside>
+
+      <main class="trainer-workspace">
+        <header class="trainer-topbar">
+          <div>
+            <p class="brand-kicker">Panel entrenador</p>
+            <h2 id="trainer-topbar-title">Ejercicios</h2>
+          </div>
+          <div class="trainer-topbar-meta">
+            <span class="trainer-pill" id="trainer-active-client-pill">
+              Lucía Ortega
+            </span>
+          </div>
+        </header>
+
+        <section
+          class="trainer-section"
+          data-section-panel="clients"
+          aria-labelledby="clients-title"
+        >
+          <div class="section-header">
+            <div>
+              <p class="brand-kicker">Clientes</p>
+              <h3 id="clients-title">Fichas conectadas</h3>
+            </div>
+          </div>
+
+          <div class="clients-layout">
+            <aside class="clients-list-panel">
+              <div class="section-header section-header-compact">
+                <h4>Tus clientes</h4>
+              </div>
+              <div class="clients-list" id="clients-list"></div>
+            </aside>
+
+            <section class="client-detail-panel" id="client-detail-panel">
+              <div class="section-header">
+                <div>
+                  <p class="brand-kicker">Ficha cliente</p>
+                  <h4 id="client-detail-name">Lucía Ortega</h4>
+                </div>
+                <span class="trainer-pill" id="client-detail-plan">
+                  Definición avanzada
+                </span>
+              </div>
+
+              <div class="client-edit-grid">
+                <article class="detail-card">
+                  <span>Peso</span>
+                  <input id="client-weight-input" type="text" />
+                </article>
+                <article class="detail-card">
+                  <span>Altura</span>
+                  <input id="client-height-input" type="text" />
+                </article>
+                <article class="detail-card">
+                  <span>Fin suscripción</span>
+                  <input id="client-subscription-input" type="date" />
+                </article>
+                <article class="detail-card">
+                  <span>Fin del plan</span>
+                  <input id="client-plan-end-input" type="date" />
+                </article>
+              </div>
+
+              <div class="client-edit-stack">
+                <label class="stack-field">
+                  <span>Objetivo</span>
+                  <input id="client-goal-input" type="text" />
+                </label>
+                <label class="stack-field">
+                  <span>Resumen visible para el alumno</span>
+                  <input id="client-summary-input" type="text" />
+                </label>
+                <label class="stack-field">
+                  <span>Notas de perfil</span>
+                  <textarea id="client-note-input" rows="4"></textarea>
+                </label>
+              </div>
+
+              <div class="client-meta-grid">
+                <article class="detail-card">
+                  <span>Rutina activa</span>
+                  <strong id="client-active-routine-name">Semana activa</strong>
+                  <p id="client-active-routine-copy">
+                    La vista alumno lee esta asignación en tiempo real.
+                  </p>
+                </article>
+                <article class="detail-card">
+                  <span>Mensajes sincronizados</span>
+                  <strong id="client-message-summary">0</strong>
+                  <p>Recibidos, enviados y recordatorios conectados.</p>
+                </article>
+              </div>
+
+              <div class="client-photos-panel">
+                <div class="section-header section-header-compact">
+                  <h4>Fotos y vista alumno</h4>
+                </div>
+                <div class="client-photos-grid" id="client-photos-grid"></div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section
+          class="trainer-section is-active"
+          data-section-panel="exercises"
+          aria-labelledby="exercises-title"
+        >
+          <div class="builder-layout">
+            <section class="exercise-library-panel">
+              <div class="section-header">
+                <div>
+                  <p class="brand-kicker">Biblioteca</p>
+                  <h3 id="exercises-title">Ejercicios</h3>
+                </div>
+              </div>
+
+              <label class="search-shell">
+                <span>⌕</span>
+                <input
+                  id="exercise-search-input"
+                  type="search"
+                  placeholder="Buscar un ejercicio, grupo muscular"
+                />
+              </label>
+
+              <div class="filters-row">
+                <select id="exercise-filter-muscle">
+                  <option value="all">Grupo muscular</option>
+                </select>
+                <select id="exercise-filter-equipment">
+                  <option value="all">Equipo</option>
+                </select>
+                <select id="exercise-filter-difficulty">
+                  <option value="all">Dificultad</option>
+                </select>
+              </div>
+
+              <div class="exercise-grid" id="exercise-grid"></div>
+            </section>
+
+            <aside class="routine-builder-panel" id="routine-builder-panel">
+              <div class="mobile-builder-sheet-head">
+                <div class="mobile-builder-grabber" aria-hidden="true"></div>
+                <div class="mobile-builder-sheet-copy">
+                  <p class="brand-kicker">Rutina móvil</p>
+                  <strong id="mobile-builder-sheet-title">Crear rutina</strong>
+                </div>
+              </div>
+
+              <div class="builder-heading">
+                <div class="builder-heading-copy">
+                  <img
+                    class="builder-heading-logo"
+                    src="/trainer/assets/saulo-mark.png"
+                    alt=""
+                    aria-hidden="true"
+                  />
+                  <div>
+                    <p class="brand-kicker">Rutina</p>
+                    <h3>Crear Rutina</h3>
+                  </div>
+                </div>
+                <button class="secondary-button" id="new-routine-button">
+                  Nueva rutina
+                </button>
+              </div>
+
+              <div class="builder-form">
+                <label class="stack-field">
+                  <span>Nombre de rutina</span>
+                  <input id="builder-routine-name" type="text" />
+                </label>
+                <label class="stack-field">
+                  <span>Cliente</span>
+                  <select id="builder-client-select"></select>
+                </label>
+              </div>
+
+              <div class="builder-days" id="routine-builder-days"></div>
+
+              <div class="builder-actions">
+                <button class="secondary-button" id="save-routine-button">
+                  Guardar rutina
+                </button>
+                <button class="primary-button" id="send-routine-button">
+                  Crear y Enviar Rutina
+                </button>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section
+          class="trainer-section"
+          data-section-panel="routines"
+          aria-labelledby="routines-title"
+        >
+          <div class="section-header">
+            <div>
+              <p class="brand-kicker">Rutinas</p>
+              <h3 id="routines-title">Plantillas guardadas</h3>
+            </div>
+          </div>
+          <div class="routine-template-grid" id="routine-template-grid"></div>
+        </section>
+
+        <section
+          class="trainer-section"
+          data-section-panel="messages"
+          aria-labelledby="messages-title"
+        >
+          <div class="section-header">
+            <div>
+              <p class="brand-kicker">Mensajes</p>
+              <h3 id="messages-title">Bandeja global</h3>
+            </div>
+          </div>
+
+          <div class="messages-toolbar">
+            <label class="stack-field">
+              <span>Filtrar por cliente</span>
+              <select id="trainer-message-filter"></select>
+            </label>
+          </div>
+
+          <article class="trainer-compose-panel">
+            <div class="section-header section-header-compact">
+              <h4>Enviar mensaje</h4>
+            </div>
+            <form id="trainer-message-form" class="trainer-compose-form">
+              <label class="stack-field">
+                <span>Cliente</span>
+                <select id="trainer-message-client"></select>
+              </label>
+              <label class="stack-field">
+                <span>Asunto</span>
+                <input id="trainer-message-subject" type="text" required />
+              </label>
+              <label class="stack-field">
+                <span>Mensaje</span>
+                <textarea
+                  id="trainer-message-body"
+                  rows="4"
+                  required
+                ></textarea>
+              </label>
+              <button class="primary-button" type="submit">
+                Enviar mensaje
+              </button>
+            </form>
+          </article>
+
+          <div class="trainer-message-columns">
+            <article class="message-column">
+              <div class="section-header section-header-compact">
+                <h4>Recibidos</h4>
+              </div>
+              <div
+                class="trainer-message-list"
+                id="trainer-messages-inbox"
+              ></div>
+            </article>
+            <article class="message-column">
+              <div class="section-header section-header-compact">
+                <h4>Enviados</h4>
+              </div>
+              <div
+                class="trainer-message-list"
+                id="trainer-messages-sent"
+              ></div>
+            </article>
+            <article class="message-column">
+              <div class="section-header section-header-compact">
+                <h4>Recordatorios</h4>
+              </div>
+              <div
+                class="trainer-message-list"
+                id="trainer-messages-reminders"
+              ></div>
+            </article>
+          </div>
+        </section>
+
+        <section
+          class="trainer-section"
+          data-section-panel="settings"
+          aria-labelledby="settings-title"
+        >
+          <div class="section-header">
+            <div>
+              <p class="brand-kicker">Ajustes</p>
+              <h3 id="settings-title">Cuenta y datos</h3>
+            </div>
+          </div>
+
+          <div class="settings-grid">
+            <article class="detail-card detail-card-strong">
+              <span>Entrenador</span>
+              <strong id="trainer-name-value">Saulo De Tassio</strong>
+              <p id="trainer-email-value">hola@saulofitness.com</p>
+            </article>
+            <article class="detail-card">
+              <span>Restablecer datos</span>
+              <p>
+                Borra los datos locales de la app y repone el estado inicial del
+                panel alumno y entrenador.
+              </p>
+              <button class="secondary-button" id="reset-demo-button">
+                Restablecer datos
+              </button>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <button
+      class="mobile-builder-toggle"
+      id="mobile-builder-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="routine-builder-panel"
+    >
+      <span class="mobile-builder-toggle-copy">
+        <strong id="mobile-builder-toggle-title">Rutina</strong>
+        <span id="mobile-builder-toggle-meta">0 ejercicios</span>
+      </span>
+      <span class="mobile-builder-toggle-icon" aria-hidden="true">⌃</span>
+    </button>
+
+    <div class="mobile-builder-backdrop" id="mobile-builder-backdrop"></div>
+
+    <script src="/app/demo-store.js?v=saulo-trainer-v4" defer></script>
+    <script src="/trainer/app.js?v=saulo-trainer-v4" defer></script>
+  </body>
+</html>

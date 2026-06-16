@@ -29,7 +29,13 @@ const demoLinks = new Map([
 ]);
 
 app.use(express.json());
-app.use(express.static(publicDir, { extensions: ['html'] }));
+
+app.use((req, res, next) => {
+  if (process.env.DEBUG_REQUESTS === 'true') {
+    console.log(`[request] ${req.method} ${req.url}`);
+  }
+  next();
+});
 
 app.get('/', (_req, res) => {
   res.sendFile(path.join(publicDir, 'index.html'));
@@ -37,6 +43,18 @@ app.get('/', (_req, res) => {
 
 app.get('/app', (_req, res) => {
   res.sendFile(path.join(publicDir, 'app', 'index.html'));
+});
+
+app.get('/app/', (_req, res) => {
+  res.sendFile(path.join(publicDir, 'app', 'index.html'));
+});
+
+app.get('/trainer', (_req, res) => {
+  res.sendFile(path.join(publicDir, 'trainer', 'index.html'));
+});
+
+app.get('/trainer/', (_req, res) => {
+  res.sendFile(path.join(publicDir, 'trainer', 'index.html'));
 });
 
 app.get('/demo/:token', (req, res) => {
@@ -95,6 +113,8 @@ app.post('/api/demo-links/:token/claim', (req, res) => {
   });
 });
 
+app.use(express.static(publicDir, { extensions: ['html'] }));
+
 app.post('/api/demo-links/:token/unlock', (req, res) => {
   const demoLink = demoLinks.get(req.params.token);
   const pin = String(req.body?.pin || '').trim();
@@ -127,7 +147,7 @@ app.post('/api/demo-links/:token/unlock', (req, res) => {
   });
 });
 
-app.listen(port, host, () => {
+const server = app.listen(port, host, () => {
   const networkUrls = getNetworkUrls(port);
 
   console.log(`Saulo app listening on http://127.0.0.1:${port}`);

@@ -38,6 +38,7 @@ const state = {
   messageFilterClientId: 'all',
   isMobileBuilderOpen: false,
   draggingExerciseId: null,
+  activeExerciseMenuId: null,
 };
 
 const sectionTitleMap = {
@@ -195,24 +196,34 @@ builderDayTabs?.addEventListener('click', (event) => {
 });
 
 exerciseGrid?.addEventListener('click', (event) => {
+  const dayOption = event.target.closest('[data-add-exercise-day]');
+  if (dayOption) {
+    const sharedState = getState();
+    const exercise = sharedState.exerciseLibrary.find(
+      (item) => item.id === dayOption.dataset.addExerciseDay,
+    );
+    if (!exercise) {
+      return;
+    }
+
+    addExerciseToBuilder(exercise, dayOption.dataset.dayTarget);
+    state.activeExerciseMenuId = null;
+    renderBuilder(sharedState);
+    renderExerciseLibrary(sharedState);
+    if (window.innerWidth <= 920) {
+      state.isMobileBuilderOpen = true;
+      syncMobileBuilderState();
+    }
+    return;
+  }
+
   const addButton = event.target.closest('[data-add-exercise]');
-  if (!addButton) {
+  if (addButton) {
+    const exerciseId = addButton.dataset.addExercise;
+    state.activeExerciseMenuId =
+      state.activeExerciseMenuId === exerciseId ? null : exerciseId;
+    renderExerciseLibrary(getState());
     return;
-  }
-
-  const sharedState = getState();
-  const exercise = sharedState.exerciseLibrary.find(
-    (item) => item.id === addButton.dataset.addExercise,
-  );
-  if (!exercise) {
-    return;
-  }
-
-  addExerciseToBuilder(exercise);
-  renderBuilder(sharedState);
-  if (window.innerWidth <= 920) {
-    state.isMobileBuilderOpen = true;
-    syncMobileBuilderState();
   }
 });
 
@@ -465,6 +476,19 @@ window.addEventListener('resize', () => {
   syncMobileBuilderState();
 });
 
+document.addEventListener('click', (event) => {
+  if (!state.activeExerciseMenuId) {
+    return;
+  }
+
+  if (event.target.closest('.exercise-add-menu-shell')) {
+    return;
+  }
+
+  state.activeExerciseMenuId = null;
+  renderExerciseLibrary(getState());
+});
+
 function renderApp() {
   const sharedState = getState();
   const resolvedClientId = resolveClientId(sharedState, state.activeClientId);
@@ -701,15 +725,38 @@ function renderExerciseLibrary(sharedState) {
               </span>
             </div>
           </div>
-          <button
-            class="exercise-add-button"
-            type="button"
-            data-add-exercise="${escapeHtml(exercise.id)}"
-            aria-label="Añadir ${escapeHtml(exercise.name)} a ${escapeHtml(getDayLabel(state.builderTargetDay))}"
-            title="Añadir a ${escapeHtml(getDayLabel(state.builderTargetDay))}"
-          >
-            +
-          </button>
+          <div class="exercise-add-menu-shell">
+            <button
+              class="exercise-add-button"
+              type="button"
+              data-add-exercise="${escapeHtml(exercise.id)}"
+              aria-expanded="${state.activeExerciseMenuId === exercise.id ? 'true' : 'false'}"
+              aria-label="Elegir día para ${escapeHtml(exercise.name)}"
+              title="Elegir día"
+            >
+              +
+            </button>
+            ${
+              state.activeExerciseMenuId === exercise.id
+                ? `
+                  <div class="exercise-add-menu">
+                    ${DAY_ORDER.map(
+                      (dayKey) => `
+                        <button
+                          class="exercise-add-day-option ${dayKey === state.builderTargetDay ? 'is-active' : ''}"
+                          type="button"
+                          data-add-exercise-day="${escapeHtml(exercise.id)}"
+                          data-day-target="${escapeHtml(dayKey)}"
+                        >
+                          ${escapeHtml(getDayLabel(dayKey))}
+                        </button>
+                      `,
+                    ).join('')}
+                  </div>
+                `
+                : ''
+            }
+          </div>
         </article>
       `,
     )

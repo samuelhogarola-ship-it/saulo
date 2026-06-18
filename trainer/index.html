@@ -15,13 +15,10 @@
       content="black-translucent"
     />
     <meta name="apple-mobile-web-app-title" content="Saulo Coach" />
-    <link
-      rel="manifest"
-      href="/trainer/manifest.webmanifest?v=saulo-trainer-v1"
-    />
+    <link rel="manifest" href="manifest.webmanifest?v=saulo-trainer-v1" />
     <link
       rel="apple-touch-icon"
-      href="/trainer/icons/coach-icon-192.png?v=saulo-trainer-v1"
+      href="icons/coach-icon-192.png?v=saulo-trainer-v1"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,7 +26,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/trainer/styles.css?v=saulo-trainer-v3" />
+    <link rel="stylesheet" href="styles.css?v=saulo-trainer-v9" />
   </head>
   <body>
     <div class="trainer-app">
@@ -37,7 +34,7 @@
         <div class="trainer-brand">
           <img
             class="brand-logo"
-            src="/trainer/assets/saulo-mark.png"
+            src="assets/saulo-mark.png"
             alt="Saulo Fitness"
           />
           <div>
@@ -127,25 +124,7 @@
             </span>
             Mensajes
           </button>
-          <button class="trainer-nav-link" data-section="settings">
-            <span class="trainer-nav-icon" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <circle cx="12" cy="12" r="2.8"></circle>
-                <path
-                  d="M19 12a7 7 0 0 0-.08-1l2.02-1.57-1.92-3.33-2.47.83a7.6 7.6 0 0 0-1.74-1.02l-.39-2.58h-3.84l-.39 2.58c-.62.24-1.2.59-1.74 1.02l-2.47-.83-1.92 3.33L5.08 11A7 7 0 0 0 5 12c0 .34.03.67.08 1l-2.02 1.57 1.92 3.33 2.47-.83c.54.43 1.12.78 1.74 1.02l.39 2.58h3.84l.39-2.58c.62-.24 1.2-.59 1.74-1.02l2.47.83 1.92-3.33L18.92 13c.05-.33.08-.66.08-1Z"
-                ></path>
-              </svg>
-            </span>
-            Ajustes
-          </button>
-          <a class="trainer-nav-link" href="/admin/eventos">
+          <button class="trainer-nav-link" data-section="events">
             <span class="trainer-nav-icon" aria-hidden="true">
               <svg
                 viewBox="0 0 24 24"
@@ -166,7 +145,25 @@
               </svg>
             </span>
             Eventos
-          </a>
+          </button>
+          <button class="trainer-nav-link" data-section="settings">
+            <span class="trainer-nav-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="2.8"></circle>
+                <path
+                  d="M19 12a7 7 0 0 0-.08-1l2.02-1.57-1.92-3.33-2.47.83a7.6 7.6 0 0 0-1.74-1.02l-.39-2.58h-3.84l-.39 2.58c-.62.24-1.2.59-1.74 1.02l-2.47-.83-1.92 3.33L5.08 11A7 7 0 0 0 5 12c0 .34.03.67.08 1l-2.02 1.57 1.92 3.33 2.47-.83c.54.43 1.12.78 1.74 1.02l.39 2.58h3.84l.39-2.58c.62-.24 1.2-.59 1.74-1.02l2.47.83 1.92-3.33L18.92 13c.05-.33.08-.66.08-1Z"
+                ></path>
+              </svg>
+            </span>
+            Ajustes
+          </button>
         </nav>
 
         <div class="sidebar-note">
@@ -344,7 +341,7 @@
                 <div class="builder-heading-copy">
                   <img
                     class="builder-heading-logo"
-                    src="/trainer/assets/saulo-mark.png"
+                    src="assets/saulo-mark.png"
                     alt=""
                     aria-hidden="true"
                   />
@@ -445,6 +442,58 @@
             </div>
             <div class="routine-template-grid" id="routine-template-grid"></div>
           </div>
+        </section>
+
+        <section
+          class="trainer-section"
+          data-section-panel="events"
+          aria-labelledby="events-title"
+        >
+          <div class="section-header">
+            <div>
+              <p class="brand-kicker">Eventos</p>
+              <h3 id="events-title">Agenda y plazas</h3>
+            </div>
+          </div>
+
+          <div class="trainer-messages-note routine-note">
+            <p>
+              Preview funcional dentro del trainer: útil para revisar próximos
+              eventos, estado de plazas y borradores desde el móvil o el
+              escritorio mientras cerramos la parte completa.
+            </p>
+          </div>
+
+          <div class="event-stats-grid" id="event-stats-grid"></div>
+
+          <div class="event-toolbar">
+            <label class="stack-field">
+              <span>Buscar</span>
+              <input
+                id="event-search-input"
+                type="search"
+                placeholder="Nombre del evento, ciudad o formato"
+              />
+            </label>
+            <label class="stack-field">
+              <span>Estado</span>
+              <select id="event-filter-status">
+                <option value="all">Todos</option>
+                <option value="live">En venta</option>
+                <option value="draft">Borrador</option>
+                <option value="closing">Últimas plazas</option>
+                <option value="closed">Cerrado</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="event-list" id="trainer-event-list"></div>
+
+          <section
+            class="event-detail-panel"
+            id="trainer-event-detail"
+            aria-live="polite"
+          ></section>
         </section>
 
         <section
@@ -602,7 +651,7 @@
 
     <div class="mobile-builder-backdrop" id="mobile-builder-backdrop"></div>
 
-    <script src="/app/demo-store.js?v=saulo-trainer-v4" defer></script>
-    <script src="/trainer/app.js?v=saulo-trainer-v4" defer></script>
+    <script src="../app/demo-store.js?v=saulo-trainer-v9" defer></script>
+    <script src="app.js?v=saulo-trainer-v9" defer></script>
   </body>
 </html>

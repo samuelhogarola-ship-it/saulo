@@ -28,19 +28,25 @@
       "name": "Ejercicios",
       "short_name": "Ejercicios",
       "url": "/trainer/?section=exercises",
-      "icons": [{ "src": "/trainer/icons/coach-icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        { "src": "/trainer/icons/coach-icon-192.png", "sizes": "192x192" }
+      ]
     },
     {
       "name": "Rutinas",
       "short_name": "Rutinas",
       "url": "/trainer/?section=routines",
-      "icons": [{ "src": "/trainer/icons/coach-icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        { "src": "/trainer/icons/coach-icon-192.png", "sizes": "192x192" }
+      ]
     },
     {
       "name": "Mensajes",
       "short_name": "Mensajes",
       "url": "/trainer/?section=messages",
-      "icons": [{ "src": "/trainer/icons/coach-icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        { "src": "/trainer/icons/coach-icon-192.png", "sizes": "192x192" }
+      ]
     }
   ]
 }

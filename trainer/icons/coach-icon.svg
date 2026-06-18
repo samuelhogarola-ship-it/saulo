@@ -1,35 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Saulo Coach">
-  <defs>
-    <linearGradient id="coachBg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#111215" />
-      <stop offset="100%" stop-color="#050507" />
-    </linearGradient>
-    <linearGradient id="coachPurple" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#8b5cf6" />
-      <stop offset="100%" stop-color="#5b21b6" />
-    </linearGradient>
-    <linearGradient id="coachBlue" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#c4b5fd" />
-      <stop offset="100%" stop-color="#8b5cf6" />
-    </linearGradient>
-  </defs>
-  <rect x="24" y="24" width="464" height="464" rx="108" fill="url(#coachBg)" />
-  <rect x="24" y="24" width="464" height="464" rx="108" fill="none" stroke="#8b5cf6" stroke-opacity="0.34" stroke-width="10" />
-  <circle cx="384" cy="138" r="52" fill="#8b5cf6" fill-opacity="0.12" />
-  <circle cx="128" cy="382" r="64" fill="#8b5cf6" fill-opacity="0.1" />
-  <path d="M170 156c0-17.673 14.327-32 32-32h110l34 34v182c0 17.673-14.327 32-32 32H202c-17.673 0-32-14.327-32-32V156Z" fill="#16181d" stroke="#f5f3ff" stroke-width="16" />
-  <path d="M312 124v42c0 13.255 10.745 24 24 24h42" fill="none" stroke="#f5f3ff" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M212 233h92" stroke="url(#coachPurple)" stroke-width="18" stroke-linecap="round" />
-  <path d="M212 283h132" stroke="#f5f3ff" stroke-opacity="0.92" stroke-width="16" stroke-linecap="round" />
-  <path d="M212 325h108" stroke="#f5f3ff" stroke-opacity="0.56" stroke-width="16" stroke-linecap="round" />
-  <g transform="translate(126 300)">
-    <rect x="0" y="40" width="120" height="88" rx="28" fill="url(#coachPurple)" />
-    <rect x="22" y="58" width="76" height="14" rx="7" fill="#f5f3ff" />
-    <rect x="22" y="84" width="52" height="14" rx="7" fill="#f5f3ff" fill-opacity="0.92" />
-    <circle cx="134" cy="18" r="42" fill="#0f172a" />
-    <circle cx="134" cy="18" r="36" fill="url(#coachPurple)" />
-    <path d="M118 18h32" stroke="#f5f3ff" stroke-width="10" stroke-linecap="round" />
-    <path d="M134 2v32" stroke="#f5f3ff" stroke-width="10" stroke-linecap="round" />
-  </g>
-  <path d="M120 120c20-22 42-32 72-32" stroke="url(#coachBlue)" stroke-width="10" stroke-linecap="round" opacity="0.9" />
+  <rect x="24" y="24" width="464" height="464" rx="108" fill="#7c3aed" />
+  <rect
+    x="24"
+    y="24"
+    width="464"
+    height="464"
+    rx="108"
+    fill="none"
+    stroke="#050507"
+    stroke-opacity="0.28"
+    stroke-width="10"
+  />
+  <image
+    href="./coach-icon-512.png"
+    x="76"
+    y="76"
+    width="360"
+    height="360"
+    preserveAspectRatio="xMidYMid meet"
+  />
 </svg>

@@ -30,6 +30,7 @@ const state = {
   builderName: '',
   builderClientId: null,
   builderTargetDay: 'monday',
+  openBuilderDay: 'monday',
   builderDays: createEmptyWeek(),
   exerciseSearch: '',
   muscleFilter: 'all',
@@ -38,6 +39,9 @@ const state = {
   routineSearch: '',
   routineFilterClientId: 'all',
   routineFilterType: 'all',
+  eventSearch: '',
+  eventStatusFilter: 'all',
+  selectedEventId: 'evt-marbella-hyrox',
   messageFilterClientId: 'all',
   messageContextKey: 'trainer-messages-inbox',
   isMobileBuilderOpen: false,
@@ -49,6 +53,7 @@ const sectionTitleMap = {
   clients: 'Clientes',
   exercises: 'Ejercicios',
   routines: 'Rutinas',
+  events: 'Eventos',
   messages: 'Mensajes',
   settings: 'Ajustes',
 };
@@ -100,6 +105,11 @@ const routineTemplateGrid = document.querySelector('#routine-template-grid');
 const routineSearchInput = document.querySelector('#routine-search-input');
 const routineFilterClient = document.querySelector('#routine-filter-client');
 const routineFilterType = document.querySelector('#routine-filter-type');
+const eventStatsGrid = document.querySelector('#event-stats-grid');
+const eventSearchInput = document.querySelector('#event-search-input');
+const eventFilterStatus = document.querySelector('#event-filter-status');
+const trainerEventList = document.querySelector('#trainer-event-list');
+const trainerEventDetail = document.querySelector('#trainer-event-detail');
 const trainerMessageFilter = document.querySelector('#trainer-message-filter');
 const trainerMessageContextNav = document.querySelector(
   '#trainer-message-context-nav',
@@ -173,6 +183,132 @@ const trainerMessageContextOptions = [
   },
 ];
 
+const trainerEvents = [
+  {
+    id: 'evt-marbella-hyrox',
+    title: 'Workshop HYROX Marbella',
+    format: 'Workshop',
+    city: 'Marbella',
+    venue: 'The I/O Club',
+    date: '2026-06-27',
+    status: 'closing',
+    capacity: 18,
+    sold: 14,
+    registrations: [
+      {
+        name: 'Lucía Ortega',
+        phone: '+34 612 24 18 90',
+        status: 'Confirmada',
+        payment: 'Pagado',
+        amount: 45,
+        note: 'Quiere trabajar técnica de carrera.',
+      },
+      {
+        name: 'Mario Vega',
+        phone: '+34 644 70 22 18',
+        status: 'Confirmada',
+        payment: 'Pagado',
+        amount: 45,
+        note: 'Viene con lesión antigua de hombro.',
+      },
+      {
+        name: 'Ana Robles',
+        phone: '+34 633 10 91 44',
+        status: 'Pendiente',
+        payment: 'Reserva',
+        amount: 15,
+        note: 'Falta confirmar talla de camiseta.',
+      },
+      {
+        name: 'Bruno Costa',
+        phone: '+34 699 31 05 16',
+        status: 'Confirmada',
+        payment: 'Pagado',
+        amount: 45,
+        note: 'Nivel avanzado.',
+      },
+    ],
+  },
+  {
+    id: 'evt-fuengirola-bootcamp',
+    title: 'Bootcamp Playa Fuengirola',
+    format: 'Outdoor',
+    city: 'Fuengirola',
+    venue: 'Paseo Marítimo',
+    date: '2026-07-04',
+    status: 'live',
+    capacity: 24,
+    sold: 11,
+    registrations: [
+      {
+        name: 'Paula Martin',
+        phone: '+34 622 45 77 20',
+        status: 'Confirmada',
+        payment: 'Pagado',
+        amount: 18,
+        note: 'Primera vez en bootcamp.',
+      },
+      {
+        name: 'Hugo Navarro',
+        phone: '+34 650 21 89 33',
+        status: 'Pendiente',
+        payment: 'Reserva',
+        amount: 8,
+        note: 'Pregunta por aparcamiento.',
+      },
+      {
+        name: 'Carla Medina',
+        phone: '+34 611 83 40 75',
+        status: 'Confirmada',
+        payment: 'Pagado',
+        amount: 18,
+        note: 'Quiere traer esterilla.',
+      },
+    ],
+  },
+  {
+    id: 'evt-malaga-mobility',
+    title: 'Mobility Reset Málaga',
+    format: 'Clase especial',
+    city: 'Málaga',
+    venue: 'Studio Centro',
+    date: '2026-07-12',
+    status: 'draft',
+    capacity: 16,
+    sold: 0,
+    registrations: [],
+  },
+  {
+    id: 'evt-mijas-strength',
+    title: 'Strength Day Mijas',
+    format: 'Intensivo',
+    city: 'Mijas',
+    venue: 'Box Costa',
+    date: '2026-06-14',
+    status: 'closed',
+    capacity: 20,
+    sold: 20,
+    registrations: [
+      {
+        name: 'Sergio Lima',
+        phone: '+34 677 30 44 12',
+        status: 'Asistió',
+        payment: 'Pagado',
+        amount: 35,
+        note: 'Pedir feedback.',
+      },
+      {
+        name: 'Nerea Soler',
+        phone: '+34 655 19 01 62',
+        status: 'Asistió',
+        payment: 'Pagado',
+        amount: 35,
+        note: 'Interesada en plan 1:1.',
+      },
+    ],
+  },
+];
+
 hydrateStateFromUrl();
 registerTrainerServiceWorker();
 subscribe(() => {
@@ -211,6 +347,52 @@ exerciseFilterDifficulty?.addEventListener('change', (event) => {
   renderExerciseLibrary(getState());
 });
 
+eventSearchInput?.addEventListener('input', (event) => {
+  state.eventSearch = event.target.value;
+  renderEvents();
+});
+
+eventFilterStatus?.addEventListener('change', (event) => {
+  state.eventStatusFilter = event.target.value;
+  renderEvents();
+});
+
+trainerEventList?.addEventListener('click', (event) => {
+  const messageButton = event.target.closest('[data-open-event-message]');
+  if (messageButton) {
+    state.section = 'messages';
+    state.messageContextKey = 'trainer-messages-compose';
+    trainerMessageSubject.value = `Recordatorio · ${messageButton.dataset.openEventMessage}`;
+    trainerMessageBody.value =
+      'Te dejo el recordatorio del evento y las últimas plazas disponibles.';
+    renderApp();
+    return;
+  }
+
+  const eventRow = event.target.closest('[data-event-id]');
+  if (!eventRow) {
+    return;
+  }
+
+  state.selectedEventId = eventRow.dataset.eventId;
+  renderEvents();
+});
+
+trainerEventList?.addEventListener('keydown', (event) => {
+  if (!['Enter', ' '].includes(event.key)) {
+    return;
+  }
+
+  const eventRow = event.target.closest('[data-event-id]');
+  if (!eventRow) {
+    return;
+  }
+
+  event.preventDefault();
+  state.selectedEventId = eventRow.dataset.eventId;
+  renderEvents();
+});
+
 builderRoutineName?.addEventListener('input', (event) => {
   state.builderName = event.target.value;
 });
@@ -227,7 +409,9 @@ builderDayTabs?.addEventListener('click', (event) => {
   }
 
   state.builderTargetDay = target.dataset.targetDay;
+  state.openBuilderDay = target.dataset.targetDay;
   renderExerciseLibrary(getState());
+  renderBuilder(getState());
 });
 
 exerciseGrid?.addEventListener('click', (event) => {
@@ -301,7 +485,10 @@ routineBuilderDays?.addEventListener('input', (event) => {
 routineBuilderDays?.addEventListener('click', (event) => {
   const toggleButton = event.target.closest('[data-toggle-day]');
   if (toggleButton) {
-    state.builderTargetDay = toggleButton.dataset.toggleDay;
+    const nextDay = toggleButton.dataset.toggleDay;
+
+    state.builderTargetDay = nextDay;
+    state.openBuilderDay = state.openBuilderDay === nextDay ? null : nextDay;
     renderBuilder(getState());
     return;
   }
@@ -361,6 +548,7 @@ routineBuilderDays?.addEventListener('drop', (event) => {
   }
 
   state.builderTargetDay = dayCard.dataset.dayKey;
+  state.openBuilderDay = state.builderTargetDay;
   addExerciseToBuilder(exercise, state.builderTargetDay);
   renderBuilder(sharedState);
 });
@@ -385,6 +573,7 @@ newRoutineButton?.addEventListener('click', () => {
   state.builderName = 'Nueva rutina semanal';
   state.builderDays = createEmptyWeek();
   state.builderTargetDay = 'monday';
+  state.openBuilderDay = 'monday';
   state.builderInitialized = true;
   state.isMobileBuilderOpen = true;
   renderApp();
@@ -585,6 +774,7 @@ function renderApp() {
   renderExerciseLibrary(sharedState);
   renderBuilder(sharedState);
   renderRoutineTemplates(sharedState);
+  renderEvents();
   renderMessages(sharedState);
   renderBuilderTargetSummary(sharedState);
   renderMobileBuilderSummary(sharedState);
@@ -855,7 +1045,8 @@ function renderBuilder(sharedState) {
 
   routineBuilderDays.innerHTML = DAY_ORDER.map((dayKey) => {
     const day = state.builderDays[dayKey] || createEmptyWeek()[dayKey];
-    const isOpen = state.builderTargetDay === dayKey;
+    const isOpen = state.openBuilderDay === dayKey;
+    const isTarget = state.builderTargetDay === dayKey;
     const rows = day.exercises
       .map(
         (exercise) => `
@@ -917,7 +1108,7 @@ function renderBuilder(sharedState) {
       .join('');
 
     return `
-      <article class="day-builder-card ${isOpen ? 'is-open' : ''}" data-day-key="${escapeHtml(dayKey)}">
+      <article class="day-builder-card ${isOpen ? 'is-open' : ''} ${isTarget ? 'is-target' : ''}" data-day-key="${escapeHtml(dayKey)}">
         <button
           class="day-builder-toggle"
           type="button"
@@ -1048,6 +1239,254 @@ function renderRoutineTemplates(sharedState) {
       `;
     })
     .join('');
+}
+
+function renderEvents() {
+  if (!eventStatsGrid || !trainerEventList || !trainerEventDetail) {
+    return;
+  }
+
+  if (eventSearchInput) {
+    eventSearchInput.value = state.eventSearch;
+  }
+
+  if (eventFilterStatus) {
+    eventFilterStatus.value = state.eventStatusFilter;
+  }
+
+  const searchValue = state.eventSearch.trim().toLowerCase();
+  const filteredEvents = trainerEvents.filter((item) => {
+    const matchesStatus =
+      state.eventStatusFilter === 'all' ||
+      item.status === state.eventStatusFilter;
+    const matchesSearch =
+      !searchValue ||
+      [item.title, item.city, item.format, item.venue]
+        .join(' ')
+        .toLowerCase()
+        .includes(searchValue);
+
+    return matchesStatus && matchesSearch;
+  });
+
+  if (
+    filteredEvents.length &&
+    !filteredEvents.some((item) => item.id === state.selectedEventId)
+  ) {
+    state.selectedEventId = filteredEvents[0].id;
+  }
+
+  const stats = [
+    {
+      label: 'En venta',
+      value: String(
+        trainerEvents.filter((item) =>
+          ['live', 'closing'].includes(item.status),
+        ).length,
+      ),
+      copy: 'Publicados ahora',
+    },
+    {
+      label: 'Últimas plazas',
+      value: String(
+        trainerEvents.filter((item) => item.status === 'closing').length,
+      ),
+      copy: 'Para empujar por mensaje',
+    },
+    {
+      label: 'Borradores',
+      value: String(
+        trainerEvents.filter((item) => item.status === 'draft').length,
+      ),
+      copy: 'Pendientes de lanzar',
+    },
+  ];
+
+  eventStatsGrid.innerHTML = stats
+    .map(
+      (item) => `
+        <article class="event-stat-card">
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.value)}</strong>
+          <p>${escapeHtml(item.copy)}</p>
+        </article>
+      `,
+    )
+    .join('');
+
+  if (!filteredEvents.length) {
+    trainerEventList.innerHTML =
+      '<div class="trainer-empty-state">No hay eventos que coincidan con este filtro.</div>';
+    trainerEventDetail.innerHTML = '';
+    return;
+  }
+
+  trainerEventList.innerHTML = filteredEvents
+    .map((item) => {
+      const seatsLeft = Math.max(item.capacity - item.sold, 0);
+      return `
+        <article
+          class="event-row ${item.id === state.selectedEventId ? 'is-active' : ''}"
+          data-event-id="${escapeHtml(item.id)}"
+          tabindex="0"
+          role="button"
+          aria-label="Ver inscritos de ${escapeHtml(item.title)}"
+        >
+          <div class="event-row-main">
+            <strong>${escapeHtml(item.title)}</strong>
+            <p>${escapeHtml(item.format)} · ${escapeHtml(item.city)} · ${escapeHtml(item.venue)}</p>
+          </div>
+          <div class="event-row-date">
+            <strong>${escapeHtml(formatDateIso(item.date))}</strong>
+            <p>${escapeHtml(getEventStatusLabel(item.status))}</p>
+          </div>
+          <div class="event-row-capacity">
+            <strong>${escapeHtml(String(item.sold))}/${escapeHtml(String(item.capacity))}</strong>
+            <p>${escapeHtml(seatsLeft === 0 ? 'Completo' : `${seatsLeft} plazas libres`)}</p>
+          </div>
+          <div class="event-row-actions">
+            <span class="meta-chip">${escapeHtml(getEventStatusChip(item.status))}</span>
+            <button class="template-action" type="button" data-open-event-message="${escapeHtml(item.title)}">
+              Recordar por mensaje
+            </button>
+          </div>
+        </article>
+      `;
+    })
+    .join('');
+
+  renderEventDetail();
+}
+
+function renderEventDetail() {
+  const selectedEvent =
+    trainerEvents.find((item) => item.id === state.selectedEventId) ||
+    trainerEvents[0];
+
+  if (!selectedEvent || !trainerEventDetail) {
+    return;
+  }
+
+  const registrations = selectedEvent.registrations || [];
+  const seatsLeft = Math.max(selectedEvent.capacity - selectedEvent.sold, 0);
+  const paidCount = registrations.filter(
+    (registration) => registration.payment === 'Pagado',
+  ).length;
+  const pendingCount = registrations.length - paidCount;
+  const paidAmount = registrations
+    .filter((registration) => registration.payment === 'Pagado')
+    .reduce(
+      (total, registration) => total + Number(registration.amount || 0),
+      0,
+    );
+  const pendingAmount = registrations
+    .filter((registration) => registration.payment !== 'Pagado')
+    .reduce(
+      (total, registration) => total + Number(registration.amount || 0),
+      0,
+    );
+
+  trainerEventDetail.innerHTML = `
+    <div class="section-header section-header-compact">
+      <div>
+        <p class="brand-kicker">Inscritos</p>
+        <h4>${escapeHtml(selectedEvent.title)}</h4>
+      </div>
+      <span class="trainer-pill event-detail-pill">
+        ${escapeHtml(registrations.length)} inscritos · ${escapeHtml(String(seatsLeft))} libres
+      </span>
+    </div>
+    <div class="event-payment-summary">
+      <article>
+        <span>Pagados</span>
+        <strong>${escapeHtml(String(paidCount))}</strong>
+        <p>${escapeHtml(formatCurrency(paidAmount))}</p>
+      </article>
+      <article>
+        <span>Pendientes / reserva</span>
+        <strong>${escapeHtml(String(pendingCount))}</strong>
+        <p>${escapeHtml(formatCurrency(pendingAmount))}</p>
+      </article>
+    </div>
+    ${
+      registrations.length
+        ? `
+          <div class="event-registration-list">
+            ${registrations
+              .map(
+                (registration) => `
+                  <article class="event-registration-row">
+                    <div class="event-registration-person">
+                      <strong>${escapeHtml(registration.name)}</strong>
+                      <p>${escapeHtml(registration.phone)}</p>
+                    </div>
+                    <div>
+                      <span class="meta-chip">${escapeHtml(registration.status)}</span>
+                    </div>
+                    <div class="event-payment-cell">
+                      <span class="payment-chip ${escapeHtml(getPaymentChipClass(registration.payment))}">
+                        ${escapeHtml(registration.payment)}
+                      </span>
+                      <strong>${escapeHtml(formatCurrency(registration.amount || 0))}</strong>
+                      <p>${escapeHtml(registration.note)}</p>
+                    </div>
+                  </article>
+                `,
+              )
+              .join('')}
+          </div>
+        `
+        : '<div class="trainer-empty-state">Todavía no hay inscritos en este evento.</div>'
+    }
+  `;
+}
+
+function getPaymentChipClass(payment) {
+  if (payment === 'Pagado') {
+    return 'is-paid';
+  }
+
+  if (payment === 'Reserva') {
+    return 'is-reserved';
+  }
+
+  return 'is-pending';
+}
+
+function formatCurrency(amount) {
+  return `${Number(amount || 0).toLocaleString('es-ES')} €`;
+}
+
+function getEventStatusLabel(status) {
+  if (status === 'live') {
+    return 'Venta abierta';
+  }
+
+  if (status === 'closing') {
+    return 'Últimas plazas';
+  }
+
+  if (status === 'draft') {
+    return 'Borrador listo';
+  }
+
+  return 'Cerrado';
+}
+
+function getEventStatusChip(status) {
+  if (status === 'live') {
+    return 'En venta';
+  }
+
+  if (status === 'closing') {
+    return 'Urgente';
+  }
+
+  if (status === 'draft') {
+    return 'Draft';
+  }
+
+  return 'Cerrado';
 }
 
 function renderMessages(sharedState) {
@@ -1225,6 +1664,7 @@ function addExerciseToBuilder(exercise, targetDayKey = state.builderTargetDay) {
   }
 
   state.builderTargetDay = resolvedDayKey;
+  state.openBuilderDay = resolvedDayKey;
   day.exercises.push({
     id: `builder-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
     exerciseId: exercise.id,
@@ -1365,6 +1805,8 @@ function openTemplateInBuilder(templateId, preferSendMode) {
   state.builderDays = normalizeBuilderWeek(template.days);
   state.builderInitialized = true;
   state.section = 'exercises';
+  state.builderTargetDay = 'monday';
+  state.openBuilderDay = 'monday';
   if (preferSendMode) {
     state.activeClientId = preferredClientId;
     state.clientDetailId = preferredClientId;
@@ -1390,6 +1832,7 @@ function cloneTemplateIntoBuilder(templateId, preferStudentFlow = false) {
   state.builderInitialized = true;
   state.section = 'exercises';
   state.builderTargetDay = 'monday';
+  state.openBuilderDay = 'monday';
   if (preferStudentFlow) {
     state.activeClientId = preferredClientId;
     state.clientDetailId = preferredClientId;
@@ -1417,6 +1860,7 @@ function seedBuilderFromClient(sharedState, clientId) {
 
   state.builderClientId = resolvedClientId;
   state.builderTargetDay = 'monday';
+  state.openBuilderDay = 'monday';
   state.builderInitialized = true;
 }
 
@@ -1426,6 +1870,7 @@ function resetLocalBuilder() {
   state.builderName = '';
   state.builderClientId = null;
   state.builderTargetDay = 'monday';
+  state.openBuilderDay = 'monday';
   state.builderDays = createEmptyWeek();
   state.messageFilterClientId = 'all';
   state.messageContextKey = 'trainer-messages-inbox';

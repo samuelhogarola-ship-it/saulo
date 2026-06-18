@@ -88,8 +88,8 @@ test('creates a workout report and surfaces it in the trainer inbox', async ({
       .locator('#trainer-messages-inbox')
       .getByText('Resumen de entrenamiento'),
   ).toBeVisible();
-  await expect(page.locator('#trainer-active-client-pill')).toHaveText(
-    'Lucía Ortega',
+  await expect(page.locator('#trainer-message-filter')).toHaveValue(
+    'client-lucia',
   );
 });
 
@@ -162,6 +162,9 @@ test('trainer navigation loads the five main sections', async ({ page }) => {
     trainerNav.getByRole('button', { name: 'Mensajes' }),
   ).toBeVisible();
   await expect(
+    trainerNav.getByRole('button', { name: 'Eventos' }),
+  ).toBeVisible();
+  await expect(
     trainerNav.getByRole('button', { name: 'Ajustes' }),
   ).toBeVisible();
 
@@ -171,6 +174,8 @@ test('trainer navigation loads the five main sections', async ({ page }) => {
   await expect(page.locator('#trainer-topbar-title')).toHaveText('Rutinas');
   await trainerNav.getByRole('button', { name: 'Mensajes' }).click();
   await expect(page.locator('#trainer-topbar-title')).toHaveText('Mensajes');
+  await trainerNav.getByRole('button', { name: 'Eventos' }).click();
+  await expect(page.locator('#trainer-topbar-title')).toHaveText('Eventos');
   await trainerNav.getByRole('button', { name: 'Ajustes' }).click();
   await expect(page.locator('#trainer-topbar-title')).toHaveText('Ajustes');
 });
@@ -183,14 +188,15 @@ test('guardar rutina creates a draft template without assigned clients', async (
   await page.getByRole('button', { name: 'Nueva rutina' }).click();
   await page.locator('#builder-routine-name').fill('Rutina draft Playwright');
   await page.locator('#exercise-search-input').fill('Face pull');
-  await page.getByRole('button', { name: 'Añadir Face pull a Lunes' }).click();
+  await page.getByRole('button', { name: 'Elegir día para Face pull' }).click();
+  await page.locator('[data-add-exercise-day="ex-face-pull"]').first().click();
   await page.getByRole('button', { name: 'Guardar rutina' }).click();
 
   await expect(page.locator('#trainer-topbar-title')).toHaveText('Rutinas');
   const draftCard = page
-    .locator('.routine-template-card')
+    .locator('.routine-row')
     .filter({ hasText: 'Rutina draft Playwright' });
-  await expect(draftCard).toContainText('Sin clientes asignados');
+  await expect(draftCard).toContainText('Rutina prototipo');
 });
 
 test('trainer can create and send a routine and the student view updates', async ({
@@ -202,7 +208,8 @@ test('trainer can create and send a routine and the student view updates', async
   await page.locator('#builder-routine-name').fill('Rutina conectada');
   await page.locator('#builder-client-select').selectOption('client-mario');
   await page.locator('#exercise-search-input').fill('Face pull');
-  await page.getByRole('button', { name: 'Añadir Face pull a Lunes' }).click();
+  await page.getByRole('button', { name: 'Elegir día para Face pull' }).click();
+  await page.locator('[data-add-exercise-day="ex-face-pull"]').first().click();
   await page.getByRole('button', { name: 'Crear y Enviar Rutina' }).click();
 
   await expect(page.locator('#trainer-topbar-title')).toHaveText('Clientes');
@@ -219,14 +226,19 @@ test('trainer can create and send a routine and the student view updates', async
 test('trainer messages and profile edits sync back to the student view', async ({
   page,
 }) => {
-  await page.goto('/trainer/?section=messages&client=client-hugo');
+  await page.goto(
+    '/trainer/?section=messages&client=client-hugo&messageView=trainer-messages-compose',
+  );
 
   await page.locator('#trainer-message-client').selectOption('client-hugo');
   await page.locator('#trainer-message-subject').fill('Ajuste semanal');
   await page
     .locator('#trainer-message-body')
     .fill('Revisa el cardio suave y confirma sensaciones mañana.');
-  await page.getByRole('button', { name: 'Enviar mensaje' }).click();
+  await page
+    .locator('#trainer-message-form')
+    .getByRole('button', { name: 'Enviar mensaje' })
+    .click();
 
   await page.goto('/trainer/?section=clients&client=client-hugo');
   await page.locator('#client-weight-input').fill('89,9 kg');

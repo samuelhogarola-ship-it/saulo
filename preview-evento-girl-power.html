@@ -1,0 +1,793 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Preview evento | Girl Power</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @font-face {
+        font-family: 'BlowBrush';
+        src: local('BlowBrush');
+        font-display: swap;
+      }
+
+      :root {
+        --bg: #09051b;
+        --surface: rgba(17, 12, 42, 0.9);
+        --line: rgba(113, 145, 255, 0.22);
+        --text: #fff7fd;
+        --muted: rgba(255, 236, 252, 0.76);
+        --accent: #7f98ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        background:
+          radial-gradient(
+            circle at top right,
+            rgba(108, 141, 255, 0.22),
+            transparent 24%
+          ),
+          radial-gradient(
+            circle at left top,
+            rgba(112, 73, 255, 0.18),
+            transparent 22%
+          ),
+          linear-gradient(180deg, #09051b 0%, #10092b 100%);
+        color: var(--text);
+        font-family: 'Inter', sans-serif;
+      }
+
+      .event-stage__content {
+        position: relative;
+        display: grid;
+        gap: 28px;
+        min-width: 0;
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 32px 0 40px;
+        z-index: 2;
+      }
+
+      .site-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 22px 32px;
+        z-index: 6;
+      }
+
+      .site-header__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .site-logo {
+        color: var(--text);
+        font-family: 'BlowBrush', cursive;
+        font-size: clamp(1.9rem, 3vw, 2.9rem);
+        letter-spacing: 0.02em;
+        text-decoration: none;
+        text-shadow: 0 0 18px rgba(125, 155, 255, 0.18);
+      }
+
+      .site-nav {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      .site-nav a {
+        color: rgba(255, 247, 253, 0.9);
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+
+      .site-nav__cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 18px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        background: rgba(11, 8, 26, 0.22);
+        backdrop-filter: blur(10px);
+      }
+
+      .hero {
+        --hero-fade: 1;
+        --hero-stick: 0px;
+        position: relative;
+        width: 100vw;
+        min-height: 100vh;
+        margin-left: calc(50% - 50vw);
+        overflow: hidden;
+        background: #070514;
+        isolation: isolate;
+      }
+
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center center;
+        opacity: var(--hero-fade);
+        transform: translate3d(0, var(--hero-stick), 0);
+        will-change: opacity, transform;
+      }
+
+      .hero-overlay {
+        position: absolute;
+        inset: 0;
+        opacity: var(--hero-fade);
+        transform: translate3d(0, var(--hero-stick), 0);
+        will-change: opacity, transform;
+        background:
+          linear-gradient(
+            90deg,
+            rgba(4, 4, 18, 0.75) 0%,
+            rgba(4, 4, 18, 0.35) 40%,
+            rgba(4, 4, 18, 0.05) 100%
+          ),
+          linear-gradient(
+            180deg,
+            rgba(4, 4, 18, 0) 65%,
+            rgba(4, 4, 18, 0.95) 100%
+          );
+      }
+
+      .hero::after {
+        content: '';
+        position: absolute;
+        inset: auto 0 0;
+        height: 180px;
+        background: linear-gradient(
+          180deg,
+          rgba(9, 5, 27, 0) 0%,
+          rgba(9, 5, 27, 0.84) 76%,
+          #10092b 100%
+        );
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 4;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 0 32px;
+      }
+
+      .hero-copy {
+        width: min(100%, 420px);
+      }
+
+      .kicker,
+      .section-kicker {
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-size: clamp(1rem, 1.8vw, 1.6rem);
+        color: #cfd7ff;
+        font-weight: 800;
+      }
+
+      .script {
+        margin: 18px 0 0;
+        color: rgba(232, 214, 255, 0.88);
+        font-size: clamp(1.1rem, 2vw, 1.7rem);
+        line-height: 1.4;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      .hero h1 {
+        margin-top: 14px;
+        line-height: 0.9;
+        text-transform: uppercase;
+      }
+
+      .hero h1 span {
+        display: block;
+        font-family: 'Bebas Neue', sans-serif;
+        letter-spacing: 0.04em;
+        text-shadow:
+          0 0 18px rgba(125, 155, 255, 0.18),
+          0 0 36px rgba(92, 115, 255, 0.08);
+      }
+
+      .hero h1 span:first-child {
+        font-size: clamp(4.5rem, 10vw, 9rem);
+      }
+
+      .hero h1 span:last-child {
+        font-size: clamp(4rem, 9vw, 8rem);
+      }
+
+      .hero-actions {
+        margin-top: 14px;
+        color: rgba(239, 229, 255, 0.82);
+        font-size: 0.98rem;
+        line-height: 1.55;
+        max-width: 24ch;
+      }
+
+      .hero-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        margin-top: 24px;
+        padding: 0 22px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        background: rgba(11, 8, 26, 0.28);
+        backdrop-filter: blur(10px);
+        color: var(--text);
+        font-size: 0.86rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+
+      .scroll-down {
+        position: absolute;
+        bottom: 32px;
+        left: 50%;
+        z-index: 5;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        transform: translateX(-50%);
+        color: rgba(255, 247, 253, 0.82);
+        text-decoration: none;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        animation: floatDown 2.6s ease-in-out infinite;
+      }
+
+      .mouse-icon {
+        position: relative;
+        width: 24px;
+        height: 38px;
+        border: 1.5px solid rgba(255, 247, 253, 0.8);
+        border-radius: 999px;
+      }
+
+      .mouse-icon::before {
+        content: '';
+        position: absolute;
+        top: 7px;
+        left: 50%;
+        width: 4px;
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(255, 247, 253, 0.9);
+        transform: translateX(-50%);
+        animation: wheelMove 2.1s ease-in-out infinite;
+      }
+
+      @keyframes floatDown {
+        0%,
+        100% {
+          transform: translateX(-50%) translateY(0);
+          opacity: 0.72;
+        }
+
+        50% {
+          transform: translateX(-50%) translateY(8px);
+          opacity: 1;
+        }
+      }
+
+      @keyframes wheelMove {
+        0% {
+          transform: translateX(-50%) translateY(0);
+          opacity: 0;
+        }
+
+        20% {
+          opacity: 1;
+        }
+
+        100% {
+          transform: translateX(-50%) translateY(12px);
+          opacity: 0;
+        }
+      }
+
+      .teacher-card {
+        width: fit-content;
+        margin-top: 32px;
+        padding: 18px 24px;
+        border-radius: 24px;
+        border: 1px solid rgba(244, 120, 255, 0.4);
+        background: rgba(17, 12, 41, 0.82);
+        backdrop-filter: blur(14px);
+      }
+
+      .teacher-card span,
+      .meta-item span {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .teacher-card strong,
+      .meta-item strong {
+        font-family: 'Bebas Neue', sans-serif;
+        letter-spacing: 0.05em;
+      }
+
+      .teacher-card strong {
+        font-size: 2rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.9fr);
+        gap: 24px;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: var(--surface);
+        box-shadow: 0 22px 90px rgba(97, 132, 255, 0.14);
+        backdrop-filter: blur(10px);
+        padding: 28px;
+      }
+
+      .section-title {
+        margin-top: 8px;
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        letter-spacing: 0.04em;
+      }
+
+      .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 22px;
+      }
+
+      .meta-item {
+        padding: 18px 20px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .meta-item strong {
+        font-size: 2rem;
+      }
+
+      .deadline,
+      .note-box {
+        margin-top: 18px;
+        padding: 18px 20px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .copy {
+        margin-top: 22px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .hash {
+        margin-top: 18px;
+        color: var(--accent);
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 2rem;
+        letter-spacing: 0.05em;
+      }
+
+      .form {
+        display: grid;
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      label {
+        display: grid;
+        gap: 8px;
+        font-weight: 700;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.92);
+        color: #23152c;
+        font: inherit;
+      }
+
+      button {
+        min-height: 58px;
+        border: 0;
+        border-radius: 18px;
+        background: linear-gradient(90deg, #6e8cff, #8b63ff);
+        color: white;
+        font-size: 1.15rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .muted {
+        margin-top: 16px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .includes {
+        display: grid;
+        gap: 12px;
+        margin: 22px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .includes li::before {
+        content: '✓';
+        margin-right: 12px;
+        color: #8ea4ff;
+        font-weight: 800;
+      }
+
+      .benefits {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 24px;
+      }
+
+      .benefit,
+      .footer {
+        padding: 22px 24px;
+        border-radius: 24px;
+        border: 1px solid var(--line);
+        background: rgba(14, 11, 35, 0.88);
+        backdrop-filter: blur(10px);
+      }
+
+      .benefit h3 {
+        margin-bottom: 8px;
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 2rem;
+        letter-spacing: 0.04em;
+        color: #98b0ff;
+      }
+
+      .benefit p,
+      .footer {
+        color: var(--muted);
+      }
+
+      .footer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        align-items: center;
+        justify-content: center;
+        margin-top: 24px;
+        text-align: center;
+      }
+
+      .footer span {
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .footer-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .footer-link svg {
+        width: 22px;
+        height: 22px;
+        color: #98b0ff;
+        flex: 0 0 auto;
+      }
+
+      @media (max-width: 920px) {
+        .grid,
+        .benefits {
+          grid-template-columns: 1fr;
+        }
+
+        .site-header {
+          padding: 18px 20px;
+        }
+
+        .site-header__inner {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .site-nav {
+          gap: 12px;
+          justify-content: flex-start;
+        }
+
+        .hero {
+          min-height: 100svh;
+        }
+
+        .hero-content {
+          min-height: 100svh;
+          padding: 0 20px;
+        }
+
+        .hero-copy {
+          width: 100%;
+          max-width: 320px;
+        }
+
+        .scroll-down {
+          bottom: 22px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="event-stage">
+        <header class="site-header" id="top">
+          <div class="site-header__inner">
+            <a class="site-logo" href="#top">Girl Power</a>
+            <nav class="site-nav" aria-label="Navegación principal">
+              <a href="#top">Inicio</a>
+              <a href="#evento">Evento</a>
+              <a href="#incluye">Qué incluye</a>
+              <a href="#evento">Profesores</a>
+              <a href="#contacto">Contacto</a>
+              <a class="site-nav__cta" href="#inscripcion">Inscríbete</a>
+            </nav>
+          </div>
+        </header>
+
+        <section class="hero">
+          <img class="hero-bg" src="../h1.png" alt="" />
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <div class="hero-copy">
+              <p class="kicker">Fuerza · Energía · Conexión</p>
+              <h1>
+                <span>Girl</span>
+                <span>Power</span>
+              </h1>
+              <p class="script">Juntas somos imparables</p>
+              <p class="hero-actions">
+                Entrena frente al mar y sal del atardecer con otra energía.
+              </p>
+              <a class="hero-cta" href="#inscripcion">Inscribirme</a>
+            </div>
+          </div>
+          <a class="scroll-down" href="#evento">
+            <span class="mouse-icon" aria-hidden="true"></span>
+            <span>Scroll Down</span>
+          </a>
+        </section>
+
+        <div class="event-stage__content">
+          <section class="grid" id="evento">
+            <article class="card">
+              <p class="section-kicker">Información del evento</p>
+              <h2 class="section-title">Todo listo para tu plaza</h2>
+
+              <div class="meta-grid">
+                <article class="meta-item">
+                  <span>Fecha</span>
+                  <strong>20 de junio</strong>
+                </article>
+                <article class="meta-item">
+                  <span>Hora</span>
+                  <strong>19:00</strong>
+                </article>
+                <article class="meta-item">
+                  <span>Lugar</span>
+                  <strong>Playa de Fuengirola</strong>
+                </article>
+                <article class="meta-item">
+                  <span>Precio</span>
+                  <strong>30 €</strong>
+                </article>
+              </div>
+
+              <div class="deadline">
+                <span>Inscripción hasta</span>
+                <strong>10 de junio</strong>
+              </div>
+
+              <p class="copy">
+                Un encuentro al aire libre para entrenar con ritmo, compartir
+                energía y vivir una tarde distinta junto al mar. La idea no es
+                solo moverse: es salir con fuerza, conexión y ganas de repetir.
+              </p>
+
+              <div class="hash">#GirlPower</div>
+            </article>
+
+            <article class="card" id="inscripcion">
+              <p class="section-kicker">Inscríbete ahora</p>
+              <h2 class="section-title">¡No te quedes sin tu plaza!</h2>
+              <form class="form">
+                <label>
+                  Nombre completo *
+                  <input type="text" placeholder="Escribe tu nombre completo" />
+                </label>
+                <label>
+                  Email (opcional)
+                  <input type="email" placeholder="tu@email.com" />
+                </label>
+                <label>
+                  Teléfono *
+                  <input type="tel" placeholder="Tu número de teléfono" />
+                </label>
+                <label>
+                  Comentarios (opcional)
+                  <textarea
+                    rows="4"
+                    placeholder="Cuéntanos algo (opcional)"
+                  ></textarea>
+                </label>
+                <button type="button">Inscribirme</button>
+              </form>
+              <p class="muted">
+                Tus datos están protegidos. Solo se usarán para la gestión del
+                evento.
+              </p>
+            </article>
+          </section>
+
+          <section class="card" id="incluye">
+            <p class="section-kicker">¿Qué incluye?</p>
+            <h2 class="section-title">
+              Una experiencia pensada para disfrutar
+            </h2>
+            <ul class="includes">
+              <li>Entrenamiento guiado por Saulo y Tamires</li>
+              <li>Sesión enfocada en energía, fuerza y conexión</li>
+              <li>Ambiente motivador y música para venirte arriba</li>
+              <li>Dinámica grupal para compartir y disfrutar</li>
+            </ul>
+          </section>
+
+          <section class="benefits">
+            <article class="benefit">
+              <h3>Fuerza</h3>
+              <p>Una sesión pensada para salir más arriba de como llegas.</p>
+            </article>
+            <article class="benefit">
+              <h3>Energía</h3>
+              <p>Atardecer, movimiento y ritmo para activar cuerpo y mente.</p>
+            </article>
+            <article class="benefit">
+              <h3>Conexión</h3>
+              <p>
+                Entrenar con otras mujeres multiplica la motivación y el
+                ambiente.
+              </p>
+            </article>
+          </section>
+
+          <footer class="footer" id="contacto">
+            <span>¿Dudas? Contáctanos</span>
+            <a
+              class="footer-link"
+              href="#"
+              aria-label="Instagram de Saulo Fitness"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.9"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="3.5" y="3.5" width="17" height="17" rx="4.5"></rect>
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M17.2 6.8h.01"></path>
+              </svg>
+              <strong>@saulofitness</strong>
+            </a>
+            <a class="footer-link" href="#" aria-label="Instagram de Tamires">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.9"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="3.5" y="3.5" width="17" height="17" rx="4.5"></rect>
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M17.2 6.8h.01"></path>
+              </svg>
+              <strong>@tamirescorreaa</strong>
+            </a>
+            <strong>695 578 960</strong>
+          </footer>
+        </div>
+      </section>
+    </main>
+    <script>
+      const hero = document.querySelector('.hero');
+
+      function updateHeroFade() {
+        const scrollY = Math.max(window.scrollY, 0);
+        const heroHeight = hero.offsetHeight || window.innerHeight;
+        const progress = Math.min(scrollY / (heroHeight * 0.9), 1);
+        const opacity = Math.max(1 - progress, 0);
+
+        hero.style.setProperty(
+          '--hero-stick',
+          `${Math.min(scrollY, heroHeight)}px`,
+        );
+        hero.style.setProperty('--hero-fade', opacity.toFixed(3));
+      }
+
+      updateHeroFade();
+      window.addEventListener('scroll', updateHeroFade, { passive: true });
+      window.addEventListener('resize', updateHeroFade);
+    </script>
+  </body>
+</html>

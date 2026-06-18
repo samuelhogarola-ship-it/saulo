@@ -111,6 +111,7 @@ button {
   color: #737784;
   font-size: 0.78rem;
   font-weight: 700;
+  text-decoration: none;
   transition:
     transform 180ms ease,
     border-color 180ms ease,
@@ -256,6 +257,25 @@ button {
   box-shadow: var(--shadow-soft);
 }
 
+.trainer-messages-note {
+  margin-bottom: 14px;
+  padding: 18px 20px;
+  border: 1px solid rgba(10, 10, 10, 0.06);
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff, #fbfbfc);
+  box-shadow: var(--shadow-soft);
+}
+
+.trainer-messages-note p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.exercise-library-panel {
+  display: grid;
+  align-content: start;
+}
+
 .search-shell {
   display: grid;
   grid-template-columns: 26px minmax(0, 1fr);
@@ -273,9 +293,15 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.28rem;
+  width: 22px;
+  height: 22px;
   line-height: 1;
   color: #6b7280;
+}
+
+.search-shell span svg {
+  width: 20px;
+  height: 20px;
 }
 
 .search-shell input {
@@ -295,8 +321,69 @@ button {
   gap: 12px;
 }
 
+.trainer-context-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 14px 0;
+  padding: 12px;
+  border: 1px solid rgba(10, 10, 10, 0.06);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 16px 34px rgba(10, 10, 10, 0.04);
+}
+
+.trainer-context-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid rgba(10, 10, 10, 0.07);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.trainer-context-chip.is-active {
+  border-color: #0a0a0a;
+  background: #0a0a0a;
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(10, 10, 10, 0.14);
+}
+
 .filters-row {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.exercise-library-panel .section-header,
+.exercise-library-panel .search-shell,
+.exercise-library-panel .filters-row {
+  position: sticky;
+  z-index: 4;
+}
+
+.exercise-library-panel .section-header {
+  top: 0;
+  padding-top: 2px;
+  background: linear-gradient(180deg, #fff 72%, rgba(255, 255, 255, 0));
+}
+
+.exercise-library-panel .search-shell {
+  top: 58px;
+}
+
+.exercise-library-panel .filters-row {
+  top: 114px;
+  padding-bottom: 8px;
+  background: linear-gradient(180deg, #fff 76%, rgba(255, 255, 255, 0));
 }
 
 .filters-row select,
@@ -594,6 +681,31 @@ button {
   letter-spacing: -0.03em;
 }
 
+.builder-target-summary {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(55, 111, 184, 0.12);
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(55, 111, 184, 0.08),
+    rgba(255, 255, 255, 0.94)
+  );
+}
+
+.builder-target-summary strong {
+  display: block;
+  font-size: 0.86rem;
+  letter-spacing: -0.02em;
+}
+
+.builder-target-summary p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
 .builder-days {
   display: grid;
   gap: 10px;
@@ -714,7 +826,6 @@ button {
 
 .day-builder-exercise-copy p,
 .client-card p,
-.routine-template-card p,
 .detail-card p,
 .message-client-line {
   margin: 4px 0 0;
@@ -858,12 +969,57 @@ button {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   margin-top: 16px;
+  position: sticky;
+  bottom: 0;
+  padding-top: 10px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), #fff 40%);
 }
 
 .clients-layout {
   display: grid;
   grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
   gap: 18px;
+}
+
+.routine-note {
+  margin-bottom: 14px;
+}
+
+.routine-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(180px, 0.8fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.routine-list-shell {
+  border: 1px solid rgba(10, 10, 10, 0.06);
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 18px 36px rgba(10, 10, 10, 0.04);
+  overflow: hidden;
+}
+
+.routine-list-head,
+.routine-row {
+  display: grid;
+  grid-template-columns: minmax(210px, 1.25fr) minmax(
+      220px,
+      1.1fr
+    ) 100px 120px minmax(150px, 0.9fr) minmax(240px, 1fr);
+  gap: 14px;
+  align-items: center;
+}
+
+.routine-list-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(10, 10, 10, 0.06);
+  background: #f7f8fb;
+  color: #666a74;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .clients-list {
@@ -958,30 +1114,69 @@ button {
 
 .routine-template-grid {
   display: grid;
-  gap: 14px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.routine-template-card {
-  display: grid;
-  gap: 12px;
-  padding: 18px;
-  border-radius: 20px;
-  border: 1px solid rgba(10, 10, 10, 0.06);
-  background: #fff;
-  box-shadow: 0 14px 26px rgba(10, 10, 10, 0.05);
+.routine-row {
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(10, 10, 10, 0.06);
+  background: #ffffff;
 }
 
-.routine-template-meta,
-.routine-template-client-list,
-.routine-template-actions {
+.routine-row:last-child {
+  border-bottom: 0;
+}
+
+.routine-row strong,
+.routine-row-main strong,
+.routine-row-clients strong,
+.routine-row-expiry strong {
+  display: block;
+  font-size: 0.96rem;
+  letter-spacing: -0.03em;
+}
+
+.routine-row p,
+.routine-row-date,
+.routine-row-main p,
+.routine-row-clients p,
+.routine-row-expiry p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.routine-row-date {
+  margin: 0;
+}
+
+.routine-row-type {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.routine-row-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
+  justify-content: flex-start;
 }
 
-.routine-template-actions {
-  margin-top: 4px;
+.routine-row-actions .template-action,
+.routine-row-actions .primary-button {
+  min-height: 38px;
+  padding-inline: 12px;
+}
+
+.routine-expiry-alert {
+  color: #b25a00;
+}
+
+.routine-empty-state {
+  border: 0;
+  border-radius: 0;
+  min-height: 160px;
+  background: #ffffff;
 }
 
 .trainer-compose-form {
@@ -989,35 +1184,55 @@ button {
   gap: 12px;
 }
 
-.trainer-message-columns {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 16px;
+.trainer-message-panels {
+  display: block;
 }
 
 .trainer-message-list {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 12px;
+  width: 100%;
 }
 
 .trainer-message-item {
-  padding: 14px;
-  border-radius: 16px;
+  width: min(100%, 920px);
+  max-width: 100%;
+  padding: 18px 20px;
+  border-radius: 22px;
   border: 1px solid rgba(10, 10, 10, 0.06);
-  background: #fbfbfd;
+  background: rgba(255, 255, 255, 0.99);
+  box-shadow: 0 18px 40px rgba(10, 10, 10, 0.04);
 }
 
 .trainer-message-item-top {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.trainer-message-item-top time {
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
 }
 
 .trainer-message-item strong {
   display: block;
   margin-bottom: 6px;
+  font-size: 1rem;
+  letter-spacing: -0.03em;
+}
+
+.trainer-message-item p {
+  margin: 0;
 }
 
 .trainer-empty-state {
@@ -1034,17 +1249,26 @@ button {
 
 @media (max-width: 1180px) {
   .builder-layout,
-  .clients-layout,
-  .trainer-message-columns {
+  .clients-layout {
     grid-template-columns: 1fr;
+  }
+
+  .routine-filters,
+  .routine-list-head,
+  .routine-row {
+    grid-template-columns: 1fr;
+  }
+
+  .routine-list-head {
+    display: none;
+  }
+
+  .routine-row {
+    gap: 10px;
   }
 
   .exercise-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .routine-template-grid {
-    grid-template-columns: 1fr;
   }
 
   .client-photos-grid {
@@ -1102,6 +1326,13 @@ button {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .exercise-library-panel .section-header,
+  .exercise-library-panel .search-shell,
+  .exercise-library-panel .filters-row {
+    position: static;
+    background: transparent;
+  }
+
   .mobile-builder-toggle,
   .mobile-builder-backdrop,
   .mobile-builder-sheet-head {
@@ -1131,8 +1362,13 @@ button {
     position: fixed;
     inset: 0;
     z-index: 25;
-    background: rgba(16, 18, 24, 0.08);
-    backdrop-filter: blur(1.5px);
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(16, 18, 24, 0) 0%,
+      rgba(16, 18, 24, 0) 56%,
+      rgba(16, 18, 24, 0.06) 100%
+    );
   }
 
   .mobile-builder-toggle {

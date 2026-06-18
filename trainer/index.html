@@ -8,6 +8,21 @@
       name="description"
       content="Panel del entrenador conectado a la experiencia del alumno."
     />
+    <meta name="theme-color" content="#0b0b0f" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Saulo Coach" />
+    <link
+      rel="manifest"
+      href="/trainer/manifest.webmanifest?v=saulo-trainer-v1"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="/trainer/icons/coach-icon-192.png?v=saulo-trainer-v1"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -130,6 +145,28 @@
             </span>
             Ajustes
           </button>
+          <a class="trainer-nav-link" href="/admin/eventos">
+            <span class="trainer-nav-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M6 4.75h12A1.25 1.25 0 0 1 19.25 6v12A1.25 1.25 0 0 1 18 19.25H6A1.25 1.25 0 0 1 4.75 18V6A1.25 1.25 0 0 1 6 4.75Z"
+                ></path>
+                <path d="M8 3.75v3"></path>
+                <path d="M16 3.75v3"></path>
+                <path d="M4.75 9.25h14.5"></path>
+                <path d="M8.25 13h3"></path>
+                <path d="M8.25 16h6.5"></path>
+              </svg>
+            </span>
+            Eventos
+          </a>
         </nav>
 
         <div class="sidebar-note">
@@ -149,7 +186,7 @@
           </div>
           <div class="trainer-topbar-meta">
             <span class="trainer-pill" id="trainer-active-client-pill">
-              Lucía Ortega
+              Saulo Coach
             </span>
           </div>
         </header>
@@ -259,7 +296,19 @@
               </div>
 
               <label class="search-shell">
-                <span>⌕</span>
+                <span aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.1"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="11" cy="11" r="6"></circle>
+                    <path d="m16 16 4 4"></path>
+                  </svg>
+                </span>
                 <input
                   id="exercise-search-input"
                   type="search"
@@ -320,6 +369,13 @@
                 </label>
               </div>
 
+              <div class="builder-target-summary" id="builder-target-summary">
+                <strong id="builder-target-title">Día activo: Lunes</strong>
+                <p id="builder-target-copy">
+                  El botón + y el drag & drop añaden al día desplegado.
+                </p>
+              </div>
+
               <div class="builder-days" id="routine-builder-days"></div>
 
               <div class="builder-actions">
@@ -342,10 +398,53 @@
           <div class="section-header">
             <div>
               <p class="brand-kicker">Rutinas</p>
-              <h3 id="routines-title">Plantillas guardadas</h3>
+              <h3 id="routines-title">Base de rutinas</h3>
             </div>
           </div>
-          <div class="routine-template-grid" id="routine-template-grid"></div>
+
+          <div class="trainer-messages-note routine-note">
+            <p>
+              Flujo actual centrado en trabajo 1:1. Usa rutinas prototipo como
+              base, crea una copia de trabajo y luego asignala a un alumno
+              concreto. La gestión masiva queda como mejora futura.
+            </p>
+          </div>
+
+          <div class="routine-filters">
+            <label class="stack-field">
+              <span>Buscar</span>
+              <input
+                id="routine-search-input"
+                type="search"
+                placeholder="Alumno, objetivo, grupo muscular o nombre de rutina"
+              />
+            </label>
+            <label class="stack-field">
+              <span>Cliente</span>
+              <select id="routine-filter-client"></select>
+            </label>
+            <label class="stack-field">
+              <span>Tipo</span>
+              <select id="routine-filter-type">
+                <option value="all">Todas</option>
+                <option value="model">Rutinas modelo</option>
+                <option value="assigned">Asignadas</option>
+                <option value="expiring">A punto de caducar</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="routine-list-shell">
+            <div class="routine-list-head" aria-hidden="true">
+              <span>Rutina</span>
+              <span>Cliente / objetivo</span>
+              <span>Tipo</span>
+              <span>Última edición</span>
+              <span>Caducidad</span>
+              <span>Acciones</span>
+            </div>
+            <div class="routine-template-grid" id="routine-template-grid"></div>
+          </div>
         </section>
 
         <section
@@ -360,6 +459,13 @@
             </div>
           </div>
 
+          <div class="trainer-messages-note">
+            <p>
+              Misma lógica que el alumno: recibidos, enviados, recordatorios y
+              envío manual. Aquí además puedes filtrar todo por cliente.
+            </p>
+          </div>
+
           <div class="messages-toolbar">
             <label class="stack-field">
               <span>Filtrar por cliente</span>
@@ -367,7 +473,17 @@
             </label>
           </div>
 
-          <article class="trainer-compose-panel">
+          <nav
+            class="trainer-context-nav"
+            id="trainer-message-context-nav"
+            aria-label="Opciones de mensajería del entrenador"
+          ></nav>
+
+          <article
+            class="trainer-compose-panel"
+            id="trainer-messages-compose-panel"
+            data-trainer-message-panel="trainer-messages-compose"
+          >
             <div class="section-header section-header-compact">
               <h4>Enviar mensaje</h4>
             </div>
@@ -394,8 +510,12 @@
             </form>
           </article>
 
-          <div class="trainer-message-columns">
-            <article class="message-column">
+          <div class="trainer-message-panels">
+            <article
+              class="message-column"
+              id="trainer-messages-inbox-panel"
+              data-trainer-message-panel="trainer-messages-inbox"
+            >
               <div class="section-header section-header-compact">
                 <h4>Recibidos</h4>
               </div>
@@ -404,7 +524,11 @@
                 id="trainer-messages-inbox"
               ></div>
             </article>
-            <article class="message-column">
+            <article
+              class="message-column"
+              id="trainer-messages-sent-panel"
+              data-trainer-message-panel="trainer-messages-sent"
+            >
               <div class="section-header section-header-compact">
                 <h4>Enviados</h4>
               </div>
@@ -413,7 +537,11 @@
                 id="trainer-messages-sent"
               ></div>
             </article>
-            <article class="message-column">
+            <article
+              class="message-column"
+              id="trainer-messages-reminders-panel"
+              data-trainer-message-panel="trainer-messages-reminders"
+            >
               <div class="section-header section-header-compact">
                 <h4>Recordatorios</h4>
               </div>

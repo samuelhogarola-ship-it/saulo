@@ -35,7 +35,11 @@ const state = {
   muscleFilter: 'all',
   equipmentFilter: 'all',
   difficultyFilter: 'all',
+  routineSearch: '',
+  routineFilterClientId: 'all',
+  routineFilterType: 'all',
   messageFilterClientId: 'all',
+  messageContextKey: 'trainer-messages-inbox',
   isMobileBuilderOpen: false,
   draggingExerciseId: null,
   activeExerciseMenuId: null,
@@ -86,12 +90,20 @@ const exerciseGrid = document.querySelector('#exercise-grid');
 const routineBuilderPanel = document.querySelector('#routine-builder-panel');
 const builderRoutineName = document.querySelector('#builder-routine-name');
 const builderClientSelect = document.querySelector('#builder-client-select');
+const builderTargetTitle = document.querySelector('#builder-target-title');
+const builderTargetCopy = document.querySelector('#builder-target-copy');
 const routineBuilderDays = document.querySelector('#routine-builder-days');
 const newRoutineButton = document.querySelector('#new-routine-button');
 const saveRoutineButton = document.querySelector('#save-routine-button');
 const sendRoutineButton = document.querySelector('#send-routine-button');
 const routineTemplateGrid = document.querySelector('#routine-template-grid');
+const routineSearchInput = document.querySelector('#routine-search-input');
+const routineFilterClient = document.querySelector('#routine-filter-client');
+const routineFilterType = document.querySelector('#routine-filter-type');
 const trainerMessageFilter = document.querySelector('#trainer-message-filter');
+const trainerMessageContextNav = document.querySelector(
+  '#trainer-message-context-nav',
+);
 const trainerMessageForm = document.querySelector('#trainer-message-form');
 const trainerMessageClient = document.querySelector('#trainer-message-client');
 const trainerMessageSubject = document.querySelector(
@@ -103,6 +115,9 @@ const trainerMessagesSent = document.querySelector('#trainer-messages-sent');
 const trainerMessagesReminders = document.querySelector(
   '#trainer-messages-reminders',
 );
+const trainerMessagePanels = [
+  ...document.querySelectorAll('[data-trainer-message-panel]'),
+];
 const trainerNameValue = document.querySelector('#trainer-name-value');
 const trainerEmailValue = document.querySelector('#trainer-email-value');
 const resetDemoButton = document.querySelector('#reset-demo-button');
@@ -139,7 +154,27 @@ const thumbnailThemeByExerciseId = {
   'ex-face-pull': 'romanian',
 };
 
+const trainerMessageContextOptions = [
+  {
+    key: 'trainer-messages-inbox',
+    label: 'Recibidos',
+  },
+  {
+    key: 'trainer-messages-sent',
+    label: 'Enviados',
+  },
+  {
+    key: 'trainer-messages-reminders',
+    label: 'Recordatorios',
+  },
+  {
+    key: 'trainer-messages-compose',
+    label: 'Enviar mensaje',
+  },
+];
+
 hydrateStateFromUrl();
+registerTrainerServiceWorker();
 subscribe(() => {
   renderApp();
 });
@@ -406,6 +441,12 @@ clientsList?.addEventListener('click', (event) => {
 });
 
 routineTemplateGrid?.addEventListener('click', (event) => {
+  const cloneButton = event.target.closest('[data-clone-template]');
+  if (cloneButton) {
+    cloneTemplateIntoBuilder(cloneButton.dataset.cloneTemplate);
+    return;
+  }
+
   const editButton = event.target.closest('[data-edit-template]');
   if (editButton) {
     openTemplateInBuilder(editButton.dataset.editTemplate);
@@ -414,13 +455,28 @@ routineTemplateGrid?.addEventListener('click', (event) => {
 
   const sendButton = event.target.closest('[data-send-template]');
   if (sendButton) {
-    openTemplateInBuilder(sendButton.dataset.sendTemplate, true);
+    cloneTemplateIntoBuilder(sendButton.dataset.sendTemplate, true);
   }
+});
+
+routineSearchInput?.addEventListener('input', (event) => {
+  state.routineSearch = event.target.value;
+  renderRoutineTemplates(getState());
+});
+
+routineFilterClient?.addEventListener('change', (event) => {
+  state.routineFilterClientId = event.target.value;
+  renderRoutineTemplates(getState());
+});
+
+routineFilterType?.addEventListener('change', (event) => {
+  state.routineFilterType = event.target.value;
+  renderRoutineTemplates(getState());
 });
 
 trainerMessageFilter?.addEventListener('change', (event) => {
   state.messageFilterClientId = event.target.value;
-  renderMessages(getState());
+  renderApp();
 });
 
 trainerMessageForm?.addEventListener('submit', (event) => {
@@ -443,6 +499,9 @@ trainerMessageForm?.addEventListener('submit', (event) => {
 
   trainerMessageForm.reset();
   trainerMessageClient.value = clientId;
+  state.section = 'messages';
+  state.messageFilterClientId = clientId;
+  state.messageContextKey = 'trainer-messages-sent';
   renderApp();
 });
 
@@ -514,7 +573,7 @@ function renderApp() {
 
   topbarTitle.textContent =
     sectionTitleMap[state.section] || 'Panel entrenador';
-  activeClientPill.textContent = activeClient.name;
+  activeClientPill.textContent = 'Saulo Coach';
   trainerNameValue.textContent = sharedState.trainer.name;
   trainerEmailValue.textContent = sharedState.trainer.email;
 
@@ -527,6 +586,7 @@ function renderApp() {
   renderBuilder(sharedState);
   renderRoutineTemplates(sharedState);
   renderMessages(sharedState);
+  renderBuilderTargetSummary(sharedState);
   renderMobileBuilderSummary(sharedState);
   syncMobileBuilderState();
   syncUrlState();
@@ -568,6 +628,14 @@ function renderClientSelects(sharedState) {
     ${optionsMarkup}
   `;
   trainerMessageFilter.value = state.messageFilterClientId;
+
+  if (routineFilterClient) {
+    routineFilterClient.innerHTML = `
+      <option value="all">Todos</option>
+      ${optionsMarkup}
+    `;
+    routineFilterClient.value = state.routineFilterClientId;
+  }
 }
 
 function renderClients(sharedState) {
@@ -890,45 +958,77 @@ function renderBuilder(sharedState) {
     `;
   }).join('');
 
+  renderBuilderTargetSummary(sharedState);
   renderMobileBuilderSummary(sharedState);
 }
 
 function renderRoutineTemplates(sharedState) {
-  routineTemplateGrid.innerHTML = sharedState.routineTemplates
-    .map((template) => {
-      const totalExercises = DAY_ORDER.reduce(
-        (count, dayKey) =>
-          count + (template.days?.[dayKey]?.exercises?.length || 0),
-        0,
-      );
-      const clientChips = (template.assignedClientIds || [])
-        .map((clientId) => getClientById(sharedState, clientId)?.name)
-        .filter(Boolean)
-        .map(
-          (name) => `
-            <span class="routine-template-client-chip">${escapeHtml(name)}</span>
-          `,
-        )
-        .join('');
+  if (routineSearchInput) {
+    routineSearchInput.value = state.routineSearch;
+  }
 
+  if (routineFilterType) {
+    routineFilterType.value = state.routineFilterType;
+  }
+
+  const searchValue = state.routineSearch.trim().toLowerCase();
+  const templates = sharedState.routineTemplates
+    .map((template) => buildRoutineTemplateViewModel(sharedState, template))
+    .filter((item) => {
+      const matchesClient =
+        state.routineFilterClientId === 'all' ||
+        item.clientIds.includes(state.routineFilterClientId);
+
+      const matchesType =
+        state.routineFilterType === 'all' ||
+        (state.routineFilterType === 'model' && item.isModel) ||
+        (state.routineFilterType === 'assigned' && !item.isModel) ||
+        (state.routineFilterType === 'expiring' && item.isExpiringSoon);
+
+      const matchesSearch =
+        !searchValue || item.searchableText.includes(searchValue);
+
+      return matchesClient && matchesType && matchesSearch;
+    });
+
+  if (!templates.length) {
+    routineTemplateGrid.innerHTML =
+      '<div class="trainer-empty-state routine-empty-state">No hay rutinas que coincidan con este filtro.</div>';
+    return;
+  }
+
+  routineTemplateGrid.innerHTML = templates
+    .map((template) => {
       return `
-        <article class="routine-template-card">
-          <div>
-            <h4>${escapeHtml(template.name)}</h4>
-            <p>Última edición: ${escapeHtml(
-              formatMessageDate(template.updatedAt),
-            )}</p>
+        <article class="routine-row">
+          <div class="routine-row-main">
+            <strong>${escapeHtml(template.name)}</strong>
+            <p>${escapeHtml(template.totalExercisesLabel)}</p>
           </div>
-          <div class="routine-template-meta">
-            <span class="meta-chip">${escapeHtml(
-              template.status === 'draft' ? 'Borrador' : 'Activa',
-            )}</span>
-            <span class="meta-chip">${totalExercises} ejercicios</span>
+          <div class="routine-row-clients">
+            <strong>${escapeHtml(template.clientHeadline)}</strong>
+            <p>${escapeHtml(template.clientSubline)}</p>
           </div>
-          <div class="routine-template-client-list">
-            ${clientChips || '<span class="routine-template-client-chip">Sin clientes asignados</span>'}
+          <div class="routine-row-type">
+            <span class="meta-chip">${escapeHtml(template.typeLabel)}</span>
           </div>
-          <div class="routine-template-actions">
+          <div class="routine-row-date">
+            ${escapeHtml(formatMessageDate(template.updatedAt))}
+          </div>
+          <div class="routine-row-expiry">
+            <strong class="${template.isExpiringSoon ? 'routine-expiry-alert' : ''}">
+              ${escapeHtml(template.expiryHeadline)}
+            </strong>
+            <p>${escapeHtml(template.expirySubline)}</p>
+          </div>
+          <div class="routine-row-actions">
+            <button
+              class="template-action"
+              type="button"
+              data-clone-template="${escapeHtml(template.id)}"
+            >
+              Trabajar copia
+            </button>
             <button
               class="template-action"
               type="button"
@@ -941,7 +1041,7 @@ function renderRoutineTemplates(sharedState) {
               type="button"
               data-send-template="${escapeHtml(template.id)}"
             >
-              Enviar a cliente
+              Asignar a alumno
             </button>
           </div>
         </article>
@@ -951,16 +1051,45 @@ function renderRoutineTemplates(sharedState) {
 }
 
 function renderMessages(sharedState) {
+  renderTrainerMessageContextNav();
+
   const buckets = getTrainerMessageBuckets(
     sharedState,
     state.messageFilterClientId,
   );
 
-  trainerMessagesInbox.innerHTML = renderTrainerMessageBucket(buckets.inbox);
-  trainerMessagesSent.innerHTML = renderTrainerMessageBucket(buckets.sent);
-  trainerMessagesReminders.innerHTML = renderTrainerMessageBucket(
-    buckets.reminders,
-  );
+  const panelMap = {
+    'trainer-messages-inbox': {
+      container: trainerMessagesInbox,
+      items: buckets.inbox,
+    },
+    'trainer-messages-sent': {
+      container: trainerMessagesSent,
+      items: buckets.sent,
+    },
+    'trainer-messages-reminders': {
+      container: trainerMessagesReminders,
+      items: buckets.reminders,
+    },
+    'trainer-messages-compose': {
+      container: null,
+      items: [],
+    },
+  };
+
+  const activePanel =
+    panelMap[state.messageContextKey] || panelMap['trainer-messages-inbox'];
+
+  trainerMessagePanels.forEach((panel) => {
+    panel.hidden =
+      panel.dataset.trainerMessagePanel !== state.messageContextKey;
+  });
+
+  if (activePanel.container) {
+    activePanel.container.innerHTML = renderTrainerMessageBucket(
+      activePanel.items,
+    );
+  }
 }
 
 function renderTrainerMessageBucket(items) {
@@ -982,6 +1111,108 @@ function renderTrainerMessageBucket(items) {
       `,
     )
     .join('');
+}
+
+function renderTrainerMessageContextNav() {
+  if (!trainerMessageContextNav) {
+    return;
+  }
+
+  trainerMessageContextNav.innerHTML = trainerMessageContextOptions
+    .map(
+      (option) => `
+        <button
+          class="trainer-context-chip ${option.key === state.messageContextKey ? 'is-active' : ''}"
+          type="button"
+          data-trainer-message-context="${escapeHtml(option.key)}"
+        >
+          ${escapeHtml(option.label)}
+        </button>
+      `,
+    )
+    .join('');
+
+  [
+    ...trainerMessageContextNav.querySelectorAll(
+      '[data-trainer-message-context]',
+    ),
+  ].forEach((button) => {
+    button.addEventListener('click', () => {
+      const nextKey = button.dataset.trainerMessageContext;
+      if (
+        !trainerMessageContextOptions.find((option) => option.key === nextKey)
+      ) {
+        return;
+      }
+
+      state.messageContextKey = nextKey;
+      renderApp();
+    });
+  });
+}
+
+function buildRoutineTemplateViewModel(sharedState, template) {
+  const clientIds = template.assignedClientIds || [];
+  const clients = clientIds
+    .map((clientId) => getClientById(sharedState, clientId))
+    .filter(Boolean);
+  const totalExercises = DAY_ORDER.reduce(
+    (count, dayKey) =>
+      count + (template.days?.[dayKey]?.exercises?.length || 0),
+    0,
+  );
+  const muscleGroups = [
+    ...new Set(
+      DAY_ORDER.flatMap((dayKey) =>
+        (template.days?.[dayKey]?.exercises || []).map(
+          (exercise) => exercise.muscleGroup,
+        ),
+      ),
+    ),
+  ];
+  const planDates = clients
+    .map((client) => client.planEnd || client.subscriptionEnd)
+    .filter(Boolean)
+    .sort((left, right) => new Date(left) - new Date(right));
+  const nextExpiry = planDates[0] || null;
+  const daysUntilExpiry = nextExpiry
+    ? Math.ceil((new Date(nextExpiry) - new Date()) / 86400000)
+    : null;
+  const isModel = !clientIds.length;
+  const isExpiringSoon = nextExpiry ? daysUntilExpiry <= 10 : false;
+
+  return {
+    ...template,
+    clientIds,
+    isModel,
+    isExpiringSoon,
+    typeLabel: isModel
+      ? 'Modelo'
+      : template.status === 'draft'
+        ? 'Borrador'
+        : 'Asignada',
+    totalExercisesLabel: `${totalExercises} ejercicios · ${muscleGroups.slice(0, 2).join(' · ') || 'Base general'}`,
+    clientHeadline: isModel
+      ? 'Rutina prototipo'
+      : clients.map((client) => client.name).join(', '),
+    clientSubline: isModel
+      ? 'Lista para copiar y personalizar'
+      : clients.map((client) => client.goal).join(' · '),
+    expiryHeadline: nextExpiry ? formatDateIso(nextExpiry) : 'Sin caducidad',
+    expirySubline: nextExpiry
+      ? isExpiringSoon
+        ? 'A punto de caducar'
+        : 'Plan activo'
+      : 'Prototipo reutilizable',
+    searchableText: [
+      template.name,
+      ...clients.map((client) => client.name),
+      ...clients.map((client) => client.goal),
+      ...muscleGroups,
+    ]
+      .join(' ')
+      .toLowerCase(),
+  };
 }
 
 function addExerciseToBuilder(exercise, targetDayKey = state.builderTargetDay) {
@@ -1049,6 +1280,23 @@ function renderMobileBuilderSummary(sharedState) {
   mobileBuilderToggleTitle.textContent = state.builderName || 'Crear rutina';
   mobileBuilderToggleMeta.textContent = `${clientName} · ${totalExercises} ejercicios`;
   mobileBuilderSheetTitle.textContent = state.builderName || 'Crear rutina';
+}
+
+function renderBuilderTargetSummary(sharedState) {
+  if (!builderTargetTitle || !builderTargetCopy) {
+    return;
+  }
+
+  const activeDay = state.builderDays[state.builderTargetDay];
+  const exerciseCount = activeDay?.exercises?.length || 0;
+  const clientName =
+    getClientById(sharedState, state.builderClientId)?.name || 'Sin cliente';
+
+  builderTargetTitle.textContent = `Día activo: ${getDayLabel(state.builderTargetDay)}`;
+  builderTargetCopy.textContent =
+    exerciseCount > 0
+      ? `${clientName} · ${exerciseCount} ejercicios en ${getDayLabel(state.builderTargetDay)}. El + y el drag & drop se envían aquí.`
+      : `${clientName} · todavía no hay ejercicios en ${getDayLabel(state.builderTargetDay)}. Usa + o arrastra un vídeo.`;
 }
 
 function syncMobileBuilderState() {
@@ -1124,6 +1372,31 @@ function openTemplateInBuilder(templateId, preferSendMode) {
   renderApp();
 }
 
+function cloneTemplateIntoBuilder(templateId, preferStudentFlow = false) {
+  const sharedState = getState();
+  const template = getRoutineTemplateById(sharedState, templateId);
+  if (!template) {
+    return;
+  }
+
+  const preferredClientId =
+    template.assignedClientIds?.[0] ||
+    resolveClientId(sharedState, state.activeClientId);
+
+  state.builderTemplateId = null;
+  state.builderName = `${template.name} · copia`;
+  state.builderClientId = preferredClientId;
+  state.builderDays = normalizeBuilderWeek(template.days);
+  state.builderInitialized = true;
+  state.section = 'exercises';
+  state.builderTargetDay = 'monday';
+  if (preferStudentFlow) {
+    state.activeClientId = preferredClientId;
+    state.clientDetailId = preferredClientId;
+  }
+  renderApp();
+}
+
 function seedBuilderFromClient(sharedState, clientId) {
   const resolvedClientId = resolveClientId(sharedState, clientId);
   const assignment = getClientRoutineAssignment(sharedState, resolvedClientId);
@@ -1155,6 +1428,7 @@ function resetLocalBuilder() {
   state.builderTargetDay = 'monday';
   state.builderDays = createEmptyWeek();
   state.messageFilterClientId = 'all';
+  state.messageContextKey = 'trainer-messages-inbox';
 }
 
 function normalizeBuilderWeek(days) {
@@ -1196,8 +1470,10 @@ function syncUrlState() {
   params.set('client', state.activeClientId);
   if (state.section === 'messages') {
     params.set('messageClient', state.messageFilterClientId);
+    params.set('messageView', state.messageContextKey);
   } else {
     params.delete('messageClient');
+    params.delete('messageView');
   }
   if (state.builderTemplateId) {
     params.set('template', state.builderTemplateId);
@@ -1217,6 +1493,7 @@ function hydrateStateFromUrl() {
   const nextSection = params.get('section');
   const nextClient = params.get('client');
   const nextMessageClient = params.get('messageClient');
+  const nextMessageView = params.get('messageView');
   if (nextSection && sectionTitleMap[nextSection]) {
     state.section = nextSection;
   }
@@ -1230,10 +1507,36 @@ function hydrateStateFromUrl() {
   if (nextMessageClient) {
     state.messageFilterClientId = nextMessageClient;
   }
+
+  if (
+    nextMessageView &&
+    trainerMessageContextOptions.find(
+      (option) => option.key === nextMessageView,
+    )
+  ) {
+    state.messageContextKey = nextMessageView;
+  }
 }
 
 function deepClone(value) {
   return JSON.parse(JSON.stringify(value));
+}
+
+async function registerTrainerServiceWorker() {
+  if (!('serviceWorker' in navigator)) {
+    return;
+  }
+
+  try {
+    await navigator.serviceWorker.register(
+      '/trainer/sw.js?v=saulo-trainer-v1',
+      {
+        scope: '/trainer/',
+      },
+    );
+  } catch (_error) {
+    // Keep the trainer demo working even if the install layer fails.
+  }
 }
 
 function clearBuilderDropTargets() {

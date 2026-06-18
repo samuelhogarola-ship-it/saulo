@@ -2,6 +2,7 @@
 
 ## Working Rules
 
+- `Saulo Fitness APP` queda congelada por ahora. No modificar `app/`, `trainer/`, la landing ni la PWA salvo orden explícita nueva del usuario.
 - Keep `saulofitness.com` as the public brand landing.
 - Keep `/app/` as the public student demo.
 - Do not reintroduce the old questionnaire or budget form into the public flow.
@@ -10,6 +11,7 @@
 
 ## Repo Layout
 
+- Protected area until new order: `index.html`, `styles.css`, `app/`, `trainer/`, PWA manifests/service workers, and Saulo Fitness APP related tests.
 - `index.html` is the public landing.
 - `app/index.html` is the student demo shell.
 - `app/app.js` drives demo state, navigation, and interactions.

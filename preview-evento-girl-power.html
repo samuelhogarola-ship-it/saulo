@@ -782,7 +782,10 @@
         const progress = Math.min(scrollY / (heroHeight * 0.9), 1);
         const opacity = Math.max(1 - progress, 0);
 
-        hero.style.setProperty('--hero-stick', `${Math.min(scrollY, heroHeight)}px`);
+        hero.style.setProperty(
+          '--hero-stick',
+          `${Math.min(scrollY, heroHeight)}px`,
+        );
         hero.style.setProperty('--hero-fade', opacity.toFixed(3));
       }
 

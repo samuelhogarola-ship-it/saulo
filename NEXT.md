@@ -9,3 +9,5 @@ CURRENT FOCUS
 - El acceso por enlace único + PIN queda aparcado temporalmente; mantener la base técnica sin activarlo en la experiencia actual.
 - Siguiente bloque técnico: robustecer la PWA real antes de reactivar `token + PIN + activación`.
 - Trabajar siempre desde rama con PR antes de mergear a `main`.
+- Partir de `preview-evento-girl-power.html` como referencia visual aprobada para la futura landing publica de eventos.
+- Cuando se retome eventos, integrar la landing real sin contaminar `/`, `/app/` ni la demo existente.

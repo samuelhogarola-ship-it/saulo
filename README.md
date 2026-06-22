@@ -25,7 +25,7 @@ No incluye ya el formulario de presupuesto/cuestionario ni su backend asociado.
   `Perfil`
 - Rutinas por `Dia 1-7` con deep links publicos
 - Comentarios por ejercicio y generacion visual de informe al finalizar
-- PWA instalable con icono, `manifest` y `service worker`
+- PWA instalable con icono, `manifest`, `service worker` y shell offline basico
 
 ## Git hooks
 

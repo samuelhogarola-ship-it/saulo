@@ -30,8 +30,8 @@ test('links the landing CTA to the public student app demo', async ({
     page.getByRole('heading', { name: 'Saulo Fitness APP' }),
   ).toBeVisible();
   await expect(page.locator('#topbar-title')).toHaveText('Rutinas del alumno');
-  await expect(page.locator('#context-nav')).toContainText('Día 1');
+  await expect(page.locator('#context-nav')).toContainText('Lunes');
   await expect(page.locator('#demo-banner strong')).toHaveText(
-    'Hola Saulo, listo para comprobar la primera demo?',
+    'Hola Saulo, listo para revisar tu app?',
   );
 });

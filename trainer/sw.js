@@ -1,13 +1,15 @@
-const CACHE_NAME = 'saulo-fitness-pwa-v6';
+const CACHE_NAME = 'saulo-trainer-pwa-v1';
 const APP_SHELL = [
-  '/app/',
-  '/app/index.html',
-  '/app/styles.css?v=saulo-v6',
-  '/app/demo-store.js?v=saulo-v6',
-  '/app/app.js?v=saulo-v6',
-  '/app/manifest.webmanifest?v=saulo-v6',
-  '/app/icons/icon-192.png?v=saulo-v6',
-  '/app/icons/icon-512.png?v=saulo-v6',
+  '/trainer/',
+  '/trainer/index.html',
+  '/trainer/styles.css?v=saulo-trainer-v3',
+  '/trainer/app.js?v=saulo-trainer-v1',
+  '/trainer/manifest.webmanifest?v=saulo-trainer-v1',
+  '/trainer/icons/coach-icon-192.png?v=saulo-trainer-v1',
+  '/trainer/icons/coach-icon-512.png?v=saulo-trainer-v1',
+  '/trainer/assets/saulo-mark.png',
+  '/trainer/assets/reference-dashboard.jpeg',
+  '/app/demo-store.js?v=saulo-trainer-v1',
 ];
 
 self.addEventListener('install', (event) => {
@@ -24,7 +26,7 @@ self.addEventListener('activate', (event) => {
       .then((keys) =>
         Promise.all(
           keys.map((key) => {
-            if (key.startsWith('saulo-fitness-') && key !== CACHE_NAME) {
+            if (key.startsWith('saulo-trainer-') && key !== CACHE_NAME) {
               return caches.delete(key);
             }
 
@@ -36,28 +38,24 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-self.addEventListener('message', (event) => {
-  if (event.data?.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
-
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') {
     return;
   }
 
   const requestUrl = new URL(event.request.url);
-  const isAppRequest =
+  const isTrainerRequest =
     requestUrl.origin === self.location.origin &&
-    requestUrl.pathname.startsWith('/app/');
+    (requestUrl.pathname.startsWith('/trainer/') ||
+      requestUrl.pathname === '/trainer' ||
+      requestUrl.pathname === '/app/demo-store.js');
 
-  if (!isAppRequest) {
+  if (!isTrainerRequest) {
     return;
   }
 
   if (event.request.mode === 'navigate') {
-    event.respondWith(networkFirst(event.request, '/app/index.html'));
+    event.respondWith(networkFirst(event.request, '/trainer/index.html'));
     return;
   }
 
@@ -75,7 +73,7 @@ async function networkFirst(request, fallbackUrl) {
     return (
       (await cache.match(request)) ||
       (await cache.match(fallbackUrl)) ||
-      (await cache.match('/app/'))
+      (await cache.match('/trainer/'))
     );
   }
 }
@@ -90,5 +88,5 @@ async function staleWhileRevalidate(request) {
     })
     .catch(() => null);
 
-  return cachedResponse || networkPromise || cache.match('/app/index.html');
+  return cachedResponse || networkPromise || cache.match('/trainer/index.html');
 }

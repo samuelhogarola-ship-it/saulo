@@ -1,241 +1,36 @@
-const studentProfile = {
-  name: 'Lucía Ortega',
-  plan: 'Definición',
-  age: '31 años',
-  weight: '63,4 kg',
-  goal: 'Bajar grasa y mantener fuerza',
-};
-
-const batteryByDay = {
-  1: { level: 84, label: 'Alta', note: 'Solo tú marcas tus límites.' },
-  2: { level: 42, label: 'Media', note: 'Recupera para volver más fuerte.' },
-  3: { level: 88, label: 'Alta', note: 'Hoy vas un paso más allá.' },
-  4: { level: 36, label: 'Media', note: 'Sigue sumando con calma.' },
-  5: { level: 92, label: 'Muy alta', note: 'Hoy toca apretar de verdad.' },
-  6: { level: 32, label: 'Media', note: 'Mueve el cuerpo y respira.' },
-  7: { level: 24, label: 'Baja', note: 'Descansa y vuelve con hambre.' },
-};
-
-const routinesByDay = {
-  1: {
-    label: 'Día 1',
-    title: 'Pierna + glúteo',
-    meta: 'Activa · Ganancia muscular',
-    exercises: [
-      {
-        name: 'Hip thrust',
-        video: 'Ver vídeo',
-        videoUrl: 'https://www.youtube.com/shorts/rVMsqygXtG4',
-        reps: '4 x 10',
-        load: '75%',
-        rest: '90 s',
-      },
-      {
-        name: 'Sentadilla búlgara',
-        video: 'Sin vídeo',
-        reps: '3 x 12',
-        load: '14 kg',
-        rest: '75 s',
-      },
-      {
-        name: 'Peso muerto rumano',
-        video: 'Sin vídeo',
-        reps: '4 x 8',
-        load: '70%',
-        rest: '90 s',
-      },
-    ],
-  },
-  2: {
-    label: 'Día 2',
-    title: 'Descanso activo',
-    meta: 'Recuperación · Cardio ligero',
-    exercises: [
-      {
-        name: 'Caminata rápida',
-        video: 'Sin vídeo',
-        reps: '25 min',
-        load: 'Z2',
-        rest: 'Continuo',
-      },
-      {
-        name: 'Movilidad de cadera',
-        video: 'Sin vídeo',
-        reps: '8 min',
-        load: 'Suave',
-        rest: 'Continuo',
-      },
-    ],
-  },
-  3: {
-    label: 'Día 3',
-    title: 'Espalda + bíceps',
-    meta: 'Activa · Ganancia muscular',
-    exercises: [
-      {
-        name: 'Jalón al pecho',
-        video: 'Sin vídeo',
-        reps: '4 x 10',
-        load: '68%',
-        rest: '90 s',
-      },
-      {
-        name: 'Remo con mancuerna',
-        video: 'Sin vídeo',
-        reps: '3 x 12',
-        load: '22 kg',
-        rest: '75 s',
-      },
-      {
-        name: 'Curl inclinado',
-        video: 'Sin vídeo',
-        reps: '3 x 15',
-        load: '10 kg',
-        rest: '60 s',
-      },
-    ],
-  },
-  4: {
-    label: 'Día 4',
-    title: 'Descanso activo',
-    meta: 'Recuperación · Cardio ligero',
-    exercises: [
-      {
-        name: 'Bicicleta ligera',
-        video: 'Sin vídeo',
-        reps: '20 min',
-        load: 'Suave',
-        rest: 'Continuo',
-      },
-      {
-        name: 'Movilidad torácica',
-        video: 'Sin vídeo',
-        reps: '6 min',
-        load: 'Suave',
-        rest: 'Continuo',
-      },
-    ],
-  },
-  5: {
-    label: 'Día 5',
-    title: 'Push + core',
-    meta: 'Activa · Ganancia muscular',
-    exercises: [
-      {
-        name: 'Press inclinado',
-        video: 'Sin vídeo',
-        reps: '4 x 8',
-        load: '72%',
-        rest: '120 s',
-      },
-      {
-        name: 'Press militar',
-        video: 'Sin vídeo',
-        reps: '3 x 10',
-        load: '24 kg',
-        rest: '90 s',
-      },
-    ],
-  },
-  6: {
-    label: 'Día 6',
-    title: 'Descanso activo',
-    meta: 'Recuperación · Cardio ligero',
-    exercises: [
-      {
-        name: 'Paseo suave',
-        video: 'Sin vídeo',
-        reps: '30 min',
-        load: 'Muy suave',
-        rest: 'Continuo',
-      },
-      {
-        name: 'Movilidad de hombro',
-        video: 'Sin vídeo',
-        reps: '8 min',
-        load: 'Suave',
-        rest: 'Continuo',
-      },
-    ],
-  },
-  7: {
-    label: 'Día 7',
-    title: 'Descanso activo',
-    meta: 'Recuperación · Cardio ligero',
-    exercises: [
-      {
-        name: 'Cardio suave',
-        video: 'Sin vídeo',
-        reps: '20 min',
-        load: 'Suave',
-        rest: 'Continuo',
-      },
-      {
-        name: 'Respiración',
-        video: 'Sin vídeo',
-        reps: '5 min',
-        load: 'Control',
-        rest: 'Continuo',
-      },
-    ],
-  },
-};
+const {
+  DAY_ORDER,
+  escapeHtml,
+  formatDateIso,
+  formatMessageDate,
+  getClientById,
+  getClientRoutineAssignment,
+  getDayLabel,
+  getExerciseThumbnailSrc,
+  getProgressPhotoSrc,
+  getState,
+  recordWorkoutReport,
+  resolveClientId,
+  resolveDayKey,
+  sendClientMessage,
+  subscribe,
+  updateClientPendingPhoto,
+} = window.SauloDemoStore;
 
 const state = {
   section: 'routines',
-  day: 1,
-  report: null,
+  contextKey: 'monday',
+  dayKey: 'monday',
+  clientId: null,
   demoToken: null,
-  contextKey: 'day-1',
+  claimRequested: false,
   exerciseChecks: {},
-  profileUploads: {},
-  messages: {
-    inbox: [
-      {
-        title: 'Coach Saulo',
-        tag: 'Recibido',
-        date: 'Hoy · 08:45',
-        source: 'Email',
-        body: 'Esta semana treinaste muito duro. Lembra-te de descansar e hidratar-te bem nos dias de descanso ativo.',
-      },
-      {
-        title: 'Coach Saulo',
-        tag: 'Recibido',
-        date: 'Ayer · 19:10',
-        source: 'Email',
-        body: 'Esta semana vamos procurar mais controlo técnico. Mantém o foco, dorme bem e aproveita os dias leves para recuperar sem perder ritmo.',
-      },
-    ],
-    sent: [
-      {
-        title: 'Consulta nutrición',
-        tag: 'Enviado',
-        date: 'Ayer · 20:15',
-        source: 'Email',
-        body: 'Pregunté si mover carbohidratos al pre-entreno.',
-      },
-    ],
-    reminders: [
-      {
-        title: 'Check-in semanal',
-        tag: 'Recordatorio',
-        date: 'Martes · 09:00',
-        source: 'App',
-        body: 'Sube peso, sensaciones y 4 fotos de progreso.',
-      },
-      {
-        title: 'Renovación próxima',
-        tag: 'Recordatorio',
-        date: 'Viernes · 18:00',
-        source: 'App',
-        body: 'Tu plan actual finaliza el 30 de junio de 2026.',
-      },
-    ],
-  },
+  exerciseNotes: {},
 };
 
 const demoBanner = document.querySelector('#demo-banner');
 const topbarTitle = document.querySelector('#topbar-title');
+const studentClientChip = document.querySelector('#student-client-chip');
 const contextNav = document.querySelector('#context-nav');
 const studentName = document.querySelector('#student-name');
 const studentPlan = document.querySelector('#student-plan');
@@ -260,99 +55,73 @@ const messageComposeSubject = document.querySelector(
 );
 const messageComposeBody = document.querySelector('#message-compose-body');
 const supportChatTrigger = document.querySelector('#support-chat-trigger');
-const CHATBASE_SCRIPT_ID = 'h_f0xkPpXu0hX4aU1cNkQ';
-let chatbaseLoaderPromise = null;
-let supportChatRequested = false;
 const profilePhotosGallery = document.querySelector('#profile-photos-gallery');
+const subscriptionStatusValue = document.querySelector(
+  '#subscription-status-value',
+);
+const subscriptionStatusCopy = document.querySelector(
+  '#subscription-status-copy',
+);
+const subscriptionEndValue = document.querySelector('#subscription-end-value');
+const planEndValue = document.querySelector('#plan-end-value');
+const profileAgeValue = document.querySelector('#profile-age-value');
+const profileWeightValue = document.querySelector('#profile-weight-value');
+const profileGoalValue = document.querySelector('#profile-goal-value');
+const profileNoteTitle = document.querySelector('#profile-note-title');
+const profileNoteCopy = document.querySelector('#profile-note-copy');
 
 const contextOptionsBySection = {
-  routines: [
-    { key: 'day-1', label: 'Día 1', type: 'day', day: 1 },
-    { key: 'day-3', label: 'Día 3', type: 'day', day: 3 },
-    { key: 'day-5', label: 'Día 5', type: 'day', day: 5 },
-    { key: 'day-2', label: 'Día 2', type: 'day', day: 2 },
-    { key: 'day-4', label: 'Día 4', type: 'day', day: 4 },
-    { key: 'day-6', label: 'Día 6', type: 'day', day: 6 },
-    { key: 'day-7', label: 'Día 7', type: 'day', day: 7 },
-  ],
+  routines: DAY_ORDER.map((dayKey) => ({
+    key: dayKey,
+    label: getDayLabel(dayKey),
+    type: 'day',
+    dayKey,
+  })),
   messages: [
     {
       key: 'messages-inbox',
       label: 'Buzón de entrada',
-      type: 'anchor',
-      target: '#messages-inbox-panel',
+      type: 'panel',
     },
     {
       key: 'messages-sent',
       label: 'Enviados',
-      type: 'anchor',
-      target: '#messages-sent-panel',
+      type: 'panel',
     },
     {
       key: 'messages-reminders',
       label: 'Recordatorios',
-      type: 'anchor',
-      target: '#messages-reminders-panel',
+      type: 'panel',
     },
     {
       key: 'messages-compose',
       label: 'Enviar mensaje',
-      type: 'anchor',
-      target: '#messages-compose-panel',
+      type: 'panel',
     },
   ],
   subscription: [
-    {
-      key: 'subscription-start',
-      label: 'Inicio',
-      type: 'anchor',
-      target: '#subscription-start-card',
-    },
-    {
-      key: 'subscription-plan',
-      label: 'Plan 30 días',
-      type: 'anchor',
-      target: '#subscription-plan-card',
-    },
-    {
-      key: 'subscription-end',
-      label: 'Fin',
-      type: 'anchor',
-      target: '#subscription-end-card',
-    },
+    { key: 'subscription-start', label: 'Estado', type: 'panel' },
+    { key: 'subscription-plan', label: 'Válida hasta', type: 'panel' },
+    { key: 'subscription-end', label: 'Fin del plan', type: 'panel' },
   ],
   profile: [
-    {
-      key: 'profile-age',
-      label: 'Edad',
-      type: 'anchor',
-      target: '#profile-age-card',
-    },
-    {
-      key: 'profile-weight',
-      label: 'Peso',
-      type: 'anchor',
-      target: '#profile-weight-card',
-    },
-    {
-      key: 'profile-goal',
-      label: 'Objetivo',
-      type: 'anchor',
-      target: '#profile-goal-card',
-    },
-    {
-      key: 'profile-photos',
-      label: 'Fotos',
-      type: 'anchor',
-      target: '#profile-photos-card',
-    },
+    { key: 'profile-age', label: 'Edad', type: 'panel' },
+    { key: 'profile-weight', label: 'Peso', type: 'panel' },
+    { key: 'profile-goal', label: 'Objetivo', type: 'panel' },
+    { key: 'profile-photos', label: 'Fotos', type: 'panel' },
   ],
 };
+
+hydrateStateFromUrl();
+registerServiceWorker();
+subscribe(() => {
+  renderApp();
+});
+renderApp();
 
 sideLinks.forEach((button) => {
   button.addEventListener('click', () => {
     const nextSection = button.dataset.section;
-
     if (!nextSection) {
       return;
     }
@@ -372,17 +141,18 @@ messageComposeForm?.addEventListener('submit', (event) => {
 
   const subject = messageComposeSubject?.value.trim();
   const body = messageComposeBody?.value.trim();
+  const sharedState = getState();
+  const clientId = resolveClientId(sharedState, state.clientId);
 
-  if (!subject || !body) {
+  if (!subject || !body || !clientId) {
     return;
   }
 
-  state.messages.sent.unshift({
+  sendClientMessage({
+    clientId,
     title: subject,
-    tag: 'Enviado',
-    date: 'Ahora',
-    source: 'App',
     body,
+    source: 'App',
   });
 
   if (messageComposeForm instanceof HTMLFormElement) {
@@ -396,210 +166,13 @@ messageComposeForm?.addEventListener('submit', (event) => {
 
 supportChatTrigger?.addEventListener('click', (event) => {
   event.preventDefault();
-  supportChatRequested = true;
-  openSupportChat();
+  window.alert(
+    'El chat personalizado se abre desde Mensajes > Enviar mensaje para resolver dudas entre revisiones.',
+  );
 });
-
-hydrateStateFromUrl();
-registerServiceWorker();
-renderApp();
-
-function renderApp() {
-  studentName.textContent = studentProfile.name;
-  studentPlan.textContent = studentProfile.plan;
-  renderStudentBattery();
-
-  renderDemoBanner();
-  updateSectionNavigation();
-  updateTopCopy();
-  renderContextNav();
-  renderRoutine();
-  renderMessages();
-  renderProfilePhotos();
-  syncChatbaseVisibility();
-  syncUrlState();
-}
-
-async function openSupportChat() {
-  try {
-    await ensureChatbaseLoaded();
-    window.chatbase('open');
-  } catch (error) {
-    console.warn('No se pudo abrir Chatbase', error);
-    window.alert('El chat se está cargando. Prueba de nuevo en unos segundos.');
-  }
-}
-
-function renderStudentBattery() {
-  const battery = batteryByDay[state.day] ?? batteryByDay[1];
-
-  studentSummary.textContent = battery.note;
-}
-
-function updateSectionNavigation() {
-  sideLinks.forEach((link) => {
-    link.classList.toggle('is-active', link.dataset.section === state.section);
-  });
-
-  sectionPanels.forEach((panel) => {
-    panel.classList.toggle(
-      'is-active',
-      panel.dataset.sectionPanel === state.section,
-    );
-  });
-}
-
-function updateTopCopy() {
-  const titles = {
-    routines: 'Rutinas del alumno',
-    messages: 'Mensajes',
-    subscription: 'Suscripción',
-    profile: 'Perfil',
-  };
-
-  topbarTitle.textContent = titles[state.section];
-}
-
-function renderContextNav() {
-  const options = contextOptionsBySection[state.section] ?? [];
-
-  if (!contextNav || !options.length) {
-    return;
-  }
-
-  if (state.section === 'routines') {
-    state.contextKey = `day-${state.day}`;
-  } else if (!options.some((option) => option.key === state.contextKey)) {
-    state.contextKey = options[0].key;
-  }
-
-  contextNav.innerHTML = options
-    .map(
-      (option) => `
-        <button
-          class="context-chip ${option.key === state.contextKey ? 'is-active' : ''}"
-          data-context-key="${escapeHtml(option.key)}"
-        >
-          ${escapeHtml(option.label)}
-        </button>
-      `,
-    )
-    .join('');
-
-  [...contextNav.querySelectorAll('[data-context-key]')].forEach((button) => {
-    button.addEventListener('click', () => {
-      const nextKey = button.dataset.contextKey;
-      const nextOption = options.find((option) => option.key === nextKey);
-
-      if (!nextOption) {
-        return;
-      }
-
-      if (nextOption.type === 'day') {
-        state.section = 'routines';
-        state.day = nextOption.day;
-        state.contextKey = nextOption.key;
-        renderApp();
-        return;
-      }
-
-      state.contextKey = nextOption.key;
-      renderApp();
-
-      if (nextOption.target) {
-        window.requestAnimationFrame(() => {
-          document.querySelector(nextOption.target)?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-          });
-        });
-      }
-    });
-  });
-}
-
-function renderRoutine() {
-  const routine = routinesByDay[state.day];
-
-  routineDayLabel.textContent = routine.label;
-  routineDayTitle.textContent = routine.title;
-  routineDayMeta.textContent = routine.meta;
-
-  exerciseList.innerHTML = routine.exercises
-    .map(
-      (exercise, index) => `
-        <article class="exercise-card" data-exercise-name="${escapeHtml(exercise.name)}">
-          <div class="exercise-top">
-            <div>
-              <p class="brand-kicker">Ejercicio ${index + 1}</p>
-              <h5>${escapeHtml(exercise.name)}</h5>
-              ${
-                exercise.videoUrl
-                  ? '<p class="exercise-video-note">Video disponible en este ejercicio</p>'
-                  : ''
-              }
-            </div>
-            <button
-              class="exercise-video ${exercise.videoUrl ? 'is-clickable' : ''}"
-              type="button"
-              ${exercise.videoUrl ? `data-video-url="${escapeHtml(exercise.videoUrl)}" data-video-title="${escapeHtml(exercise.name)}"` : 'disabled aria-disabled="true"'}
-            >
-              <img
-                class="exercise-video-image"
-                src="${getExerciseThumbnailSrc(exercise.name, routine.title)}"
-                alt="Vista previa del ejercicio ${escapeHtml(exercise.name)}"
-              />
-              <div class="exercise-video-overlay" aria-hidden="true">
-                ${
-                  exercise.videoUrl
-                    ? '<span class="exercise-video-status">Video disponible</span>'
-                    : ''
-                }
-                <span class="exercise-video-play"></span>
-                <span class="exercise-video-label">Ver vídeo</span>
-              </div>
-            </button>
-          </div>
-
-          <div class="exercise-spec-grid">
-            <div class="exercise-spec">
-              Repeticiones
-              <strong>${escapeHtml(exercise.reps)}</strong>
-            </div>
-            <div class="exercise-spec">
-              Peso / %
-              <strong>${escapeHtml(exercise.load)}</strong>
-            </div>
-            <div class="exercise-spec">
-              Descanso
-              <strong>${escapeHtml(exercise.rest)}</strong>
-            </div>
-          </div>
-
-          <label class="exercise-check">
-            <input
-              class="exercise-check-input"
-              type="checkbox"
-              data-exercise-check="${escapeHtml(exercise.name)}"
-              ${isExerciseChecked(exercise.name) ? 'checked' : ''}
-            />
-            <span class="exercise-check-box" aria-hidden="true"></span>
-            <span class="exercise-check-label">Hecho</span>
-          </label>
-
-          <textarea
-            class="exercise-comment"
-            placeholder="Comentario de este ejercicio para guardarlo al finalizar..."
-          >${getExistingComment(exercise.name)}</textarea>
-        </article>
-      `,
-    )
-    .join('');
-}
 
 exerciseList?.addEventListener('click', (event) => {
   const videoButton = event.target?.closest?.('[data-video-url]');
-
   if (!videoButton) {
     return;
   }
@@ -616,259 +189,63 @@ exerciseList?.addEventListener('click', (event) => {
 
 exerciseList?.addEventListener('change', (event) => {
   const checkInput = event.target?.closest?.('[data-exercise-check]');
-
-  if (!(checkInput instanceof HTMLInputElement)) {
+  if (checkInput instanceof HTMLInputElement) {
+    const key = buildExerciseDraftKey(
+      checkInput.dataset.exerciseCheck,
+      state.dayKey,
+      state.clientId,
+    );
+    state.exerciseChecks[key] = checkInput.checked;
     return;
   }
 
-  setExerciseChecked(checkInput.dataset.exerciseCheck, checkInput.checked);
+  const noteInput = event.target?.closest?.('[data-exercise-note]');
+  if (noteInput instanceof HTMLTextAreaElement) {
+    const key = buildExerciseDraftKey(
+      noteInput.dataset.exerciseNote,
+      state.dayKey,
+      state.clientId,
+    );
+    state.exerciseNotes[key] = noteInput.value;
+  }
 });
 
-function getExerciseThumbnailSrc(exerciseName, routineTitle) {
-  const theme = getExerciseThumbnailTheme(exerciseName);
-  const safeExerciseName = escapeHtml(exerciseName);
-  const safeRoutineTitle = escapeHtml(routineTitle);
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="${safeExerciseName}">
-      <defs>
-        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#111114" />
-          <stop offset="55%" stop-color="#1a1a20" />
-          <stop offset="100%" stop-color="#060608" />
-        </linearGradient>
-        <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="${theme.glow}" stop-opacity="0.9" />
-          <stop offset="100%" stop-color="${theme.glowSecondary}" stop-opacity="0.15" />
-        </linearGradient>
-      </defs>
-      <rect width="320" height="180" rx="24" fill="url(#bg)" />
-      <circle cx="74" cy="54" r="58" fill="url(#glow)" opacity="0.55" />
-      <circle cx="262" cy="34" r="40" fill="${theme.glowSecondary}" opacity="0.16" />
-      <rect x="0" y="138" width="320" height="42" fill="#0c0c0f" />
-      <rect x="22" y="138" width="276" height="2" fill="rgba(255,255,255,0.08)" />
-      ${theme.scene}
-      <rect x="18" y="18" width="112" height="24" rx="12" fill="rgba(255,255,255,0.08)" />
-      <text x="32" y="34" fill="#ffffff" font-size="12" font-family="Arial, sans-serif" font-weight="700">${safeRoutineTitle}</text>
-      <rect x="18" y="146" width="158" height="20" rx="10" fill="rgba(255,255,255,0.08)" />
-      <text x="30" y="160" fill="#ffffff" font-size="12" font-family="Arial, sans-serif" font-weight="700">${safeExerciseName}</text>
-    </svg>
-  `;
-
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-}
-
-function getExerciseThumbnailTheme(exerciseName) {
-  const name = exerciseName.toLowerCase();
-
-  if (
-    name.includes('sentadilla') ||
-    name.includes('hip thrust') ||
-    name.includes('peso muerto')
-  ) {
-    return {
-      glow: '#7c4dff',
-      glowSecondary: '#ffffff',
-      scene: `
-        <rect x="198" y="64" width="6" height="70" rx="3" fill="#2b2b31" />
-        <rect x="118" y="102" width="104" height="6" rx="3" fill="#d8d8de" />
-        <rect x="104" y="96" width="12" height="18" rx="4" fill="#5a5a65" />
-        <rect x="224" y="96" width="12" height="18" rx="4" fill="#5a5a65" />
-        <circle cx="152" cy="74" r="12" fill="#f3d7c4" />
-        <rect x="144" y="86" width="20" height="28" rx="10" fill="#1d4ed8" />
-        <rect x="133" y="92" width="16" height="10" rx="5" fill="#f3d7c4" />
-        <rect x="159" y="92" width="26" height="8" rx="4" fill="#f3d7c4" />
-        <rect x="146" y="112" width="8" height="24" rx="4" fill="#f3d7c4" />
-        <rect x="157" y="112" width="8" height="24" rx="4" fill="#f3d7c4" />
-      `,
-    };
+exerciseList?.addEventListener('input', (event) => {
+  const noteInput = event.target?.closest?.('[data-exercise-note]');
+  if (!(noteInput instanceof HTMLTextAreaElement)) {
+    return;
   }
 
-  if (
-    name.includes('jalón') ||
-    name.includes('remo') ||
-    name.includes('curl')
-  ) {
-    return {
-      glow: '#8b5cf6',
-      glowSecondary: '#60a5fa',
-      scene: `
-        <rect x="214" y="34" width="8" height="102" rx="4" fill="#2d2d34" />
-        <rect x="196" y="46" width="44" height="6" rx="3" fill="#4a4a53" />
-        <rect x="214" y="52" width="2" height="24" fill="#b9b9c5" />
-        <rect x="206" y="76" width="18" height="4" rx="2" fill="#d9d9e0" />
-        <circle cx="140" cy="72" r="12" fill="#f3d7c4" />
-        <rect x="132" y="84" width="20" height="30" rx="10" fill="#2563eb" />
-        <rect x="144" y="114" width="8" height="24" rx="4" fill="#f3d7c4" />
-        <rect x="156" y="90" width="36" height="8" rx="4" fill="#f3d7c4" />
-        <rect x="131" y="95" width="18" height="8" rx="4" fill="#f3d7c4" />
-      `,
-    };
+  const key = buildExerciseDraftKey(
+    noteInput.dataset.exerciseNote,
+    state.dayKey,
+    state.clientId,
+  );
+  state.exerciseNotes[key] = noteInput.value;
+});
+
+profilePhotosGallery?.addEventListener('change', (event) => {
+  const input = event.target;
+  if (!(input instanceof HTMLInputElement)) {
+    return;
   }
 
-  if (name.includes('press')) {
-    return {
-      glow: '#6d28d9',
-      glowSecondary: '#93c5fd',
-      scene: `
-        <rect x="92" y="112" width="120" height="8" rx="4" fill="#3c3c45" />
-        <rect x="110" y="96" width="48" height="12" rx="6" fill="#4f4f58" />
-        <rect x="126" y="90" width="84" height="6" rx="3" fill="#dadbe1" />
-        <rect x="116" y="84" width="12" height="18" rx="4" fill="#61616c" />
-        <rect x="210" y="84" width="12" height="18" rx="4" fill="#61616c" />
-        <circle cx="150" cy="74" r="11" fill="#f3d7c4" />
-        <rect x="142" y="84" width="20" height="22" rx="10" fill="#2563eb" />
-        <rect x="135" y="93" width="16" height="8" rx="4" fill="#f3d7c4" />
-        <rect x="160" y="93" width="18" height="8" rx="4" fill="#f3d7c4" />
-      `,
-    };
+  const slot = input.dataset.photoUpload;
+  const file = input.files?.[0];
+  if (!slot || !file || !state.clientId) {
+    return;
   }
 
-  return {
-    glow: '#7c3aed',
-    glowSecondary: '#34d399',
-    scene: `
-      <circle cx="148" cy="74" r="12" fill="#f3d7c4" />
-      <rect x="140" y="86" width="20" height="32" rx="10" fill="#2563eb" />
-      <rect x="129" y="92" width="16" height="8" rx="4" fill="#f3d7c4" />
-      <rect x="156" y="92" width="18" height="8" rx="4" fill="#f3d7c4" />
-      <rect x="144" y="118" width="8" height="18" rx="4" fill="#f3d7c4" />
-      <rect x="154" y="118" width="8" height="18" rx="4" fill="#f3d7c4" />
-      <rect x="196" y="92" width="44" height="8" rx="4" fill="#3f3f47" />
-      <rect x="84" y="104" width="50" height="8" rx="4" fill="#3f3f47" />
-    `,
+  const reader = new FileReader();
+  reader.onload = () => {
+    if (typeof reader.result !== 'string') {
+      return;
+    }
+
+    updateClientPendingPhoto(state.clientId, slot, reader.result);
   };
-}
-
-function renderWorkoutModal() {
-  if (!workoutModalRoot) {
-    return;
-  }
-
-  workoutModalRoot.hidden = false;
-  workoutModalRoot.innerHTML = `
-    <div class="workout-modal" role="dialog" aria-modal="true" aria-labelledby="workout-modal-title">
-      <button class="workout-modal-close" type="button" data-close-workout-modal aria-label="Cerrar">
-        ×
-      </button>
-      <p class="brand-kicker">Rutina completada</p>
-      <h3 id="workout-modal-title">¿Qué tal fue la rutina?</h3>
-      <p>Elige cómo te ha ido para dejarlo registrado en el informe de la demo.</p>
-      <div class="workout-modal-actions">
-        <button class="complete-button" type="button" data-workout-feedback="Bien">
-          Bien
-        </button>
-        <button class="complete-button" type="button" data-workout-feedback="Regular">
-          Regular
-        </button>
-        <button class="complete-button" type="button" data-workout-feedback="Intensa">
-          Intensa
-        </button>
-      </div>
-    </div>
-  `;
-}
-
-function renderVideoModal(title, videoUrl) {
-  if (!workoutModalRoot) {
-    return;
-  }
-
-  const embedUrl = getYoutubeEmbedUrl(videoUrl);
-
-  if (!embedUrl) {
-    window.alert('No se pudo abrir este vídeo.');
-    return;
-  }
-
-  workoutModalRoot.hidden = false;
-  workoutModalRoot.innerHTML = `
-    <div class="workout-modal workout-modal-video" role="dialog" aria-modal="true" aria-labelledby="video-modal-title">
-      <button class="workout-modal-close" type="button" data-close-workout-modal aria-label="Cerrar">
-        ×
-      </button>
-      <p class="brand-kicker">Vídeo del ejercicio</p>
-      <h3 id="video-modal-title">${escapeHtml(title)}</h3>
-      <div class="video-frame">
-        <iframe
-          src="${escapeHtml(embedUrl)}"
-          title="${escapeHtml(title)}"
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-          referrerpolicy="strict-origin-when-cross-origin"
-        ></iframe>
-      </div>
-    </div>
-  `;
-}
-
-function closeWorkoutModal() {
-  if (!workoutModalRoot) {
-    return;
-  }
-
-  workoutModalRoot.hidden = true;
-  workoutModalRoot.innerHTML = '';
-}
-
-function buildWorkoutReport(feedback) {
-  const activeRoutine = routinesByDay[state.day];
-  const exerciseCards = [
-    ...exerciseList.querySelectorAll('[data-exercise-name]'),
-  ];
-  const notes = exerciseCards.map((card) => {
-    const name = card.dataset.exerciseName;
-    const textarea = card.querySelector('textarea');
-    const comment = textarea ? textarea.value.trim() : '';
-    const done = isExerciseChecked(name);
-    return {
-      name,
-      done,
-      comment: comment || 'Sin comentario',
-    };
-  });
-
-  state.report = {
-    title: 'Resumen de entrenamiento',
-    meta: `${activeRoutine.title} · ${feedback.toLowerCase()}`,
-    notes,
-  };
-
-  state.messages.sent.unshift({
-    title: 'Resumen de entrenamiento',
-    tag: 'Enviado',
-    date: getSentMessageDate(),
-    source: 'App',
-    body: `${activeRoutine.label} · ${activeRoutine.title} · ${feedback}. ${notes
-      .map(
-        (item) =>
-          `${item.name} (${item.done ? 'hecho' : 'pendiente'}): ${item.comment}`,
-      )
-      .join(' | ')}`,
-  });
-
-  state.section = 'messages';
-  state.contextKey = 'messages-sent';
-  renderApp();
-}
-
-function renderDemoBanner() {
-  if (!demoBanner) {
-    return;
-  }
-
-  if (state.demoToken !== '101') {
-    demoBanner.hidden = true;
-    demoBanner.textContent = '';
-    return;
-  }
-
-  demoBanner.hidden = false;
-  demoBanner.innerHTML = `
-    <strong>Hola Saulo, listo para comprobar la primera demo?</strong>
-    <p>1. Mira las opciones disponibles. 2. Revisa Rutinas, Suscripcion y Perfil. 3. Comprueba el funcionamiento como lo veria tu cliente.</p>
-  `;
-}
+  reader.readAsDataURL(file);
+});
 
 workoutModalRoot?.addEventListener('click', (event) => {
   const feedbackButton = event.target?.closest?.('[data-workout-feedback]');
@@ -897,88 +274,315 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-function renderMessages() {
+function renderApp() {
+  const sharedState = getState();
+  state.clientId = resolveClientId(sharedState, state.clientId);
+
+  const client = getClientById(sharedState, state.clientId);
+  if (!client) {
+    return;
+  }
+
+  const assignment = getClientRoutineAssignment(sharedState, state.clientId);
+  if (!DAY_ORDER.includes(state.dayKey)) {
+    state.dayKey = DAY_ORDER[0];
+  }
+
+  if (state.section === 'routines') {
+    state.contextKey = state.dayKey;
+  } else if (!getContextOption(state.section, state.contextKey)) {
+    state.contextKey = getDefaultContextKey(state.section);
+  }
+
+  studentName.textContent = client.name;
+  studentPlan.textContent = client.plan;
+  studentSummary.textContent = client.summary;
+  studentClientChip.textContent = client.name;
+
+  renderDemoBanner();
+  updateSectionNavigation();
+  updateTopCopy();
+  renderContextNav();
+  renderRoutine(client, assignment);
+  renderMessages(client);
+  renderSubscription(client);
+  renderProfile(client);
+  renderProfilePhotos(client);
+  syncUrlState();
+}
+
+function updateSectionNavigation() {
+  sideLinks.forEach((link) => {
+    link.classList.toggle('is-active', link.dataset.section === state.section);
+  });
+
+  sectionPanels.forEach((panel) => {
+    panel.classList.toggle(
+      'is-active',
+      panel.dataset.sectionPanel === state.section,
+    );
+  });
+}
+
+function updateTopCopy() {
+  const titles = {
+    routines: 'Rutinas del alumno',
+    messages: 'Mensajes',
+    subscription: 'Suscripción',
+    profile: 'Perfil',
+  };
+
+  topbarTitle.textContent = titles[state.section] || 'Saulo Fitness APP';
+}
+
+function renderContextNav() {
+  const options = contextOptionsBySection[state.section] ?? [];
+  if (!contextNav || !options.length) {
+    return;
+  }
+
+  contextNav.innerHTML = options
+    .map(
+      (option) => `
+        <button
+          class="context-chip ${option.key === state.contextKey ? 'is-active' : ''}"
+          data-context-key="${escapeHtml(option.key)}"
+        >
+          ${escapeHtml(option.label)}
+        </button>
+      `,
+    )
+    .join('');
+
+  [...contextNav.querySelectorAll('[data-context-key]')].forEach((button) => {
+    button.addEventListener('click', () => {
+      const nextKey = button.dataset.contextKey;
+      const nextOption = options.find((option) => option.key === nextKey);
+
+      if (!nextOption) {
+        return;
+      }
+
+      if (nextOption.type === 'day') {
+        state.section = 'routines';
+        state.dayKey = nextOption.dayKey;
+        state.contextKey = nextOption.key;
+        renderApp();
+        return;
+      }
+
+      state.contextKey = nextOption.key;
+      renderApp();
+    });
+  });
+}
+
+function renderRoutine(client, assignment) {
+  const emptyDay = {
+    title: 'Sin rutina asignada',
+    meta: 'Pendiente de entrenador',
+    exercises: [],
+  };
+  const currentDay =
+    assignment?.days?.[state.dayKey] ||
+    assignment?.days?.[DAY_ORDER[0]] ||
+    emptyDay;
+
+  routineDayLabel.textContent = getDayLabel(state.dayKey);
+  routineDayTitle.textContent = currentDay.title || client.plan;
+  routineDayMeta.textContent = currentDay.meta || 'Rutina activa';
+
+  if (!currentDay.exercises.length) {
+    exerciseList.innerHTML = `
+      <article class="exercise-card">
+        <div class="exercise-top">
+          <div>
+            <p class="brand-kicker">Pendiente</p>
+            <h5>Sin ejercicios asignados</h5>
+            <p class="exercise-video-note">El entrenador todavía no ha enviado una rutina para este día.</p>
+          </div>
+        </div>
+      </article>
+    `;
+    completeWorkoutButton.disabled = true;
+    return;
+  }
+
+  completeWorkoutButton.disabled = false;
+
+  exerciseList.innerHTML = currentDay.exercises
+    .map(
+      (exercise, index) => `
+        <article class="exercise-card" data-exercise-name="${escapeHtml(exercise.name)}">
+          <div class="exercise-top">
+            <div>
+              <p class="brand-kicker">Ejercicio ${index + 1}</p>
+              <h5>${escapeHtml(exercise.name)}</h5>
+              ${
+                exercise.videoUrl
+                  ? '<p class="exercise-video-note">Video disponible en este ejercicio</p>'
+                  : ''
+              }
+            </div>
+            <button
+              class="exercise-video ${exercise.videoUrl ? 'is-clickable' : ''}"
+              type="button"
+              ${exercise.videoUrl ? `data-video-url="${escapeHtml(exercise.videoUrl)}" data-video-title="${escapeHtml(exercise.name)}"` : 'disabled aria-disabled="true"'}
+            >
+              <img
+                class="exercise-video-image"
+                src="${getExerciseThumbnailSrc(exercise.name, currentDay.title)}"
+                alt="Vista previa del ejercicio ${escapeHtml(exercise.name)}"
+              />
+              <div class="exercise-video-overlay" aria-hidden="true">
+                ${
+                  exercise.videoUrl
+                    ? '<span class="exercise-video-status">Video disponible</span>'
+                    : ''
+                }
+                <span class="exercise-video-play"></span>
+                <span class="exercise-video-label">Ver vídeo</span>
+              </div>
+            </button>
+          </div>
+
+          <div class="exercise-spec-grid">
+            <div class="exercise-spec">
+              Series
+              <strong>${escapeHtml(exercise.series)}</strong>
+            </div>
+            <div class="exercise-spec">
+              Repeticiones
+              <strong>${escapeHtml(exercise.reps)}</strong>
+            </div>
+            <div class="exercise-spec">
+              Carga / progreso
+              <strong>${escapeHtml(exercise.load)}</strong>
+            </div>
+          </div>
+
+          <label class="exercise-check">
+            <input
+              class="exercise-check-input"
+              type="checkbox"
+              data-exercise-check="${escapeHtml(exercise.name)}"
+              ${isExerciseChecked(exercise.name) ? 'checked' : ''}
+            />
+            <span class="exercise-check-box" aria-hidden="true"></span>
+            <span class="exercise-check-label">Hecho</span>
+          </label>
+
+          <textarea
+            class="exercise-comment"
+            data-exercise-note="${escapeHtml(exercise.name)}"
+            placeholder="Comentario de este ejercicio para guardarlo al finalizar..."
+          >${escapeHtml(getExistingComment(exercise.name))}</textarea>
+        </article>
+      `,
+    )
+    .join('');
+}
+
+function renderMessages(client) {
   const panelMap = {
     'messages-inbox': {
-      panel: document.querySelector('#messages-inbox-panel'),
       container: messagesInbox,
-      items: state.messages.inbox,
+      items: client.messages.inbox,
     },
     'messages-sent': {
-      panel: document.querySelector('#messages-sent-panel'),
       container: messagesSent,
-      items: state.messages.sent,
+      items: client.messages.sent,
     },
     'messages-reminders': {
-      panel: document.querySelector('#messages-reminders-panel'),
       container: messagesReminders,
-      items: state.messages.reminders,
+      items: client.messages.reminders,
     },
     'messages-compose': {
-      panel: document.querySelector('#messages-compose-panel'),
       container: null,
       items: [],
     },
   };
 
   const activeKey =
-    state.section === 'messages' && contextOptionsBySection.messages
-      ? state.contextKey
-      : 'messages-inbox';
+    state.section === 'messages' ? state.contextKey : 'messages-inbox';
 
   messagePanels.forEach((panel) => {
-    const key = panel.dataset.messagePanel;
-    panel.hidden = key !== activeKey;
+    panel.hidden = panel.dataset.messagePanel !== activeKey;
   });
 
   const activePanel = panelMap[activeKey] ?? panelMap['messages-inbox'];
-  if (activePanel && activePanel.container) {
+  if (activePanel?.container) {
     renderMessageList(activePanel.container, activePanel.items);
   }
 }
 
-function renderProfilePhotos() {
-  if (!profilePhotosGallery) {
-    return;
-  }
+function renderMessageList(container, items) {
+  container.innerHTML = items
+    .map(
+      (item) => `
+        <article class="message-item ${getMessageVariantClass(item.direction)}">
+          <div class="message-item-top">
+            <span>${escapeHtml(item.title)}</span>
+            <time>${escapeHtml(formatMessageDate(item.createdAt))}</time>
+          </div>
+          <strong>${escapeHtml(getMessageBadge(item.direction))}</strong>
+          <p>${escapeHtml(item.body)}</p>
+        </article>
+      `,
+    )
+    .join('');
+}
 
-  const monthlyPhotos = [
-    { label: 'Izquierda', tone: 'side-left' },
-    { label: 'Derecha', tone: 'side-right' },
-    { label: 'Frente', tone: 'front' },
-    { label: 'Espalda', tone: 'back' },
-  ];
+function renderSubscription(client) {
+  subscriptionStatusValue.textContent = 'Membresía activa';
+  subscriptionStatusCopy.textContent =
+    'Acceso completo a rutina, mensajes y seguimiento.';
+  subscriptionEndValue.textContent = formatDateIso(client.subscriptionEnd);
+  planEndValue.textContent = formatDateIso(client.planEnd);
+}
+
+function renderProfile(client) {
+  profileAgeValue.textContent = client.age;
+  profileWeightValue.textContent = client.weight;
+  profileGoalValue.textContent = client.goal;
+  profileNoteTitle.textContent = 'Adherencia alta con feedback rápido';
+  profileNoteCopy.textContent = client.profileNote;
+}
+
+function renderProfilePhotos(client) {
+  const uploads = client.photos.pendingUploads;
+  const history = client.photos.history?.[0];
 
   profilePhotosGallery.innerHTML = `
     <article class="photo-history-card">
       <div class="photo-history-top">
         <div>
           <p class="brand-kicker">Próximo registro</p>
-          <h4>30 de julio de 2026</h4>
+          <h4>${escapeHtml(formatDateIso(client.photos.nextDueDate))}</h4>
         </div>
         <span class="section-badge">4 fotos requeridas</span>
       </div>
       <p class="photo-history-copy">
-        Sube izquierda, derecha, frente y espalda para dejar preparado el siguiente check-in.
+        Sube izquierda, derecha, frente y espalda. El entrenador verá estas fotos en tu ficha.
       </p>
       <div class="photo-grid photo-grid-upload">
-        ${monthlyPhotos
+        ${['Izquierda', 'Derecha', 'Frente', 'Espalda']
           .map(
-            (photo) => `
+            (label) => `
               <label class="photo-upload-slot">
                 <input
                   class="photo-upload-input"
                   type="file"
                   accept="image/*"
-                  data-photo-upload="${escapeHtml(photo.label)}"
+                  data-photo-upload="${escapeHtml(label)}"
                 />
                 ${
-                  getUploadedPhotoSrc(photo.label)
+                  uploads[label]
                     ? `
                       <img
                         class="photo-upload-preview"
-                        src="${getUploadedPhotoSrc(photo.label)}"
-                        alt="Foto subida de ${escapeHtml(photo.label)}"
+                        src="${uploads[label]}"
+                        alt="Foto subida de ${escapeHtml(label)}"
                       />
                     `
                     : `
@@ -988,33 +592,35 @@ function renderProfilePhotos() {
                 <div class="photo-upload-overlay">
                   <span class="photo-upload-button">Subir foto</span>
                 </div>
-                <span class="photo-upload-caption">${escapeHtml(photo.label)}</span>
+                <span class="photo-upload-caption">${escapeHtml(label)}</span>
               </label>
             `,
           )
           .join('')}
       </div>
     </article>
-
     <article class="photo-history-card">
       <div class="photo-history-top">
         <div>
-          <p class="brand-kicker">Junio 2026</p>
-          <h4>Lucía Ortega · Seguimiento mensual</h4>
+          <p class="brand-kicker">${escapeHtml(history?.monthLabel || 'Junio 2026')}</p>
+          <h4>${escapeHtml(history?.title || `${client.name} · Seguimiento mensual`)}</h4>
         </div>
         <span class="section-badge">4 fotos subidas</span>
       </div>
       <p class="photo-history-copy">
-        Registro ficticio del 30 de junio de 2026 para comparar definición y postura.
+        ${escapeHtml(
+          history?.description ||
+            'Histórico mensual sincronizado con el panel del entrenador.',
+        )}
       </p>
       <div class="photo-grid">
-        ${monthlyPhotos
+        ${(history?.shots || [])
           .map(
             (photo) => `
               <figure class="photo-shot">
                 <img
-                  src="${getProgressPhotoSrc(photo.label, photo.tone)}"
-                  alt="Foto de progreso ${escapeHtml(photo.label)} de Lucía Ortega"
+                  src="${getProgressPhotoSrc(photo.label, photo.tone, photo.src)}"
+                  alt="Foto de progreso ${escapeHtml(photo.label)} de ${escapeHtml(client.name)}"
                 />
                 <figcaption>${escapeHtml(photo.label)}</figcaption>
               </figure>
@@ -1026,330 +632,172 @@ function renderProfilePhotos() {
   `;
 }
 
-profilePhotosGallery?.addEventListener('change', (event) => {
-  const input = event.target;
-
-  if (!(input instanceof HTMLInputElement)) {
-    return;
-  }
-
-  const slot = input.dataset.photoUpload;
-  const file = input.files?.[0];
-
-  if (!slot || !file) {
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    if (typeof reader.result !== 'string') {
-      return;
-    }
-
-    state.profileUploads[slot] = reader.result;
-    renderProfilePhotos();
-  };
-  reader.readAsDataURL(file);
-});
-
-function syncChatbaseVisibility() {
-  const shouldShowChat =
-    state.section === 'messages' &&
-    state.contextKey === 'messages-compose' &&
-    supportChatRequested;
-
-  if (!shouldShowChat) {
-    supportChatRequested = false;
-  }
-
-  if (!shouldShowChat && typeof window.chatbase === 'function') {
-    try {
-      window.chatbase('close');
-    } catch (error) {
-      console.warn('No se pudo cerrar Chatbase', error);
-    }
-  }
-
-  getChatbaseNodes().forEach((node) => {
-    if (!node) {
-      return;
-    }
-
-    node.style.display = shouldShowChat ? '' : 'none';
-    node.style.visibility = shouldShowChat ? 'visible' : 'hidden';
-    node.style.pointerEvents = shouldShowChat ? 'auto' : 'none';
-  });
+function renderWorkoutModal() {
+  workoutModalRoot.hidden = false;
+  workoutModalRoot.innerHTML = `
+    <div class="workout-modal" role="dialog" aria-modal="true" aria-labelledby="workout-modal-title">
+      <button class="workout-modal-close" type="button" data-close-workout-modal aria-label="Cerrar">
+        ×
+      </button>
+      <p class="brand-kicker">Rutina completada</p>
+      <h3 id="workout-modal-title">¿Qué tal fue la rutina?</h3>
+      <p>Elige cómo te ha ido para enviarlo al entrenador y guardarlo en tus mensajes enviados.</p>
+      <div class="workout-modal-actions">
+        <button class="complete-button" type="button" data-workout-feedback="Bien">
+          Bien
+        </button>
+        <button class="complete-button" type="button" data-workout-feedback="Regular">
+          Regular
+        </button>
+        <button class="complete-button" type="button" data-workout-feedback="Intensa">
+          Intensa
+        </button>
+      </div>
+    </div>
+  `;
 }
 
-function getChatbaseNodes() {
-  return [
-    ...document.querySelectorAll(
-      [
-        '#chatbase-bubble-button',
-        '#chatbase-bubble-window',
-        '#chatbase-message-bubbles',
-        '[data-chatbase-bubble-button]',
-        '[data-chatbase-bubble-window]',
-        'iframe[src*="chatbase"]',
-        '[id^="chatbase-"]',
-      ].join(', '),
-    ),
+function renderVideoModal(title, videoUrl) {
+  const embedUrl = getYoutubeEmbedUrl(videoUrl);
+  if (!embedUrl) {
+    window.alert('No se pudo abrir este vídeo.');
+    return;
+  }
+
+  workoutModalRoot.hidden = false;
+  workoutModalRoot.innerHTML = `
+    <div class="workout-modal workout-modal-video" role="dialog" aria-modal="true" aria-labelledby="video-modal-title">
+      <button class="workout-modal-close" type="button" data-close-workout-modal aria-label="Cerrar">
+        ×
+      </button>
+      <p class="brand-kicker">Vídeo del ejercicio</p>
+      <h3 id="video-modal-title">${escapeHtml(title)}</h3>
+      <div class="video-frame">
+        <iframe
+          src="${escapeHtml(embedUrl)}"
+          title="${escapeHtml(title)}"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      </div>
+    </div>
+  `;
+}
+
+function closeWorkoutModal() {
+  workoutModalRoot.hidden = true;
+  workoutModalRoot.innerHTML = '';
+}
+
+function buildWorkoutReport(feedback) {
+  const sharedState = getState();
+  const client = getClientById(sharedState, state.clientId);
+  const assignment = getClientRoutineAssignment(sharedState, state.clientId);
+  const currentDay = assignment?.days?.[state.dayKey] ||
+    assignment?.days?.[DAY_ORDER[0]] || { title: client?.plan || 'Rutina' };
+
+  const exerciseCards = [
+    ...exerciseList.querySelectorAll('[data-exercise-name]'),
   ];
-}
-
-function ensureChatbaseLoaded() {
-  if (typeof window === 'undefined') {
-    return Promise.reject(new Error('Chatbase no está disponible.'));
-  }
-
-  if (typeof window.chatbase === 'function') {
-    try {
-      if (window.chatbase('getState') === 'initialized') {
-        return Promise.resolve();
-      }
-    } catch (error) {
-      console.warn('Estado de Chatbase no disponible todavía', error);
-    }
-  }
-
-  if (chatbaseLoaderPromise) {
-    return chatbaseLoaderPromise;
-  }
-
-  if (
-    !window.chatbase ||
-    (typeof window.chatbase === 'function' &&
-      window.chatbase('getState') !== 'initialized')
-  ) {
-    window.chatbase = (...arguments) => {
-      if (!window.chatbase.q) {
-        window.chatbase.q = [];
-      }
-      window.chatbase.q.push(arguments);
+  const notes = exerciseCards.map((card) => {
+    const name = card.dataset.exerciseName;
+    const textarea = card.querySelector('textarea');
+    const comment = textarea ? textarea.value.trim() : '';
+    const done = isExerciseChecked(name);
+    return {
+      name,
+      done,
+      comment: comment || 'Sin comentario',
     };
-    window.chatbase = new Proxy(window.chatbase, {
-      get(target, prop) {
-        if (prop === 'q') {
-          return target.q;
-        }
-        return (...args) => target(prop, ...args);
-      },
-    });
-  }
-
-  chatbaseLoaderPromise = new Promise((resolve, reject) => {
-    const existingScript = document.getElementById(CHATBASE_SCRIPT_ID);
-
-    if (existingScript) {
-      resolve();
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.src = 'https://www.chatbase.co/embed.min.js';
-    script.id = CHATBASE_SCRIPT_ID;
-    script.domain = 'www.chatbase.co';
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error('No se pudo cargar Chatbase.'));
-    document.body.appendChild(script);
   });
 
-  return chatbaseLoaderPromise;
+  if (!client) {
+    return;
+  }
+
+  recordWorkoutReport({
+    clientId: client.id,
+    body: `${getDayLabel(state.dayKey)} · ${currentDay.title} · ${feedback}. ${notes
+      .map(
+        (item) =>
+          `${item.name} (${item.done ? 'hecho' : 'pendiente'}): ${item.comment}`,
+      )
+      .join(' | ')}`,
+  });
+
+  state.section = 'messages';
+  state.contextKey = 'messages-sent';
+  renderApp();
 }
 
-function renderMessageList(container, items) {
-  container.innerHTML = items
-    .map(
-      (item) => `
-        <article class="message-item ${getMessageVariantClass(item)}">
-          <div class="message-item-top">
-            <span>${escapeHtml(item.title)}</span>
-            <time>${escapeHtml(item.date)}</time>
-          </div>
-          <strong>${escapeHtml(item.tag)}</strong>
-          <p>${escapeHtml(item.body)}</p>
-        </article>
-      `,
-    )
-    .join('');
+function renderDemoBanner() {
+  if (state.demoToken !== '101') {
+    demoBanner.hidden = true;
+    demoBanner.textContent = '';
+    return;
+  }
+
+  demoBanner.hidden = false;
+  demoBanner.innerHTML = `
+    <strong>Hola Saulo, listo para revisar tu app?</strong>
+    <p>1. Revisa rutinas, mensajes, suscripción y perfil. 2. Comprueba la experiencia completa del alumno. 3. Valida el seguimiento desde el panel del entrenador.</p>
+  `;
 }
 
-function getMessageVariantClass(item) {
-  const tag = item.tag.toLowerCase();
+function buildExerciseDraftKey(exerciseName, dayKey, clientId) {
+  return `${clientId || 'client'}:${dayKey}:${exerciseName}`;
+}
 
-  if (tag.includes('enviado')) {
+function getExistingComment(exerciseName) {
+  return (
+    state.exerciseNotes[
+      buildExerciseDraftKey(exerciseName, state.dayKey, state.clientId)
+    ] || ''
+  );
+}
+
+function isExerciseChecked(exerciseName) {
+  return (
+    state.exerciseChecks[
+      buildExerciseDraftKey(exerciseName, state.dayKey, state.clientId)
+    ] === true
+  );
+}
+
+function getMessageVariantClass(direction) {
+  if (direction === 'sent') {
     return 'message-item-sent';
   }
 
-  if (tag.includes('recordatorio')) {
+  if (direction === 'reminder') {
     return 'message-item-reminder';
   }
 
   return 'message-item-received';
 }
 
-function getUploadedPhotoSrc(label) {
-  return state.profileUploads[label] ?? '';
-}
-
-function getProgressPhotoSrc(label, tone) {
-  const scene = getProgressPhotoScene(tone);
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 300" role="img" aria-label="${escapeHtml(label)}">
-      <defs>
-        <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#f7f4ff" />
-          <stop offset="100%" stop-color="#ece7ff" />
-        </linearGradient>
-        <linearGradient id="floor" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#111114" />
-          <stop offset="100%" stop-color="#1f1f25" />
-        </linearGradient>
-      </defs>
-      <rect width="220" height="300" rx="24" fill="url(#wall)" />
-      <rect y="228" width="220" height="72" fill="url(#floor)" />
-      <rect x="22" y="24" width="176" height="242" rx="18" fill="rgba(255,255,255,0.44)" stroke="rgba(111,44,255,0.18)" />
-      ${scene}
-      <rect x="18" y="18" width="52" height="18" rx="9" fill="rgba(17,17,20,0.08)" />
-      <text x="28" y="31" fill="#111114" font-size="11" font-family="Arial, sans-serif" font-weight="700">${escapeHtml(label)}</text>
-    </svg>
-  `;
-
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-}
-
-function getProgressPhotoScene(tone) {
-  const base = `
-    <ellipse cx="110" cy="248" rx="40" ry="10" fill="rgba(17,17,20,0.18)" />
-    <ellipse cx="110" cy="68" rx="22" ry="10" fill="#1a1a1f" opacity="0.38" />
-    <circle cx="110" cy="88" r="22" fill="#efc8b0" />
-    <path d="M88 112c5-10 19-16 22-16s17 6 22 16l4 20c3 14-7 28-22 28h-8c-15 0-25-14-22-28z" fill="#17171b" />
-    <path d="M93 116c6-7 14-12 17-12s11 5 17 12l3 19c2 10-5 19-16 19h-8c-11 0-18-9-16-19z" fill="#7c3aed" />
-    <rect x="80" y="118" width="12" height="56" rx="6" fill="#efc8b0" />
-    <rect x="128" y="118" width="12" height="56" rx="6" fill="#efc8b0" />
-    <path d="M96 160h11l4 43c1 12-6 28-17 33l-6 2 2-34z" fill="#efc8b0" />
-    <path d="M124 160h-11l-4 43c-1 12 6 28 17 33l6 2-2-34z" fill="#efc8b0" />
-    <rect x="89" y="233" width="14" height="6" rx="3" fill="#0a0a0a" />
-    <rect x="118" y="233" width="14" height="6" rx="3" fill="#0a0a0a" />
-  `;
-
-  if (tone === 'side-left') {
-    return `
-      <ellipse cx="106" cy="248" rx="35" ry="10" fill="rgba(17,17,20,0.18)" />
-      <ellipse cx="104" cy="68" rx="20" ry="10" fill="#1a1a1f" opacity="0.38" />
-      <path d="M101 66c-11 2-18 11-18 22 0 13 8 22 20 22 7 0 13-2 17-8-7-1-11-5-11-12 0-9 5-17 13-19-4-4-12-7-21-5z" fill="#efc8b0" />
-      <path d="M96 106c8-2 19 2 26 10l6 18c4 14-6 29-22 31l-6 1c-12 1-21-8-21-20 0-20 4-33 17-40z" fill="#17171b" />
-      <path d="M98 111c7-2 16 2 21 8l4 15c3 10-4 21-16 23l-6 1c-9 1-15-6-15-15 0-15 3-25 12-32z" fill="#7c3aed" />
-      <path d="M121 119c7 7 11 19 8 32l-3 17h-10l-1-20c0-11-2-18-8-24z" fill="#efc8b0" />
-      <path d="M94 121c-4 12-5 26 0 42l4 10H88c-5-9-8-23-6-35 1-8 4-15 12-17z" fill="#efc8b0" />
-      <path d="M100 166h11l2 36c1 15-5 29-16 35l-4 2 1-33z" fill="#efc8b0" />
-      <path d="M112 166h8l1 37c1 14 4 27 12 34l-9 2c-9-7-14-20-14-34z" fill="#efc8b0" />
-      <rect x="91" y="233" width="14" height="6" rx="3" fill="#0a0a0a" />
-      <rect x="121" y="234" width="13" height="6" rx="3" fill="#0a0a0a" />
-    `;
+function getMessageBadge(direction) {
+  if (direction === 'sent') {
+    return 'Enviado';
   }
 
-  if (tone === 'side-right') {
-    return `
-      <ellipse cx="114" cy="248" rx="35" ry="10" fill="rgba(17,17,20,0.18)" />
-      <ellipse cx="116" cy="68" rx="20" ry="10" fill="#1a1a1f" opacity="0.38" />
-      <path d="M119 66c11 2 18 11 18 22 0 13-8 22-20 22-7 0-13-2-17-8 7-1 11-5 11-12 0-9-5-17-13-19 4-4 12-7 21-5z" fill="#efc8b0" />
-      <path d="M124 106c-8-2-19 2-26 10l-6 18c-4 14 6 29 22 31l6 1c12 1 21-8 21-20 0-20-4-33-17-40z" fill="#17171b" />
-      <path d="M122 111c-7-2-16 2-21 8l-4 15c-3 10 4 21 16 23l6 1c9 1 15-6 15-15 0-15-3-25-12-32z" fill="#7c3aed" />
-      <path d="M99 119c-7 7-11 19-8 32l3 17h10l1-20c0-11 2-18 8-24z" fill="#efc8b0" />
-      <path d="M126 121c4 12 5 26 0 42l-4 10h10c5-9 8-23 6-35-1-8-4-15-12-17z" fill="#efc8b0" />
-      <path d="M120 166h-11l-2 36c-1 15 5 29 16 35l4 2-1-33z" fill="#efc8b0" />
-      <path d="M108 166h-8l-1 37c-1 14-4 27-12 34l9 2c9-7 14-20 14-34z" fill="#efc8b0" />
-      <rect x="115" y="233" width="14" height="6" rx="3" fill="#0a0a0a" />
-      <rect x="86" y="234" width="13" height="6" rx="3" fill="#0a0a0a" />
-    `;
+  if (direction === 'reminder') {
+    return 'Recordatorio';
   }
 
-  if (tone === 'back') {
-    return `
-      <ellipse cx="110" cy="248" rx="40" ry="10" fill="rgba(17,17,20,0.18)" />
-      <ellipse cx="110" cy="68" rx="22" ry="10" fill="#1a1a1f" opacity="0.38" />
-      <circle cx="110" cy="88" r="22" fill="#d8b49e" />
-      <path d="M88 112c5-10 19-16 22-16s17 6 22 16l4 20c3 14-7 28-22 28h-8c-15 0-25-14-22-28z" fill="#17171b" />
-      <path d="M93 116c6-7 14-12 17-12s11 5 17 12l3 19c2 10-5 19-16 19h-8c-11 0-18-9-16-19z" fill="#6f38eb" />
-      <rect x="80" y="118" width="12" height="56" rx="6" fill="#d8b49e" />
-      <rect x="128" y="118" width="12" height="56" rx="6" fill="#d8b49e" />
-      <path d="M96 160h11l4 43c1 12-6 28-17 33l-6 2 2-34z" fill="#d8b49e" />
-      <path d="M124 160h-11l-4 43c-1 12 6 28 17 33l6 2-2-34z" fill="#d8b49e" />
-      <rect x="89" y="233" width="14" height="6" rx="3" fill="#0a0a0a" />
-      <rect x="118" y="233" width="14" height="6" rx="3" fill="#0a0a0a" />
-    `;
-  }
-
-  return base;
-}
-
-function getExistingComment(exerciseName) {
-  if (!state.report) {
-    return '';
-  }
-
-  const previousNote = state.report.notes.find(
-    (note) => note.name === exerciseName,
-  );
-  return previousNote ? previousNote.comment : '';
-}
-
-function getExerciseCheckKey(exerciseName) {
-  return `${state.day}:${exerciseName}`;
-}
-
-function isExerciseChecked(exerciseName) {
-  return state.exerciseChecks[getExerciseCheckKey(exerciseName)] === true;
-}
-
-function setExerciseChecked(exerciseName, checked) {
-  if (!exerciseName) {
-    return;
-  }
-
-  state.exerciseChecks[getExerciseCheckKey(exerciseName)] = checked;
-}
-
-function getSentMessageDate() {
-  const now = new Date();
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  return `Hoy · ${hours}:${minutes}`;
-}
-
-async function registerServiceWorker() {
-  if (!('serviceWorker' in navigator)) {
-    return;
-  }
-
-  try {
-    const registrations = await navigator.serviceWorker.getRegistrations();
-    await Promise.all(
-      registrations
-        .filter((registration) => registration.scope.includes('/app/'))
-        .map((registration) => registration.unregister()),
-    );
-
-    if ('caches' in window) {
-      const cacheKeys = await window.caches.keys();
-      await Promise.all(
-        cacheKeys
-          .filter((key) => key.startsWith('saulo-fitness-demo-'))
-          .map((key) => window.caches.delete(key)),
-      );
-    }
-  } catch (error) {
-    console.error('No se pudo limpiar el service worker', error);
-  }
+  return 'Recibido';
 }
 
 function hydrateStateFromUrl() {
   const params = new URLSearchParams(window.location.search);
   const requestedSection = params.get('section');
-  const requestedDay = Number(params.get('day'));
+  const requestedDay = params.get('day');
   const requestedDemo = params.get('demo');
+  const requestedClaim = params.get('claim');
   const requestedFocus = params.get('focus');
+  const requestedClient = params.get('client');
   const validSections = new Set([
     'routines',
     'messages',
@@ -1361,38 +809,56 @@ function hydrateStateFromUrl() {
     state.section = requestedSection;
   }
 
-  if (Number.isInteger(requestedDay) && routinesByDay[requestedDay]) {
-    state.day = requestedDay;
-  }
+  state.dayKey = resolveDayKey(requestedDay);
+  state.contextKey =
+    state.section === 'routines' ? state.dayKey : 'messages-inbox';
 
   if (requestedDemo) {
     state.demoToken = requestedDemo;
+  }
+
+  if (requestedClaim === '1') {
+    state.claimRequested = true;
   }
 
   if (requestedFocus) {
     state.contextKey = requestedFocus;
   }
 
-  if (state.section === 'routines') {
-    state.contextKey = `day-${state.day}`;
-  } else if (!getContextOption(state.section, state.contextKey)) {
-    state.contextKey = getDefaultContextKey(state.section);
+  if (requestedClient) {
+    state.clientId = requestedClient;
   }
 }
 
 function syncUrlState() {
   const params = new URLSearchParams(window.location.search);
   params.set('section', state.section);
+  params.set('client', state.clientId);
+
   if (state.section === 'routines') {
-    params.set('day', String(state.day));
+    params.set('day', state.dayKey);
   } else {
     params.delete('day');
   }
+
   if (state.contextKey) {
     params.set('focus', state.contextKey);
   } else {
     params.delete('focus');
   }
+
+  if (state.demoToken) {
+    params.set('demo', state.demoToken);
+  } else {
+    params.delete('demo');
+  }
+
+  if (state.claimRequested) {
+    params.set('claim', '1');
+  } else {
+    params.delete('claim');
+  }
+
   window.history.replaceState(
     {},
     '',
@@ -1401,11 +867,26 @@ function syncUrlState() {
 }
 
 function getDefaultContextKey(section) {
-  return contextOptionsBySection[section]?.[0]?.key ?? null;
+  return contextOptionsBySection[section]?.[0]?.key || null;
 }
 
 function getContextOption(section, key) {
   return contextOptionsBySection[section]?.find((option) => option.key === key);
+}
+
+async function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) {
+    return;
+  }
+
+  try {
+    await navigator.serviceWorker.register('/app/sw.js?v=saulo-v6', {
+      scope: './',
+      updateViaCache: 'none',
+    });
+  } catch (error) {
+    console.error('No se pudo registrar el service worker', error);
+  }
 }
 
 function getYoutubeEmbedUrl(url) {
@@ -1426,18 +907,9 @@ function getYoutubeEmbedUrl(url) {
       const videoId = parsedUrl.searchParams.get('v');
       return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
     }
-
-    return null;
   } catch (error) {
-    return null;
+    console.warn('No se pudo obtener el vídeo de YouTube', error);
   }
-}
 
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
+  return null;
 }

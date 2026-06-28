@@ -36,6 +36,21 @@ body {
   font-family: 'Outfit', sans-serif;
 }
 
+body.is-production-hold {
+  background:
+    radial-gradient(
+      circle at 18% 18%,
+      rgba(143, 44, 255, 0.24),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 82% 78%,
+      rgba(95, 28, 200, 0.18),
+      transparent 28%
+    ),
+    linear-gradient(180deg, #09030f 0%, #030105 100%);
+}
+
 .landing-shell {
   min-height: 100vh;
 }
@@ -292,6 +307,50 @@ h1 span {
   text-align: right;
 }
 
+body.is-production-hold .background-photo,
+body.is-production-hold .brand-mark,
+body.is-production-hold .brand-eyebrow,
+body.is-production-hold .footer-brand,
+body.is-production-hold .footer-links {
+  display: none;
+}
+
+body.is-production-hold .hero-stage {
+  align-content: center;
+  justify-items: center;
+  gap: 32px;
+  padding: 40px 24px;
+}
+
+body.is-production-hold .hero-copy {
+  max-width: 20rem;
+  padding-top: 0;
+  text-align: center;
+}
+
+body.is-production-hold h1 {
+  max-width: none;
+  font-size: clamp(2.9rem, 7vw, 5.4rem);
+  line-height: 0.98;
+}
+
+body.is-production-hold .site-footer {
+  display: block;
+  margin-top: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+body.is-production-hold .footer-credit {
+  justify-self: center;
+  text-align: center;
+  color: rgba(251, 248, 255, 0.72);
+}
+
 @media (max-width: 960px) {
   .hero-stage {
     padding: 24px 20px;
@@ -312,6 +371,11 @@ h1 span {
   .footer-credit {
     justify-self: start;
     text-align: left;
+  }
+
+  body.is-production-hold .footer-credit {
+    justify-self: center;
+    text-align: center;
   }
 }
 

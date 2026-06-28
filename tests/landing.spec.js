@@ -1,37 +1,34 @@
 const { test, expect } = require('@playwright/test');
 
-test('renders the brand landing and keeps the public flow clean', async ({
-  page,
-}) => {
+test('renders the production hold landing', async ({ page }) => {
   await page.goto('/');
 
   await expect(
     page.getByRole('heading', {
-      name: 'Tu mejor version, nuestra mision.',
+      name: 'Web en produccion, nos veremos pronto.',
     }),
   ).toBeVisible();
-  await expect(page.getByAltText('Logo de Saulo Fitness')).toBeVisible();
   await expect(
-    page.getByRole('link', { name: 'DESCUBRIR LA APP' }),
-  ).toBeVisible();
-  await expect(page.getByRole('link', { name: 'CONTACTO' })).toBeVisible();
+    page.getByRole('link', { name: 'Web Fuengirola Studio' }),
+  ).toHaveAttribute('href', 'https://webfuengirola.com');
+  await expect(page.locator('.brand-mark')).toBeHidden();
+  await expect(page.locator('.footer-links')).toBeHidden();
   await expect(page.getByText('Mensajes de la demo')).toHaveCount(0);
   await expect(page.locator('form')).toHaveCount(0);
 });
 
-test('links the landing CTA to the public student app demo', async ({
+test('keeps the landing out of the public student app flow', async ({
   page,
 }) => {
   await page.goto('/');
 
-  await page.getByRole('link', { name: 'DESCUBRIR LA APP' }).click();
-
+  await expect(page.locator('a[href^="/app"]')).toHaveCount(0);
+  await expect(page.locator('a[href="/app/"]')).toHaveCount(0);
+  await expect(page.locator('a[href="/app"]')).toHaveCount(0);
+  await expect(page.locator('a[href*="/app/?demo="]')).toHaveCount(0);
   await expect(
-    page.getByRole('heading', { name: 'Saulo Fitness APP' }),
+    page.getByRole('heading', {
+      name: 'Web en produccion, nos veremos pronto.',
+    }),
   ).toBeVisible();
-  await expect(page.locator('#topbar-title')).toHaveText('Rutinas del alumno');
-  await expect(page.locator('#context-nav')).toContainText('Día 1');
-  await expect(page.locator('#demo-banner strong')).toHaveText(
-    'Hola Saulo, listo para comprobar la primera demo?',
-  );
 });

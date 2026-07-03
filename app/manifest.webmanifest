@@ -1,12 +1,12 @@
 {
   "name": "Saulo Fitness APP",
   "short_name": "Saulo APP",
-  "description": "Demo instalable de Saulo Fitness APP para enseñar rutina, panel y seguimiento en movil.",
+  "description": "App instalable de Saulo Fitness APP para rutina, seguimiento y comunicación del alumno.",
   "start_url": "/app/?section=routines&day=1",
   "scope": "/app/",
   "display": "standalone",
-  "background_color": "#f4f1eb",
-  "theme_color": "#f4f1eb",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "orientation": "portrait",
   "icons": [
     {

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saulo Fitness APP · Sala de espera</title>
+    <meta
+      name="description"
+      content="Sala de espera para activar e instalar Saulo Fitness APP."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/waiting-room/styles.css" />
+  </head>
+  <body>
+    <main class="waiting-shell">
+      <section class="waiting-card">
+        <p class="brand-kicker">Saulo Fitness APP</p>
+        <h1 id="waiting-title">Preparando tu acceso</h1>
+        <p class="waiting-copy" id="waiting-copy">
+          Validando tu enlace para darte acceso a la app.
+        </p>
+
+        <div class="waiting-panel" id="waiting-panel">
+          <p class="waiting-status">Cargando enlace...</p>
+        </div>
+
+        <div class="waiting-actions" id="waiting-actions" hidden>
+          <a class="primary-button" id="waiting-open-app" href="#">
+            Abrir y activar tu app
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <script src="/waiting-room/app.js" defer></script>
+  </body>
+</html>

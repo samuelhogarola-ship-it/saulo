@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Legal | Saulo Fitness</title>
+    <meta
+      name="description"
+      content="Información legal, privacidad y cookies de la web pública de Saulo Fitness."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./landing.js" defer></script>
+  </head>
+  <body class="inner-page">
+    <header class="site-header">
+      <a class="site-logo" href="./index.html">Saulo Fitness</a>
+      <button
+        class="site-header__toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        data-nav-toggle
+      >
+        Menú
+      </button>
+      <div class="lang-switch" aria-label="Selector de idioma">
+        <a class="lang-switch__link is-active" href="./legal.html">🇪🇸 ES</a>
+        <a class="lang-switch__link" href="./legal-pt-br.html">🇧🇷 PT-BR</a>
+      </div>
+      <nav class="site-nav" id="site-nav" data-site-nav>
+        <a href="./index.html">Inicio</a>
+        <a href="./casos-exito.html">Casos de éxito</a>
+        <a href="./sobre-mi.html">Sobre mí</a>
+        <a href="./eventos">Eventos</a>
+        <a
+          class="site-nav__cta"
+          href="https://wa.me/34622923988"
+          target="_blank"
+          rel="noreferrer"
+        >
+          WhatsApp
+        </a>
+      </nav>
+    </header>
+
+    <main class="landing-page">
+      <section class="inner-hero">
+        <p class="section-label">Legal</p>
+        <h1>Información legal básica de la web pública.</h1>
+      </section>
+
+      <section class="content-section">
+        <article class="about-card" id="aviso-legal">
+          <h3>Aviso legal</h3>
+          <p>
+            Esta web muestra información pública de Saulo Fitness y ofrece
+            formularios de contacto y registro a eventos.
+          </p>
+        </article>
+        <article class="about-card" id="privacidad">
+          <h3>Privacidad</h3>
+          <p>
+            Los datos enviados mediante formularios se utilizan únicamente para
+            responder al contacto o gestionar la solicitud de plaza en eventos.
+          </p>
+        </article>
+        <article class="about-card" id="cookies">
+          <h3>Cookies</h3>
+          <p>
+            Esta versión de la web usa almacenamiento local mínimo para mejorar
+            la experiencia de la intro y la navegación pública.
+          </p>
+        </article>
+      </section>
+
+      <footer class="site-footer-bar">
+        <div class="site-footer-bar__legal">
+          <a href="./legal.html#aviso-legal">Aviso legal</a>
+          <a href="./legal.html#privacidad">Privacidad</a>
+          <a href="./legal.html#cookies">Cookies</a>
+        </div>
+        <p>
+          by
+          <a href="https://webfuengirola.com" target="_blank" rel="noreferrer"
+            >Web Fuengirola Studio</a
+          >
+        </p>
+      </footer>
+    </main>
+  </body>
+</html>

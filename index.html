@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Saulo Fitness APP</title>
+    <title>Saulo Fitness</title>
     <meta
       name="description"
-      content="Saulo Fitness APP: tu mejor version, nuestra mision."
+      content="Transformación premium, seguimiento real y eventos presenciales de Saulo Fitness."
     />
-    <meta property="og:title" content="Saulo Fitness APP" />
+    <meta property="og:title" content="Saulo Fitness" />
     <meta
       property="og:description"
-      content="La landing principal de Saulo Fitness APP para presentar la marca y la experiencia del producto."
+      content="Landing oficial de Saulo Fitness con casos de éxito, presentación, eventos y contacto directo."
     />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://saulofitness.com/aaa.png" />
@@ -23,63 +23,166 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
+    <script src="./landing.js" defer></script>
   </head>
-  <body class="is-production-hold">
-    <main class="landing-shell">
-      <section class="hero-stage" aria-labelledby="landing-title">
-        <div class="background-photo" aria-hidden="true"></div>
-        <div class="background-vignette" aria-hidden="true"></div>
-        <div class="background-glow glow-top" aria-hidden="true"></div>
-        <div class="background-glow glow-bottom" aria-hidden="true"></div>
+  <body>
+    <div class="intro-screen" data-intro-screen aria-hidden="true">
+      <div class="intro-screen__bg"></div>
+      <div class="intro-screen__copy">
+        <p>Bienvenido a</p>
+        <div class="intro-screen__title">Saulo Fitness</div>
+      </div>
+    </div>
 
-        <img
-          class="brand-mark"
-          src="./Captura%20de%20pantalla%202026-06-10%20a%20las%2020.40.52.png"
-          alt="Logo de Saulo Fitness"
-        />
+    <header class="site-header">
+      <a class="site-logo" href="./index.html">Saulo Fitness</a>
+      <button
+        class="site-header__toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        data-nav-toggle
+      >
+        Menú
+      </button>
+      <div class="lang-switch" aria-label="Selector de idioma">
+        <a class="lang-switch__link is-active" href="./index.html">🇪🇸 ES</a>
+        <a class="lang-switch__link" href="./index-pt-br.html">🇧🇷 PT-BR</a>
+      </div>
+      <nav class="site-nav" id="site-nav" data-site-nav>
+        <a href="./index.html">Inicio</a>
+        <a href="./casos-exito.html">Casos de éxito</a>
+        <a href="./sobre-mi.html">Sobre mí</a>
+        <a href="/eventos">Eventos</a>
+        <a
+          class="site-nav__cta"
+          href="https://wa.me/34622923988"
+          target="_blank"
+          rel="noreferrer"
+        >
+          WhatsApp
+        </a>
+      </nav>
+    </header>
 
-        <div class="hero-copy">
-          <p class="brand-eyebrow">Saulo Fitness APP</p>
-          <h1 id="landing-title">Web en produccion, nos veremos pronto.</h1>
+    <main class="landing-page">
+      <section class="hero hero--home" id="inicio">
+        <div class="hero__background"></div>
+        <div class="hero__overlay"></div>
+        <div class="hero__content">
+          <div class="hero__copy">
+            <h1>Tu mejor versión no se improvisa.</h1>
+            <p>
+              Entrena con dirección, seguimiento real y una experiencia premium
+              diseñada para transformar cuerpo, confianza y disciplina.
+            </p>
+            <div class="hero__actions">
+              <a
+                class="primary-link"
+                href="https://wa.me/34622923988"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Hablar por WhatsApp
+              </a>
+              <a class="secondary-link" href="mailto:info@webfuengirola.com">
+                Escribir por email
+              </a>
+            </div>
+          </div>
+          <div class="hero__aside">
+            <div class="hero__card">
+              <span>Seguimiento real</span>
+              <strong>Rutina, hábitos y foco</strong>
+              <p>
+                Plan premium y acompañamiento directo para no entrenar a ciegas.
+              </p>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <footer class="site-footer" aria-label="Pie de pagina">
-          <div class="footer-brand">
-            <p class="footer-kicker">Saulo Fitness APP</p>
-            <p class="footer-copy">Copyright Saulo Fitness 2026.</p>
-          </div>
+      <section class="content-section home-links-section">
+        <div class="section-heading">
+          <p class="section-label">Explora Saulo Fitness</p>
+          <h2>Una estructura clara, sin mezclar la app con la landing.</h2>
+          <p>
+            Navega por cada bloque en su propia página y encuentra lo que
+            necesitas sin ruido.
+          </p>
+        </div>
+        <div class="home-links-grid">
+          <a class="home-link-card" href="./casos-exito.html">
+            <span>Casos de éxito</span>
+            <h3>Antes, después y evolución real.</h3>
+            <p>
+              Fotografías, cambios visibles y una evolución construida con
+              criterio.
+            </p>
+          </a>
+          <a class="home-link-card" href="./sobre-mi.html">
+            <span>Sobre mí</span>
+            <h3>Conoce mi enfoque como personal trainer.</h3>
+            <p>
+              Filosofía de trabajo, acompañamiento y dirección para un cambio
+              serio.
+            </p>
+          </a>
+          <a class="home-link-card" href="/eventos">
+            <span>Eventos</span>
+            <h3>Reserva tu plaza en los próximos encuentros.</h3>
+            <p>
+              Eventos públicos, detalles individuales y registro directo online.
+            </p>
+          </a>
+        </div>
+      </section>
 
-          <div class="footer-links">
-            <div>
-              <p class="footer-title">Legal</p>
-              <div class="footer-list">
-                <span>Aviso legal</span>
-                <span>Privacidad</span>
-                <span>Cookies</span>
+      <section class="content-section events-section">
+        <div class="section-heading">
+          <p class="section-label">Eventos</p>
+          <h2>Encuentros presenciales con plazas limitadas.</h2>
+          <p>
+            Entrena en directo, siente la energía del grupo y reserva tu plaza
+            en los próximos eventos.
+          </p>
+        </div>
+        <div class="events-preview" data-events-preview>
+          <div class="events-preview__grid" data-events-grid>
+            <article class="event-preview-card is-loading">
+              <div class="event-preview-card__poster"></div>
+              <div class="event-preview-card__body">
+                <span>Cargando evento</span>
               </div>
-            </div>
-
-            <div>
-              <p class="footer-title">Contacto</p>
-              <div class="footer-list">
-                <span>Web en produccion</span>
-                <span>Saulo Fitness APP</span>
-              </div>
-            </div>
+            </article>
           </div>
-
-          <div class="footer-credit">
-            by
+          <div class="events-preview__footer">
+            <a class="primary-link" href="/eventos">Ver todos los eventos</a>
             <a
-              href="https://webfuengirola.com"
+              class="secondary-link"
+              href="https://wa.me/34622923988"
               target="_blank"
               rel="noreferrer"
             >
-              Web Fuengirola Studio
+              Consultar por WhatsApp
             </a>
           </div>
-        </footer>
+        </div>
       </section>
+
+      <footer class="site-footer-bar">
+        <div class="site-footer-bar__legal">
+          <a href="./legal.html#aviso-legal">Aviso legal</a>
+          <a href="./legal.html#privacidad">Privacidad</a>
+          <a href="./legal.html#cookies">Cookies</a>
+        </div>
+        <p>
+          by
+          <a href="https://webfuengirola.com" target="_blank" rel="noreferrer"
+            >Web Fuengirola Studio</a
+          >
+        </p>
+      </footer>
     </main>
   </body>
 </html>

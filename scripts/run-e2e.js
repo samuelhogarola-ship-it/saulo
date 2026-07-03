@@ -1,15 +1,18 @@
 const http = require('node:http');
+const net = require('node:net');
 const { spawn } = require('node:child_process');
 
 const HOST = '127.0.0.1';
-const PORT = 4173;
-const SERVER_URL = `http://${HOST}:${PORT}`;
+const DEFAULT_PORT = Number(process.env.PORT || 4173);
+const MAX_PORT = 65_535;
 const SERVER_START_TIMEOUT_MS = 30_000;
 const SERVER_POLL_INTERVAL_MS = 500;
 
 async function main() {
+  const port = await findAvailablePort(DEFAULT_PORT);
+  const serverUrl = `http://${HOST}:${port}`;
   const childEnv = createCleanEnv({
-    PORT: String(PORT),
+    PORT: String(port),
   });
 
   const server = spawn(process.execPath, ['server.js'], {
@@ -51,14 +54,14 @@ async function main() {
 
   try {
     await waitForServer(
-      SERVER_URL,
+      serverUrl,
       SERVER_START_TIMEOUT_MS,
       () => serverExitedError,
     );
 
     settled = true;
 
-    const playwrightExitCode = await runPlaywright();
+    const playwrightExitCode = await runPlaywright(serverUrl);
     cleanup();
     process.exit(playwrightExitCode);
   } catch (error) {
@@ -68,12 +71,13 @@ async function main() {
   }
 }
 
-function runPlaywright() {
+function runPlaywright(serverUrl) {
   return new Promise((resolve, reject) => {
     const npxCommand = process.platform === 'win32' ? 'npx.cmd' : 'npx';
     const child = spawn(npxCommand, ['playwright', 'test'], {
       stdio: 'inherit',
       env: createCleanEnv({
+        PLAYWRIGHT_BASE_URL: serverUrl,
         PLAYWRIGHT_MANAGED_SERVER: 'false',
         NODE_OPTIONS: appendNodeOption(
           process.env.NODE_OPTIONS,
@@ -84,6 +88,74 @@ function runPlaywright() {
 
     child.once('error', reject);
     child.once('exit', (code) => resolve(code ?? 1));
+  });
+}
+
+async function findAvailablePort(startPort) {
+  if (
+    startPort > 0 &&
+    startPort <= MAX_PORT &&
+    !(await isHttpPortResponding(startPort)) &&
+    (await canBindPort(startPort))
+  ) {
+    return startPort;
+  }
+
+  return reserveEphemeralPort();
+}
+
+function isHttpPortResponding(port) {
+  return new Promise((resolve) => {
+    const request = http.get(`http://${HOST}:${port}/`, (response) => {
+      response.resume();
+      resolve(true);
+    });
+
+    request.setTimeout(250, () => {
+      request.destroy();
+      resolve(false);
+    });
+
+    request.on('error', () => resolve(false));
+  });
+}
+
+function canBindPort(port) {
+  return new Promise((resolve) => {
+    const probe = net.createServer();
+
+    probe.once('error', () => {
+      resolve(false);
+    });
+
+    probe.once('listening', () => {
+      probe.close(() => resolve(true));
+    });
+
+    probe.listen(port, HOST);
+  });
+}
+
+function reserveEphemeralPort() {
+  return new Promise((resolve, reject) => {
+    const probe = net.createServer();
+
+    probe.once('error', reject);
+    probe.once('listening', () => {
+      const address = probe.address();
+      const port = typeof address === 'object' && address ? address.port : null;
+
+      probe.close(() => {
+        if (!port) {
+          reject(new Error('No se pudo reservar un puerto local libre.'));
+          return;
+        }
+
+        resolve(port);
+      });
+    });
+
+    probe.listen(0, HOST);
   });
 }
 

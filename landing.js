@@ -47,7 +47,7 @@ if (deckStackRoot && typeof window.initDeckStack === 'function') {
 
 function runIntro() {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const hasSeenIntro = sessionStorage.getItem(INTRO_KEY) === 'true';
+  const hasSeenIntro = readIntroFlag();
 
   if (reduceMotion.matches || hasSeenIntro) {
     introScreen.classList.add('is-hidden');
@@ -56,7 +56,7 @@ function runIntro() {
   }
 
   document.body.classList.add('has-intro');
-  sessionStorage.setItem(INTRO_KEY, 'true');
+  writeIntroFlag();
 
   window.setTimeout(() => {
     introScreen.classList.add('is-animating');
@@ -66,6 +66,22 @@ function runIntro() {
     introScreen.classList.add('is-hidden');
     document.body.classList.add('intro-complete');
   }, 3180);
+}
+
+function readIntroFlag() {
+  try {
+    return window.localStorage.getItem(INTRO_KEY) === 'true';
+  } catch (_error) {
+    return false;
+  }
+}
+
+function writeIntroFlag() {
+  try {
+    window.localStorage.setItem(INTRO_KEY, 'true');
+  } catch (_error) {
+    // Ignore storage failures and keep the intro working for this visit.
+  }
 }
 
 async function loadFeaturedEvents() {

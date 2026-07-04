@@ -4,6 +4,7 @@ const introScreen = document.querySelector('[data-intro-screen]');
 const navToggle = document.querySelector('[data-nav-toggle]');
 const siteNav = document.querySelector('[data-site-nav]');
 const eventsGrid = document.querySelector('[data-events-grid]');
+const deckStackRoot = document.querySelector('[data-deck-stack]');
 const isFilePreview = window.location.protocol === 'file:';
 
 if (navToggle && siteNav) {
@@ -28,9 +29,25 @@ if (eventsGrid) {
   loadFeaturedEvents();
 }
 
+if (deckStackRoot && typeof window.initDeckStack === 'function') {
+  window.initDeckStack(deckStackRoot, {
+    mobileBreakpoint: 820,
+    desktopCardShift: 44,
+    desktopCardScaleLoss: 0.02,
+    desktopMediaShift: -22,
+    desktopMediaRotate: -4.5,
+    desktopMediaScaleGain: 0.03,
+    mobileCardShift: 28,
+    mobileCardScaleLoss: 0.016,
+    mobileMediaShift: -14,
+    mobileMediaRotate: -2.4,
+    mobileMediaScaleGain: 0.02,
+  });
+}
+
 function runIntro() {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const hasSeenIntro = sessionStorage.getItem(INTRO_KEY) === 'true';
+  const hasSeenIntro = readIntroFlag();
 
   if (reduceMotion.matches || hasSeenIntro) {
     introScreen.classList.add('is-hidden');
@@ -39,16 +56,32 @@ function runIntro() {
   }
 
   document.body.classList.add('has-intro');
-  sessionStorage.setItem(INTRO_KEY, 'true');
+  writeIntroFlag();
 
   window.setTimeout(() => {
     introScreen.classList.add('is-animating');
-  }, 380);
+  }, 1180);
 
   window.setTimeout(() => {
     introScreen.classList.add('is-hidden');
     document.body.classList.add('intro-complete');
-  }, 3000);
+  }, 3180);
+}
+
+function readIntroFlag() {
+  try {
+    return window.localStorage.getItem(INTRO_KEY) === 'true';
+  } catch (_error) {
+    return false;
+  }
+}
+
+function writeIntroFlag() {
+  try {
+    window.localStorage.setItem(INTRO_KEY, 'true');
+  } catch (_error) {
+    // Ignore storage failures and keep the intro working for this visit.
+  }
 }
 
 async function loadFeaturedEvents() {
@@ -65,7 +98,7 @@ async function loadFeaturedEvents() {
   }
 
   try {
-    const response = await fetch('./api/public/events?limit=3');
+    const response = await fetch('./api/public/events?limit=5');
     if (!response.ok) {
       throw new Error('No se pudieron cargar los eventos.');
     }
@@ -89,15 +122,15 @@ async function loadFeaturedEvents() {
       .map(
         (event) => `
           <article class="event-preview-card">
-            <div class="event-preview-card__poster" style="background-image:url('${escapeHtml(
-              event.posterUrl,
-            )}')"></div>
             <div class="event-preview-card__body">
-              <p class="event-preview-card__meta">${formatDate(event.startsAt)} · ${escapeHtml(
-                event.location,
-              )}</p>
-              <h3>${escapeHtml(event.title)}</h3>
-              <p>${escapeHtml(event.summary)}</p>
+              <p class="event-preview-card__date">${formatDate(event.startsAt)}</p>
+              <div class="event-preview-card__content">
+                <p class="event-preview-card__meta">${escapeHtml(
+                  event.location,
+                )}</p>
+                <h3>${escapeHtml(event.title)}</h3>
+                <p>${escapeHtml(event.summary)}</p>
+              </div>
               <div class="event-preview-card__footer">
                 <span>${escapeHtml(event.priceLabel)}</span>
                 <a href="/eventos/${escapeHtml(event.slug)}${pageLanguage === 'pt-br' ? '?lang=pt-br' : ''}">${escapeHtml(
@@ -143,8 +176,7 @@ function formatDate(value) {
   return date.toLocaleString(pageLanguage === 'pt-br' ? 'pt-BR' : 'es-ES', {
     day: '2-digit',
     month: 'short',
-    hour: '2-digit',
-    minute: '2-digit',
+    year: 'numeric',
   });
 }
 

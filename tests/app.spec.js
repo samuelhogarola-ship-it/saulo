@@ -431,3 +431,38 @@ test.describe('PWA behavior', () => {
     await context.setOffline(false);
   });
 });
+
+test('opens the events panel inside app saulo and allows trainer login', async ({
+  page,
+}) => {
+  await page.goto('/app/eventos');
+
+  await expect(
+    page.getByRole('heading', { name: 'APP Eventos' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', {
+      name: 'Panel de eventos dentro de Saulo Fitness APP',
+    }),
+  ).toBeVisible();
+
+  await page.getByLabel('Email').fill('local@saulofitness.app');
+  await page.getByLabel('Contraseña').fill('saulo1234');
+  await page.getByRole('button', { name: 'Entrar' }).click();
+
+  await expect(
+    page.getByRole('heading', { name: 'Gestiona eventos y registros' }),
+  ).toBeVisible();
+  await expect(page.getByText('local@saulofitness.app')).toBeVisible();
+});
+
+test('redirects the old events admin route to the app saulo panel', async ({
+  page,
+}) => {
+  await page.goto('/admin/eventos');
+
+  await expect(page).toHaveURL(/\/app\/eventos\/?$/);
+  await expect(
+    page.getByRole('heading', { name: 'APP Eventos' }),
+  ).toBeVisible();
+});

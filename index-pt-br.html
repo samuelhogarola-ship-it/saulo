@@ -22,7 +22,11 @@
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="./core/deck-stack.css" />
+    <link rel="stylesheet" href="./core/cookies-banner.css" />
     <link rel="stylesheet" href="./styles.css" />
+    <script src="./core/deck-stack.js" defer></script>
+    <script src="./core/cookies-banner.js" defer></script>
     <script src="./landing.js" defer></script>
   </head>
   <body>
@@ -105,72 +109,154 @@
         </div>
       </section>
 
-      <section class="content-section home-links-section">
-        <div class="section-heading">
-          <p class="section-label">Explore Saulo Fitness</p>
-          <h2>Uma estrutura clara, sem misturar o app com a landing.</h2>
-          <p>
-            Navegue por cada bloco na sua própria página e encontre o que você
-            precisa sem ruído.
-          </p>
-        </div>
-        <div class="home-links-grid">
-          <a class="home-link-card" href="./casos-exito-pt-br.html">
-            <span>Casos de sucesso</span>
-            <h3>Antes, depois e evolução real.</h3>
-            <p>
-              Fotos, mudanças visíveis e uma evolução construída com critério.
-            </p>
-          </a>
-          <a class="home-link-card" href="./sobre-mi-pt-br.html">
-            <span>Sobre mim</span>
-            <h3>Conheça minha abordagem como personal trainer.</h3>
-            <p>
-              Filosofia de trabalho, acompanhamento e direção para uma mudança
-              séria.
-            </p>
-          </a>
-          <a class="home-link-card" href="/eventos?lang=pt-br">
-            <span>Eventos</span>
-            <h3>Reserve sua vaga nos próximos encontros.</h3>
-            <p>
-              Eventos públicos, detalhes individuais e inscrição direta online.
-            </p>
-          </a>
-        </div>
-      </section>
-
-      <section class="content-section events-section">
-        <div class="section-heading">
-          <p class="section-label">Eventos</p>
-          <h2>Encontros presenciais com vagas limitadas.</h2>
-          <p>
-            Treine ao vivo, sinta a energia do grupo e reserve sua vaga nos
-            próximos eventos.
-          </p>
-        </div>
-        <div class="events-preview" data-events-preview data-lang="pt-br">
-          <div class="events-preview__grid" data-events-grid>
-            <article class="event-preview-card is-loading">
-              <div class="event-preview-card__poster"></div>
-              <div class="event-preview-card__body">
-                <span>Carregando evento</span>
+      <section
+        class="stacking-cards__collection home-stack"
+        data-deck-stack
+        aria-label="Seções em destaque"
+      >
+        <div class="stacking-cards__list" data-deck-stack-list>
+          <article
+            class="stacking-cards__item stacking-cards__item--success"
+            data-stacking-cards-item
+            data-deck-stack-card
+          >
+            <div class="stacking-cards__item-top">
+              <span>Saulo Fitness</span>
+              <span>01 / 03</span>
+            </div>
+            <div class="stacking-cards__item-layout">
+              <div class="stacking-cards__item-copy">
+                <p class="section-label">Casos de sucesso</p>
+                <h2>
+                  Resultados visíveis, critério real e transformação com
+                  direção.
+                </h2>
+                <p>
+                  Antes, depois e evolução construída com acompanhamento real,
+                  hábitos e foco.
+                </p>
+                <div class="stacking-cards__item-actions">
+                  <a class="primary-link" href="./casos-exito-pt-br.html"
+                    >Ver casos de sucesso</a
+                  >
+                  <a
+                    class="secondary-link secondary-link--whatsapp"
+                    href="https://wa.me/34622923988"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Falar pelo WhatsApp
+                  </a>
+                </div>
               </div>
-            </article>
-          </div>
-          <div class="events-preview__footer">
-            <a class="primary-link" href="/eventos?lang=pt-br"
-              >Ver todos os eventos</a
+              <div
+                class="stacking-cards__item-visual stacking-cards__item-visual--success"
+                data-stacking-cards-img
+                data-deck-stack-media
+              >
+                <span>ANTES / DEPOIS</span>
+                <strong>Acompanhamento premium e progresso mensurável.</strong>
+              </div>
+            </div>
+          </article>
+
+          <article
+            class="stacking-cards__item stacking-cards__item--about"
+            data-stacking-cards-item
+            data-deck-stack-card
+          >
+            <div class="stacking-cards__item-top">
+              <span>Saulo Fitness</span>
+              <span>02 / 03</span>
+            </div>
+            <div class="stacking-cards__item-layout">
+              <div class="stacking-cards__item-copy">
+                <p class="section-label">Sobre mim</p>
+                <h2>
+                  Personal trainer, estrutura clara e acompanhamento de verdade.
+                </h2>
+                <p>
+                  Conheça a abordagem, a filosofia de trabalho e a forma de
+                  construir uma mudança séria.
+                </p>
+                <div class="stacking-cards__item-actions">
+                  <a class="primary-link" href="./sobre-mi-pt-br.html"
+                    >Entrar em sobre mim</a
+                  >
+                  <a
+                    class="secondary-link"
+                    href="mailto:info@webfuengirola.com"
+                  >
+                    Escrever por e-mail
+                  </a>
+                </div>
+              </div>
+              <div
+                class="stacking-cards__item-visual stacking-cards__item-visual--about"
+                data-stacking-cards-img
+                data-deck-stack-media
+              >
+                <span>METODOLOGIA</span>
+                <strong>Treino, hábitos e decisões bem guiadas.</strong>
+              </div>
+            </div>
+          </article>
+
+          <article
+            class="stacking-cards__item stacking-cards__item--events"
+            data-stacking-cards-item
+            data-deck-stack-card
+          >
+            <div class="stacking-cards__item-top">
+              <span>Saulo Fitness</span>
+              <span>03 / 03</span>
+            </div>
+            <div
+              class="stacking-cards__item-layout stacking-cards__item-layout--events"
             >
-            <a
-              class="secondary-link"
-              href="https://wa.me/34622923988"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Falar pelo WhatsApp
-            </a>
-          </div>
+              <div class="stacking-cards__item-copy">
+                <p class="section-label">Próximos eventos</p>
+                <h2>Cinco datas já programadas para treinar ao vivo.</h2>
+                <p>
+                  Agenda aberta a cada três semanas, acesso à planilha e vagas
+                  limitadas para se inscrever já.
+                </p>
+              </div>
+              <div
+                class="stacking-cards__item-visual stacking-cards__item-visual--events"
+                data-stacking-cards-img
+                data-deck-stack-media
+              >
+                <span>INSCREVA-SE JÁ</span>
+                <strong
+                  >Datas fechadas, inscrição direta e acompanhamento
+                  depois.</strong
+                >
+              </div>
+            </div>
+            <div class="events-preview" data-events-preview data-lang="pt-br">
+              <div class="events-preview__grid" data-events-grid>
+                <article class="event-preview-card is-loading">
+                  <div class="event-preview-card__body">
+                    <span>Carregando evento</span>
+                  </div>
+                </article>
+              </div>
+              <div class="events-preview__footer">
+                <a class="primary-link" href="/eventos?lang=pt-br"
+                  >Ver agenda completa</a
+                >
+                <a
+                  class="secondary-link secondary-link--whatsapp"
+                  href="https://wa.me/34622923988"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Falar pelo WhatsApp
+                </a>
+              </div>
+            </div>
+          </article>
         </div>
       </section>
 

@@ -1,0 +1,117 @@
+.cookies-banner {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 26;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: end;
+  width: min(560px, calc(100% - 24px));
+  padding: 20px 20px 18px;
+  border: 1px solid rgba(211, 180, 255, 0.18);
+  border-radius: 26px;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(169, 60, 255, 0.18),
+      transparent 30%
+    ),
+    linear-gradient(180deg, rgba(17, 10, 28, 0.98), rgba(8, 5, 13, 0.98));
+  box-shadow: 0 20px 58px rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(18px);
+  transform: translateY(12px);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 220ms ease,
+    opacity 220ms ease;
+}
+
+.cookies-banner.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cookies-banner.is-hidden {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.cookies-banner__kicker {
+  margin-bottom: 10px;
+  color: var(--accent-strong);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.cookies-banner h2 {
+  margin-bottom: 8px;
+  font-size: 1.08rem;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.cookies-banner p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.cookies-banner__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 154px;
+}
+
+.cookies-banner__accept,
+.cookies-banner__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.cookies-banner__accept {
+  border: 1px solid rgba(211, 180, 255, 0.12);
+  background: linear-gradient(
+    135deg,
+    var(--accent) 0%,
+    var(--accent-strong) 100%
+  );
+  color: white;
+}
+
+.cookies-banner__link {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+}
+
+@media (max-width: 720px) {
+  .cookies-banner {
+    right: 12px;
+    left: 12px;
+    bottom: 12px;
+    grid-template-columns: 1fr;
+    width: auto;
+  }
+
+  .cookies-banner__actions {
+    min-width: 0;
+    flex-direction: row;
+  }
+
+  .cookies-banner__accept,
+  .cookies-banner__link {
+    flex: 1;
+  }
+}

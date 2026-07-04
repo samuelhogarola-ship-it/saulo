@@ -97,6 +97,11 @@ async function main() {
   console.log(
     `- Waiting room flow checked live: ${waitingRoomFlow.enabled ? 'yes' : 'no'}`,
   );
+  if (waitingRoomFlow.enabled) {
+    console.log(
+      `- Waiting room reuse after activation: ${accessState.waitingRoomReuseState || 'unknown'}`,
+    );
+  }
   console.log(`- Subscription: ${subscription.planLabel || 'sin plan'}`);
   console.log(
     `- Routine day ${routine.currentDay.day}: ${routine.currentDay.title}`,
@@ -176,11 +181,58 @@ async function runWaitingRoomFlowCheck({ store, auth, student }) {
     );
   }
 
+  await assertConsumedWaitingRoomReuse({
+    store,
+    waitingRoomToken,
+    studentId: student.id,
+  });
+
   return {
     student: updatedStudent,
     accessToken,
     waitingRoomTriggered: true,
+    waitingRoomReuseState: 'already-opened',
   };
+}
+
+async function assertConsumedWaitingRoomReuse({
+  store,
+  waitingRoomToken,
+  studentId,
+}) {
+  try {
+    await store.getWaitingRoomPreview(waitingRoomToken);
+  } catch (error) {
+    if (Number(error.status) !== 409) {
+      throw new Error(
+        `Reabrir la sala de espera consumida devolvió ${error.status || 'un error inesperado'} en lugar de 409.`,
+      );
+    }
+
+    if (error.code !== 'WAITING_ROOM_ALREADY_OPENED') {
+      throw new Error(
+        'La sala de espera consumida no devolvió el código WAITING_ROOM_ALREADY_OPENED esperado.',
+      );
+    }
+
+    if (error.waitingRoom?.student?.id !== studentId) {
+      throw new Error(
+        'La reapertura de la sala de espera consumida no quedó asociada al alumno correcto.',
+      );
+    }
+
+    if (!error.waitingRoom?.waitingRoomConsumedAt) {
+      throw new Error(
+        'La reapertura de la sala de espera consumida no devolvió waitingRoomConsumedAt.',
+      );
+    }
+
+    return;
+  }
+
+  throw new Error(
+    'La sala de espera consumida siguió respondiendo como disponible en lugar de pasar a estado already-opened.',
+  );
 }
 
 async function refreshTrainerSessionOrFail(store, trainerSession) {

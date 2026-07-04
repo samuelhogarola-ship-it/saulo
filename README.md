@@ -172,6 +172,7 @@ El contrato operativo del acceso queda asi:
 - ese enlace lleva primero a la `sala de espera`
 - la preview de la sala de espera no expone el `accessToken` ni la URL final de la app
 - ver la sala de espera no consume el enlace; el consumo real ocurre al pulsar abrir la app
+- si el alumno reabre luego ese mismo magic link ya consumido desde el mismo móvil, la sala de espera responde como `ya activada` y le deja continuar sin generar un token nuevo
 - desde la sala de espera el alumno abre la app y deja activa la sesion
 - despues instala la PWA con el flujo nativo del navegador (`Añadir a pantalla de inicio` / `Instalar app`)
 - no existe enlace publico estable a `/app/` para entregar acceso al alumno fuera de ese flujo
@@ -345,6 +346,7 @@ Cuando activas esa variable, el smoke:
 - valida la preview de la sala de espera
 - consume la sala de espera
 - comprueba que el alumno queda en estado `opened`
+- reabre la sala de espera consumida y valida el estado `already-opened`
 - valida que la sesión del alumno sigue respondiendo con el `accessToken` activo
 
 Ejemplo:

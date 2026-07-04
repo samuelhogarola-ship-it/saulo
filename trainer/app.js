@@ -77,7 +77,7 @@
     }
     showStatus('Sesión cerrada. El panel ha quedado bloqueado.', false);
     renderTrainerIdentity(null);
-    renderEmptyState('Inicia sesión para cargar alumnos.');
+    resetStudentsState('Inicia sesión para cargar alumnos.');
   });
 
   createStudentForm?.addEventListener('submit', async (event) => {
@@ -402,7 +402,7 @@
 
   async function loadSessionAndStudents(showSuccessMessage = false) {
     if (!trainerToken) {
-      renderEmptyState('Inicia sesión para cargar alumnos.');
+      resetStudentsState('Inicia sesión para cargar alumnos.');
       return;
     }
 
@@ -430,7 +430,7 @@
       renderTrainerIdentity(payload.trainer);
     } catch (error) {
       renderTrainerIdentity(null);
-      renderEmptyState('No se pudo validar la sesión del entrenador.');
+      resetStudentsState('No se pudo validar la sesión del entrenador.');
       showStatus(error.message, true);
       return;
     }
@@ -440,7 +440,7 @@
 
   async function loadStudents(showSuccessMessage = false) {
     if (!trainerToken) {
-      renderEmptyState('Inicia sesión para cargar alumnos.');
+      resetStudentsState('Inicia sesión para cargar alumnos.');
       return;
     }
 
@@ -457,7 +457,7 @@
         showStatus('Sesión validada. Panel listo para operar.');
       }
     } catch (error) {
-      renderEmptyState('No se pudieron cargar los alumnos.');
+      resetStudentsState('No se pudieron cargar los alumnos.');
       showStatus(error.message, true);
     }
   }
@@ -876,6 +876,13 @@
     }
 
     studentsList.innerHTML = `<p class="empty-state">${escapeHtml(message)}</p>`;
+  }
+
+  function resetStudentsState(message) {
+    allStudents = [];
+    syncPlanFilter([]);
+    renderStudentsSummary([]);
+    renderEmptyState(message);
   }
 
   function showStatus(message, isError = false) {

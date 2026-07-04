@@ -212,7 +212,7 @@ body::after {
 .message-column,
 .info-card,
 .routine-panel,
-.demo-banner {
+.status-banner {
   border: 1px solid var(--line);
   background: var(--surface);
   box-shadow: var(--shadow-soft);
@@ -1134,7 +1134,7 @@ body::after {
   text-align: center;
 }
 
-.demo-banner {
+.status-banner {
   display: block;
   margin-bottom: 18px;
   padding: 18px 22px;
@@ -1144,13 +1144,13 @@ body::after {
   box-shadow: 0 20px 34px rgba(10, 10, 10, 0.14);
 }
 
-.demo-banner strong {
+.status-banner strong {
   display: block;
   font-size: 0.98rem;
   letter-spacing: -0.02em;
 }
 
-.demo-banner p {
+.status-banner p {
   margin: 10px 0 0;
   color: rgba(255, 255, 255, 0.78);
 }
@@ -1204,7 +1204,7 @@ body::after {
   box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.18);
 }
 
-.demo-banner[hidden] {
+.status-banner[hidden] {
   display: none;
 }
 

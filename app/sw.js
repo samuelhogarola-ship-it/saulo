@@ -1,12 +1,22 @@
-const CACHE_NAME = 'saulo-fitness-demo-v4';
+const CACHE_NAME = 'saulo-fitness-app-v12';
 const APP_SHELL = [
   '/app/',
   '/app/index.html',
-  '/app/styles.css?v=saulo-v4',
-  '/app/app.js?v=saulo-v4',
-  '/app/manifest.webmanifest?v=saulo-v4',
-  '/app/icons/icon-192.png?v=saulo-v4',
-  '/app/icons/icon-512.png?v=saulo-v4',
+  '/app/styles.css?v=saulo-v12',
+  '/app/api.js?v=saulo-v12',
+  '/app/pwa.js?v=saulo-v12',
+  '/app/utils.js?v=saulo-v12',
+  '/app/chat.js?v=saulo-v12',
+  '/app/navigation.js?v=saulo-v12',
+  '/app/sections.js?v=saulo-v12',
+  '/app/routines.js?v=saulo-v12',
+  '/app/state.js?v=saulo-v12',
+  '/app/ui.js?v=saulo-v12',
+  '/app/controller.js?v=saulo-v12',
+  '/app/app.js?v=saulo-v12',
+  '/app/manifest.webmanifest?v=saulo-v12',
+  '/app/icons/icon-192.png?v=saulo-v12',
+  '/app/icons/icon-512.png?v=saulo-v12',
 ];
 
 self.addEventListener('install', (event) => {
@@ -23,7 +33,7 @@ self.addEventListener('activate', (event) => {
       .then((keys) =>
         Promise.all(
           keys.map((key) => {
-            if (key !== CACHE_NAME) {
+            if (key.startsWith('saulo-fitness-app-') && key !== CACHE_NAME) {
               return caches.delete(key);
             }
 

@@ -6,7 +6,7 @@
     <title>Saulo Fitness APP</title>
     <meta
       name="description"
-      content="Demo pública e instalable de Saulo Fitness APP para mostrar la experiencia del alumno."
+      content="App instalable de Saulo Fitness APP para gestionar rutina, seguimiento y comunicación del alumno."
     />
     <meta name="theme-color" content="#ffffff" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -15,15 +15,15 @@
       content="black-translucent"
     />
     <meta name="apple-mobile-web-app-title" content="Saulo Fitness APP" />
-    <link rel="manifest" href="./manifest.webmanifest?v=saulo-v4" />
-    <link rel="apple-touch-icon" href="./icons/icon-192.png?v=saulo-v4" />
+    <link rel="manifest" href="./manifest.webmanifest?v=saulo-v12" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png?v=saulo-v12" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=saulo-v4" />
+    <link rel="stylesheet" href="./styles.css?v=saulo-v12" />
   </head>
   <body>
     <div class="modal-root" id="workout-modal-root" hidden></div>
@@ -33,8 +33,7 @@
           <p class="brand-kicker">Saulo Fitness</p>
           <h1>Saulo Fitness APP</h1>
           <p class="brand-copy">
-            Demo pública del alumno para enseñar rutina, seguimiento y
-            suscripción desde móvil.
+            Rutina, seguimiento y comunicación desde tu móvil.
           </p>
         </div>
 
@@ -42,8 +41,8 @@
           <div class="student-card-top">
             <img
               class="student-avatar"
-              src="./icons/icon-192.png?v=saulo-v4"
-              alt="Avatar de demo Saulo Fitness APP"
+              src="./icons/icon-192.png?v=saulo-v12"
+              alt="Avatar de Saulo Fitness APP"
             />
             <div>
               <p class="student-name" id="student-name">Lucía Ortega</p>
@@ -105,7 +104,7 @@
       </aside>
 
       <main class="student-workspace">
-        <section class="demo-banner" id="demo-banner" hidden></section>
+        <section class="status-banner" id="status-banner" hidden></section>
 
         <header class="topbar">
           <div>
@@ -130,7 +129,7 @@
               <p class="brand-kicker">Sección</p>
               <h3 id="routines-title">Rutinas</h3>
             </div>
-            <span class="section-badge">Configurable por entrenador</span>
+            <span class="section-badge">Plan activo</span>
           </div>
 
           <div class="routine-layout">
@@ -316,8 +315,7 @@
               <span>Fotos mensuales</span>
               <strong>Histórico mensual</strong>
               <p>
-                Seguimiento ficticio ya subido. 4 fotos: izquierda, derecha,
-                frente y espalda.
+                Registro mensual para comparar evolución, definición y postura.
               </p>
               <div
                 class="photo-history"
@@ -330,6 +328,16 @@
       </main>
     </div>
 
-    <script src="./app.js?v=saulo-v4" defer></script>
+    <script src="./api.js?v=saulo-v12" defer></script>
+    <script src="./pwa.js?v=saulo-v12" defer></script>
+    <script src="./utils.js?v=saulo-v12" defer></script>
+    <script src="./chat.js?v=saulo-v12" defer></script>
+    <script src="./navigation.js?v=saulo-v12" defer></script>
+    <script src="./sections.js?v=saulo-v12" defer></script>
+    <script src="./routines.js?v=saulo-v12" defer></script>
+    <script src="./state.js?v=saulo-v12" defer></script>
+    <script src="./ui.js?v=saulo-v12" defer></script>
+    <script src="./controller.js?v=saulo-v12" defer></script>
+    <script src="./app.js?v=saulo-v12" defer></script>
   </body>
 </html>

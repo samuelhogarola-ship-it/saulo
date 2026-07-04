@@ -1,37 +1,68 @@
 const { test, expect } = require('@playwright/test');
 
-test('renders the brand landing and keeps the public flow clean', async ({
+test('renders the public landing with multipage navigation and contact CTAs', async ({
   page,
 }) => {
   await page.goto('/');
 
+  await expect(page.locator('[data-intro-screen]')).toHaveClass(/is-hidden/);
+  await expect(
+    page.getByRole('navigation').getByRole('link', { name: 'Inicio' }),
+  ).toHaveAttribute('href', './index.html');
+  await expect(
+    page.getByRole('navigation').getByRole('link', { name: 'Casos de éxito' }),
+  ).toHaveAttribute('href', './casos-exito.html');
+  await expect(
+    page.getByRole('navigation').getByRole('link', { name: 'Sobre mí' }),
+  ).toHaveAttribute('href', './sobre-mi.html');
+  await expect(
+    page.getByRole('navigation').getByRole('link', { name: 'Eventos' }),
+  ).toHaveAttribute('href', '/eventos');
   await expect(
     page.getByRole('heading', {
-      name: 'Tu mejor version, nuestra mision.',
+      name: 'Tu mejor versión no se improvisa.',
     }),
   ).toBeVisible();
-  await expect(page.getByAltText('Logo de Saulo Fitness')).toBeVisible();
   await expect(
-    page.getByRole('link', { name: 'DESCUBRIR LA APP' }),
-  ).toBeVisible();
-  await expect(page.getByRole('link', { name: 'CONTACTO' })).toBeVisible();
-  await expect(page.getByText('Mensajes de la demo')).toHaveCount(0);
-  await expect(page.locator('form')).toHaveCount(0);
+    page.getByRole('link', { name: 'Hablar por WhatsApp' }),
+  ).toHaveAttribute('href', 'https://wa.me/34622923988');
+  await expect(
+    page.getByRole('link', { name: 'Escribir por email' }),
+  ).toHaveAttribute('href', 'mailto:info@webfuengirola.com');
+  await expect(page.locator('[data-events-grid] article')).toHaveCount(2);
+  await expect(page.locator('a[href^="/app"]')).toHaveCount(0);
 });
 
-test('links the landing CTA to the public student app demo', async ({
+test('opens the dedicated pages for casos de éxito and sobre mí', async ({
+  page,
+}) => {
+  await page.goto('/casos-exito');
+  await expect(
+    page.getByRole('heading', {
+      name: 'Resultados que se notan en el cuerpo, en la técnica y en la cabeza.',
+    }),
+  ).toBeVisible();
+
+  await page.goto('/sobre-mi');
+  await expect(
+    page.getByRole('heading', {
+      name: 'Entrenar bien no es castigo. Es dirección, exigencia y criterio.',
+    }),
+  ).toBeVisible();
+});
+
+test('shows the intro only on the first visit of the session', async ({
   page,
 }) => {
   await page.goto('/');
 
-  await page.getByRole('link', { name: 'DESCUBRIR LA APP' }).click();
+  expect(
+    await page.evaluate(() =>
+      sessionStorage.getItem('saulo-landing-intro-seen'),
+    ),
+  ).toBe('true');
 
-  await expect(
-    page.getByRole('heading', { name: 'Saulo Fitness APP' }),
-  ).toBeVisible();
-  await expect(page.locator('#topbar-title')).toHaveText('Rutinas del alumno');
-  await expect(page.locator('#context-nav')).toContainText('Día 1');
-  await expect(page.locator('#demo-banner strong')).toHaveText(
-    'Hola Saulo, listo para comprobar la primera demo?',
-  );
+  await page.reload();
+
+  await expect(page.locator('[data-intro-screen]')).toHaveClass(/is-hidden/);
 });

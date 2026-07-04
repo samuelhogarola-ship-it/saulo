@@ -1,6 +1,7 @@
 const { defineConfig, devices } = require('@playwright/test');
 
 const useManagedWebServer = process.env.PLAYWRIGHT_MANAGED_SERVER !== 'false';
+const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4173';
 
 module.exports = defineConfig({
   testDir: './tests',
@@ -9,7 +10,7 @@ module.exports = defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI ? [['html'], ['list']] : 'list',
   use: {
-    baseURL: 'http://127.0.0.1:4173',
+    baseURL,
     serviceWorkers: 'block',
     trace: 'on-first-retry',
   },

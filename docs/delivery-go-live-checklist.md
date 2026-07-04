@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-- Generado: `2026-07-03T15:12:13.668Z`
+- Generado: `2026-07-04T16:34:35.290Z`
 - Requested data mode: `local`
 - Resolved data mode: `local`
 - Supabase: sin configurar
@@ -68,7 +68,7 @@ npm run product:handoff:delivery
 - Webhook URL: `https://provider.example/webhook/magic-link`
 - Bearer auth: disabled
 - HMAC signature: disabled
-- Waiting room path ejemplo: `/sala/demo-waiting-room-token`
+- Waiting room path ejemplo: `/acceso/waiting-room-sample-123`
 - Respuesta 2xx recomendada: `channel` + `deliveryId`
 
 ## Nota operativa

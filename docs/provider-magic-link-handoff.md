@@ -30,25 +30,25 @@ The provider will receive a JSON POST whenever a trainer marks payment as receiv
 ```json
 {
   "event": "student_magic_link_ready",
-  "sentAt": "2026-07-03T15:12:13.509Z",
+  "sentAt": "2026-07-04T16:34:35.288Z",
   "senderName": "Coach Saulo",
   "appName": "Saulo Fitness APP",
   "student": {
-    "id": "student-demo-001",
+    "id": "student-sample-001",
     "name": "Lucía Ortega",
     "plan": "Definición",
     "contactEmail": "lucia@saulofitness.app",
     "contactPhone": "+34600000001"
   },
   "access": {
-    "waitingRoomUrl": "https://saulofitness.com/sala/demo-waiting-room-token",
-    "waitingRoomPath": "/sala/demo-waiting-room-token",
-    "accessUrl": "https://saulofitness.com/app/?access=demo-access-token",
-    "accessPath": "/app/?access=demo-access-token"
+    "waitingRoomUrl": "https://saulofitness.com/acceso/waiting-room-sample-123",
+    "waitingRoomPath": "/acceso/waiting-room-sample-123",
+    "accessUrl": "https://saulofitness.com/app/?access=student-access-sample-123",
+    "accessPath": "/app/?access=student-access-sample-123"
   },
-  "message": "Hola Lucía Ortega, tu acceso a Saulo Fitness APP ya está listo. Abre este enlace único y de un solo uso para entrar en tu sala de espera y activar la app en tu móvil: https://saulofitness.com/sala/demo-waiting-room-token Cuando la abras, tu sesión quedará activa y podrás añadirla a la pantalla de inicio como PWA.",
+  "message": "Hola Lucía Ortega, tu acceso a Saulo Fitness APP ya está listo. Abre este enlace único y de un solo uso para entrar en tu sala de espera y activar la app en tu móvil: https://saulofitness.com/acceso/waiting-room-sample-123 Cuando la abras, tu sesión quedará activa y podrás añadirla a la pantalla de inicio como PWA.",
   "mailtoUrl": "mailto:lucia%40saulofitness.app",
-  "whatsappUrl": "https://wa.me/34600000001?text=Hola%20Luc%C3%ADa%20Ortega%2C%20tu%20acceso%20a%20Saulo%20Fitness%20APP%20ya%20est%C3%A1%20listo.%20Abre%20este%20enlace%20%C3%BAnico%20y%20de%20un%20solo%20uso%20para%20entrar%20en%20tu%20sala%20de%20espera%20y%20activar%20la%20app%20en%20tu%20m%C3%B3vil%3A%20https%3A%2F%2Fsaulofitness.com%2Fsala%2Fdemo-waiting-room-token%20Cuando%20la%20abras%2C%20tu%20sesi%C3%B3n%20quedar%C3%A1%20activa%20y%20podr%C3%A1s%20a%C3%B1adirla%20a%20la%20pantalla%20de%20inicio%20como%20PWA."
+  "whatsappUrl": "https://wa.me/34600000001?text=Hola%20Luc%C3%ADa%20Ortega%2C%20tu%20acceso%20a%20Saulo%20Fitness%20APP%20ya%20est%C3%A1%20listo.%20Abre%20este%20enlace%20%C3%BAnico%20y%20de%20un%20solo%20uso%20para%20entrar%20en%20tu%20sala%20de%20espera%20y%20activar%20la%20app%20en%20tu%20m%C3%B3vil%3A%20https%3A%2F%2Fsaulofitness.com%2Facceso%2Fwaiting-room-sample-123%20Cuando%20la%20abras%2C%20tu%20sesi%C3%B3n%20quedar%C3%A1%20activa%20y%20podr%C3%A1s%20a%C3%B1adirla%20a%20la%20pantalla%20de%20inicio%20como%20PWA."
 }
 ```
 
@@ -67,7 +67,7 @@ When the provider accepts the delivery, it should return a `2xx` response and, i
 ## Manual cURL test
 
 ```bash
-curl -X POST 'https://provider.example/webhook/magic-link' -H 'Content-Type: application/json' --data-raw '{"event":"student_magic_link_ready","sentAt":"2026-07-03T15:12:13.509Z","senderName":"Coach Saulo","appName":"Saulo Fitness APP","student":{"id":"student-demo-001","name":"Lucía Ortega","plan":"Definición","contactEmail":"lucia@saulofitness.app","contactPhone":"+34600000001"},"access":{"waitingRoomUrl":"https://saulofitness.com/sala/demo-waiting-room-token","waitingRoomPath":"/sala/demo-waiting-room-token","accessUrl":"https://saulofitness.com/app/?access=demo-access-token","accessPath":"/app/?access=demo-access-token"},"message":"Hola Lucía Ortega, tu acceso a Saulo Fitness APP ya está listo. Abre este enlace único y de un solo uso para entrar en tu sala de espera y activar la app en tu móvil: https://saulofitness.com/sala/demo-waiting-room-token Cuando la abras, tu sesión quedará activa y podrás añadirla a la pantalla de inicio como PWA.","mailtoUrl":"mailto:lucia%40saulofitness.app","whatsappUrl":"https://wa.me/34600000001?text=Hola%20Luc%C3%ADa%20Ortega%2C%20tu%20acceso%20a%20Saulo%20Fitness%20APP%20ya%20est%C3%A1%20listo.%20Abre%20este%20enlace%20%C3%BAnico%20y%20de%20un%20solo%20uso%20para%20entrar%20en%20tu%20sala%20de%20espera%20y%20activar%20la%20app%20en%20tu%20m%C3%B3vil%3A%20https%3A%2F%2Fsaulofitness.com%2Fsala%2Fdemo-waiting-room-token%20Cuando%20la%20abras%2C%20tu%20sesi%C3%B3n%20quedar%C3%A1%20activa%20y%20podr%C3%A1s%20a%C3%B1adirla%20a%20la%20pantalla%20de%20inicio%20como%20PWA."}'
+curl -X POST 'https://provider.example/webhook/magic-link' -H 'Content-Type: application/json' --data-raw '{"event":"student_magic_link_ready","sentAt":"2026-07-04T16:34:35.288Z","senderName":"Coach Saulo","appName":"Saulo Fitness APP","student":{"id":"student-sample-001","name":"Lucía Ortega","plan":"Definición","contactEmail":"lucia@saulofitness.app","contactPhone":"+34600000001"},"access":{"waitingRoomUrl":"https://saulofitness.com/acceso/waiting-room-sample-123","waitingRoomPath":"/acceso/waiting-room-sample-123","accessUrl":"https://saulofitness.com/app/?access=student-access-sample-123","accessPath":"/app/?access=student-access-sample-123"},"message":"Hola Lucía Ortega, tu acceso a Saulo Fitness APP ya está listo. Abre este enlace único y de un solo uso para entrar en tu sala de espera y activar la app en tu móvil: https://saulofitness.com/acceso/waiting-room-sample-123 Cuando la abras, tu sesión quedará activa y podrás añadirla a la pantalla de inicio como PWA.","mailtoUrl":"mailto:lucia%40saulofitness.app","whatsappUrl":"https://wa.me/34600000001?text=Hola%20Luc%C3%ADa%20Ortega%2C%20tu%20acceso%20a%20Saulo%20Fitness%20APP%20ya%20est%C3%A1%20listo.%20Abre%20este%20enlace%20%C3%BAnico%20y%20de%20un%20solo%20uso%20para%20entrar%20en%20tu%20sala%20de%20espera%20y%20activar%20la%20app%20en%20tu%20m%C3%B3vil%3A%20https%3A%2F%2Fsaulofitness.com%2Facceso%2Fwaiting-room-sample-123%20Cuando%20la%20abras%2C%20tu%20sesi%C3%B3n%20quedar%C3%A1%20activa%20y%20podr%C3%A1s%20a%C3%B1adirla%20a%20la%20pantalla%20de%20inicio%20como%20PWA."}'
 ```
 
 ## Expected behavior

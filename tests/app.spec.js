@@ -357,10 +357,16 @@ test('consumes the waiting room magic link and keeps the student session in the 
   await expect(page.locator('#student-name')).toHaveText('Hugo Martín');
   await expect(page.locator('#topbar-title')).toHaveText('Mensajes');
 
-  const waitingRoomReuse = await request.get(
-    `/api/waiting-room/${waitingRoomToken}`,
+  await page.goto(waitingRoomUrl);
+  await expect(page.locator('#waiting-title')).toContainText(
+    'tu app ya fue activada',
   );
-  expect(waitingRoomReuse.status()).toBe(404);
+  await expect(page.locator('#waiting-panel')).toContainText(
+    'ya activó la app',
+  );
+  await page.getByRole('link', { name: 'Abrir tu app' }).click();
+  await expect(page).toHaveURL(/\/app\/\?section=routines&day=1/);
+  await expect(page.locator('#student-name')).toHaveText('Hugo Martín');
 });
 
 test('redirects legacy access links into the real waiting-room product flow', async ({

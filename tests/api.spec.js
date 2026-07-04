@@ -658,5 +658,18 @@ test('trainer API can generate a waiting room magic link after payment', async (
   const waitingRoomReuse = await request.get(
     `/api/waiting-room/${waitingToken}`,
   );
-  expect(waitingRoomReuse.status()).toBe(404);
+  expect(waitingRoomReuse.status()).toBe(409);
+  const waitingRoomReusePayload = await waitingRoomReuse.json();
+  expect(waitingRoomReusePayload).toEqual(
+    expect.objectContaining({
+      state: 'already-opened',
+      student: expect.objectContaining({
+        id: createdStudent.id,
+        name: 'Alumno Espera',
+      }),
+      waitingRoomConsumedAt: expect.any(String),
+    }),
+  );
+  expect(waitingRoomReusePayload.accessToken).toBeUndefined();
+  expect(waitingRoomReusePayload.appPath).toBeUndefined();
 });

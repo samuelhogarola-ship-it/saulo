@@ -289,13 +289,23 @@ app.post(
   }),
 );
 
-app.get(
-  '/api/waiting-room/:token',
-  asyncHandler(async (req, res) => {
+app.get('/api/waiting-room/:token', async (req, res, next) => {
+  try {
     const waitingRoom = await store.getWaitingRoomPreview(req.params.token);
     res.json(buildWaitingRoomPreviewPayload(waitingRoom));
-  }),
-);
+  } catch (error) {
+    if (Number(error.status) === 409 && error.waitingRoom) {
+      res.status(409).json(
+        buildWaitingRoomPreviewPayload(error.waitingRoom, {
+          state: 'already-opened',
+          message: error.message,
+        }),
+      );
+      return;
+    }
+    next(error);
+  }
+});
 
 app.post(
   '/api/waiting-room/:token/consume',
@@ -745,8 +755,10 @@ function resolveWaitingRoomLinkToken(token) {
   return String(token || '').trim();
 }
 
-function buildWaitingRoomPreviewPayload(waitingRoom) {
+function buildWaitingRoomPreviewPayload(waitingRoom, options = {}) {
   return {
+    state: options.state || 'ready',
+    message: options.message || '',
     student: waitingRoom.student,
     paymentReceivedAt: waitingRoom.paymentReceivedAt || null,
     waitingRoomSentAt: waitingRoom.waitingRoomSentAt || null,

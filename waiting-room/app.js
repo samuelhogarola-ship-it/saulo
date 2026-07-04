@@ -21,6 +21,12 @@
       );
       const payload = await response.json().catch(() => ({}));
 
+      if (response.status === 409 && payload?.state === 'already-opened') {
+        waitingRoomPayload = payload;
+        renderAlreadyOpened(payload);
+        return;
+      }
+
       if (!response.ok) {
         throw new Error(
           payload.message || 'No se pudo preparar tu acceso en este momento.',
@@ -39,6 +45,7 @@
     copy.textContent =
       'Tu entrenador ya ha confirmado el pago. Este magic link es único, de un solo uso, y te lleva a la sala de espera desde la que activarás tu app en el móvil.';
     panel.classList.remove('is-error');
+    panel.classList.remove('is-consumed');
     panel.innerHTML = `
       <strong>${escapeHtml(payload.student.plan || 'Saulo Fitness APP')}</strong>
       <p class="waiting-status">
@@ -53,6 +60,30 @@
     `;
     actions.hidden = false;
     openApp.href = '#';
+    openApp.textContent = 'Abrir y activar tu app';
+  }
+
+  function renderAlreadyOpened(payload) {
+    title.textContent = `Hola ${payload.student?.name || 'cliente'}, tu app ya fue activada`;
+    copy.textContent =
+      'Este enlace ya cumplió su función. Si sigues en el mismo móvil, puedes abrir la app con tu sesión activa o entrar desde el icono que dejaste en pantalla.';
+    panel.classList.remove('is-error');
+    panel.classList.add('is-consumed');
+    panel.innerHTML = `
+      <strong>${escapeHtml(payload.student?.plan || 'Saulo Fitness APP')}</strong>
+      <p class="waiting-status">
+        ${escapeHtml(
+          payload.message ||
+            'La activación ya se completó anteriormente en este mismo acceso.',
+        )}
+      </p>
+      <p class="waiting-status">
+        Si este no es tu móvil actual, pide a tu entrenador que rote el acceso y te envíe un magic link nuevo.
+      </p>
+    `;
+    actions.hidden = false;
+    openApp.href = '/app/?section=routines&day=1';
+    openApp.textContent = 'Abrir tu app';
   }
 
   function renderError(message) {
@@ -60,6 +91,7 @@
     copy.textContent =
       'Este acceso ya no está activo o todavía no ha sido preparado por tu entrenador.';
     panel.classList.add('is-error');
+    panel.classList.remove('is-consumed');
     panel.innerHTML = `<p class="waiting-status">${escapeHtml(message)}</p>`;
     actions.hidden = true;
   }
@@ -69,6 +101,11 @@
 
     if (!token || !waitingRoomPayload) {
       renderError('No se pudo preparar tu acceso en este momento.');
+      return;
+    }
+
+    if (waitingRoomPayload.state === 'already-opened') {
+      window.location.href = openApp.href;
       return;
     }
 

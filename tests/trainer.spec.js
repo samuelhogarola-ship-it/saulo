@@ -183,7 +183,10 @@ test('trainer panel loads students and can create waiting room access, update ro
   const waitingBrowserPageReuse = await page.context().newPage();
   await waitingBrowserPageReuse.goto(waitingRoomHref);
   await expect(waitingBrowserPageReuse.locator('#waiting-title')).toHaveText(
-    'Enlace no disponible',
+    `Hola ${studentName}, tu app ya fue activada`,
+  );
+  await expect(waitingBrowserPageReuse.locator('#waiting-panel')).toContainText(
+    'ya activó la app',
   );
   await waitingBrowserPageReuse.close();
 

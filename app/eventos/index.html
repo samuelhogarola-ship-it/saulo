@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saulo Fitness APP | Eventos</title>
+    <meta
+      name="description"
+      content="Panel de eventos de Saulo Fitness APP con acceso por email y contraseña del entrenador."
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="/events-admin.js" defer></script>
+  </head>
+  <body>
+    <div class="events-app">
+      <aside class="events-sidebar">
+        <div class="events-sidebar__brand">
+          <p class="brand-kicker">Saulo Fitness</p>
+          <h1>APP Eventos</h1>
+          <p class="events-sidebar__copy">
+            Acceso interno para crear eventos, revisar altas y mantener la
+            agenda pública sin tocar la app del alumno.
+          </p>
+        </div>
+
+        <section class="events-sidebar__card">
+          <p class="events-sidebar__eyebrow">Acceso entrenador</p>
+          <strong>Email + contraseña</strong>
+          <p>
+            Usa las mismas credenciales activas de `app-saulo` para entrar al
+            panel.
+          </p>
+        </section>
+
+        <nav class="events-sidebar__nav" aria-label="Atajos del panel">
+          <a class="events-sidebar__link" href="/app/">Abrir app alumno</a>
+          <a class="events-sidebar__link" href="/eventos"
+            >Ver eventos públicos</a
+          >
+          <a class="events-sidebar__link" href="/">Volver a landing</a>
+        </nav>
+      </aside>
+
+      <main class="events-main">
+        <section class="events-hero">
+          <div>
+            <p class="brand-kicker">Main separada</p>
+            <h2>Panel de eventos dentro de Saulo Fitness APP</h2>
+            <p class="events-hero__copy">
+              Login con email y contraseña del entrenador, agenda editable y
+              lectura directa de registros públicos.
+            </p>
+          </div>
+          <div class="events-hero__meta">
+            <span class="events-badge">Agenda</span>
+            <span class="events-badge">Registros</span>
+            <span class="events-badge">Supabase / local</span>
+          </div>
+        </section>
+
+        <section class="events-auth-card" data-admin-auth-card>
+          <div class="events-auth-card__head">
+            <div>
+              <p class="brand-kicker">Login</p>
+              <h3>Entrar al panel de eventos</h3>
+            </div>
+            <p class="events-auth-card__hint">
+              Mismo acceso que el entorno interno de entrenador.
+            </p>
+          </div>
+
+          <form class="events-auth-form" data-admin-login-form>
+            <label class="field">
+              <span>Email</span>
+              <input
+                name="email"
+                type="email"
+                autocomplete="username"
+                placeholder="local@saulofitness.app"
+                required
+              />
+            </label>
+            <label class="field">
+              <span>Contraseña</span>
+              <input
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Tu contraseña"
+                required
+              />
+            </label>
+            <button class="primary-button" type="submit">Entrar</button>
+            <p class="form-status" data-auth-status aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="events-dashboard" data-admin-dashboard hidden>
+          <header class="events-dashboard__topbar">
+            <div>
+              <p class="brand-kicker">Sesión activa</p>
+              <h3>Gestiona eventos y registros</h3>
+              <p class="events-session-copy">
+                Has entrado como <strong data-admin-session-email></strong>.
+              </p>
+            </div>
+            <button class="secondary-button" type="button" data-admin-logout>
+              Cerrar sesión
+            </button>
+          </header>
+
+          <div class="events-dashboard__grid">
+            <article class="events-panel events-panel--form">
+              <div class="events-panel__head">
+                <h4>Crear o editar evento</h4>
+                <button class="ghost-button" type="button" data-admin-reset>
+                  Nuevo evento
+                </button>
+              </div>
+
+              <form class="events-form" data-admin-event-form>
+                <input name="eventId" type="hidden" />
+                <label class="field">
+                  <span>Título</span>
+                  <input name="title" type="text" required />
+                </label>
+                <label class="field">
+                  <span>Slug</span>
+                  <input
+                    name="slug"
+                    type="text"
+                    placeholder="reset-de-verano"
+                  />
+                </label>
+                <label class="field">
+                  <span>Resumen</span>
+                  <textarea name="summary" rows="3" required></textarea>
+                </label>
+                <label class="field">
+                  <span>Descripción</span>
+                  <textarea name="description" rows="4"></textarea>
+                </label>
+                <div class="field-row">
+                  <label class="field">
+                    <span>Ubicación</span>
+                    <input name="location" type="text" />
+                  </label>
+                  <label class="field">
+                    <span>Fecha y hora</span>
+                    <input name="startsAt" type="datetime-local" required />
+                  </label>
+                </div>
+                <div class="field-row">
+                  <label class="field">
+                    <span>Finaliza</span>
+                    <input name="endsAt" type="datetime-local" />
+                  </label>
+                  <label class="field">
+                    <span>Precio / CTA</span>
+                    <input
+                      name="priceLabel"
+                      type="text"
+                      placeholder="Plazas limitadas"
+                    />
+                  </label>
+                </div>
+                <div class="field-row">
+                  <label class="field">
+                    <span>Poster URL</span>
+                    <input
+                      name="posterUrl"
+                      type="text"
+                      placeholder="/event-assets/..."
+                    />
+                  </label>
+                  <label class="field">
+                    <span>Texto botón</span>
+                    <input
+                      name="ctaLabel"
+                      type="text"
+                      placeholder="Apúntate ya"
+                    />
+                  </label>
+                </div>
+                <label class="field field--checkbox">
+                  <input name="isPublished" type="checkbox" checked />
+                  <span>Publicado</span>
+                </label>
+                <button class="primary-button" type="submit">
+                  Guardar evento
+                </button>
+                <p
+                  class="form-status"
+                  data-admin-form-status
+                  aria-live="polite"
+                ></p>
+              </form>
+            </article>
+
+            <article class="events-panel">
+              <div class="events-panel__head">
+                <h4>Eventos publicados</h4>
+                <p class="events-soft-note">
+                  Elige un evento para abrir su detalle interno.
+                </p>
+              </div>
+              <div class="events-panel__stack" data-admin-events-list></div>
+            </article>
+
+            <article class="events-panel">
+              <div class="events-panel__head">
+                <h4>Registros del evento</h4>
+                <p class="events-soft-note" data-admin-selected-event>
+                  Sin evento seleccionado.
+                </p>
+              </div>
+              <div class="events-panel__stack" data-admin-registrations></div>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

@@ -8,10 +8,14 @@ const eventsList = document.querySelector('[data-admin-events-list]');
 const registrationsList = document.querySelector('[data-admin-registrations]');
 const selectedEventCopy = document.querySelector('[data-admin-selected-event]');
 const resetButton = document.querySelector('[data-admin-reset]');
+const sessionEmail = document.querySelector('[data-admin-session-email]');
+const logoutButton = document.querySelector('[data-admin-logout]');
 
 const TOKEN_KEY = 'saulo-admin-token';
+const SESSION_KEY = 'saulo-admin-session';
 
 let authToken = sessionStorage.getItem(TOKEN_KEY) || '';
+let authSession = readStoredSession();
 let selectedEventId = '';
 
 if (authToken) {
@@ -41,6 +45,8 @@ if (loginForm) {
 
       authToken = result.session.accessToken;
       sessionStorage.setItem(TOKEN_KEY, authToken);
+      authSession = result.session;
+      storeSession(result.session);
       authStatus.textContent = '';
       revealDashboard();
       loadEvents();
@@ -99,6 +105,31 @@ if (resetButton) {
     }
     selectedEventId = '';
     formStatus.textContent = '';
+  });
+}
+
+if (logoutButton) {
+  logoutButton.addEventListener('click', () => {
+    authToken = '';
+    authSession = null;
+    selectedEventId = '';
+    sessionStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem(SESSION_KEY);
+    if (dashboard) {
+      dashboard.hidden = true;
+    }
+    if (authCard) {
+      authCard.hidden = false;
+    }
+    if (loginForm) {
+      loginForm.reset();
+    }
+    if (authStatus) {
+      authStatus.textContent = '';
+    }
+    if (formStatus) {
+      formStatus.textContent = '';
+    }
   });
 }
 
@@ -200,6 +231,10 @@ async function loadEventDetail(eventId) {
 function revealDashboard() {
   authCard.hidden = true;
   dashboard.hidden = false;
+  if (sessionEmail) {
+    sessionEmail.textContent =
+      authSession?.trainer?.email || 'trainer@saulofitness.app';
+  }
 }
 
 function fillEventForm(event) {
@@ -259,4 +294,21 @@ function escapeHtml(value) {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
+}
+
+function storeSession(session) {
+  try {
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+  } catch (_error) {
+    // Ignore storage write failures and keep the live session.
+  }
+}
+
+function readStoredSession() {
+  try {
+    const raw = sessionStorage.getItem(SESSION_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (_error) {
+    return null;
+  }
 }

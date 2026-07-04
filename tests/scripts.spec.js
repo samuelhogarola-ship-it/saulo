@@ -85,6 +85,22 @@ test('product:check highlights local delivery smoke and provider contract guidan
   expect(output).toContain('- Local delivery smoke: available');
   expect(output).toContain('npm run product:smoke:delivery');
   expect(output).toContain('npm run product:contract:delivery');
+  expect(output).toContain('Next steps');
+  expect(output).toContain(
+    'Configura SAULO_DATA_MODE=supabase antes de validar el camino real de producto.',
+  );
+  expect(output).toContain(
+    'Completa SUPABASE_URL y SUPABASE_SERVICE_ROLE_KEY con valores reales para salir del fallback local.',
+  );
+  expect(output).toContain(
+    'Prepara el bootstrap del entrenador y ejecuta: npm run product:bootstrap:trainer',
+  );
+  expect(output).toContain(
+    'Prepara el bootstrap del alumno y ejecuta: npm run product:bootstrap:student',
+  );
+  expect(output).toContain(
+    'Define SMOKE_TRAINER_EMAIL y SMOKE_TRAINER_PASSWORD para poder ejecutar npm run product:smoke:supabase',
+  );
   expect(output).toContain('- Recommended provider 2xx response:');
   expect(output).toContain('channel: whatsapp');
   expect(output).toContain('deliveryId: provider-delivery-001');

@@ -171,6 +171,12 @@ const localDeliverySmoke = {
     process.env.DELIVERY_SMOKE_OUTPUT_PATH || '(tmp automatico del sistema)',
 };
 const providerContract = buildProviderContract();
+const nextSteps = buildNextSteps({
+  bootstrapReadiness,
+  smokeSupabaseReadiness,
+  runtime,
+  supabase,
+});
 
 notes.push(
   'Puedes validar la entrega automática sin proveedor final con: npm run product:smoke:delivery',
@@ -261,6 +267,11 @@ if (migrationFiles.length) {
 if (notes.length) {
   console.log('\nOperational notes');
   notes.forEach((note) => console.log(`- ${note}`));
+}
+
+if (nextSteps.length) {
+  console.log('\nNext steps');
+  nextSteps.forEach((step, index) => console.log(`${index + 1}. ${step}`));
 }
 
 if (warnings.length) {
@@ -405,4 +416,59 @@ function hasMeaningfulValue(value) {
     /^local@saulofitness\.app$/i,
     /^saulo1234$/i,
   ].some((pattern) => pattern.test(normalized));
+}
+
+function buildNextSteps({
+  bootstrapReadiness,
+  smokeSupabaseReadiness,
+  runtime,
+  supabase,
+}) {
+  const steps = [];
+
+  if (runtime.requestedDataMode !== 'supabase') {
+    steps.push(
+      'Configura SAULO_DATA_MODE=supabase antes de validar el camino real de producto.',
+    );
+  }
+
+  if (!supabase.hasConfig) {
+    steps.push(
+      'Completa SUPABASE_URL y SUPABASE_SERVICE_ROLE_KEY con valores reales para salir del fallback local.',
+    );
+  }
+
+  if (!bootstrapReadiness.trainerReady) {
+    steps.push(
+      'Prepara el bootstrap del entrenador y ejecuta: npm run product:bootstrap:trainer',
+    );
+  }
+
+  if (!bootstrapReadiness.studentReady) {
+    steps.push(
+      'Prepara el bootstrap del alumno y ejecuta: npm run product:bootstrap:student',
+    );
+  }
+
+  if (!smokeSupabaseReadiness.credentialsReady) {
+    steps.push(
+      'Define SMOKE_TRAINER_EMAIL y SMOKE_TRAINER_PASSWORD para poder ejecutar npm run product:smoke:supabase',
+    );
+  } else if (!smokeSupabaseReadiness.studentTargetConfigured) {
+    steps.push(
+      'Fija SMOKE_STUDENT_ID o SMOKE_STUDENT_CONTACT_EMAIL antes de ejecutar npm run product:smoke:supabase con varios alumnos.',
+    );
+  } else {
+    steps.push(
+      'Con el entorno listo, ejecuta npm run product:smoke:supabase para validar login real, ownership y lectura del alumno.',
+    );
+  }
+
+  if (!delivery.webhookUrl) {
+    steps.push(
+      'Si quieres cerrar también la entrega automática, conecta MAGIC_LINK_WEBHOOK_URL y después lanza npm run product:smoke:delivery.',
+    );
+  }
+
+  return steps;
 }

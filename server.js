@@ -592,7 +592,7 @@ function buildStudentAccessPayload(req, accessToken, accessState) {
 
 function buildWaitingRoomPayload(req, waitingRoomToken, waitingRoomState) {
   const origin = `${req.protocol}://${req.get('host')}`;
-  const waitingRoomPath = `/sala/${encodeURIComponent(waitingRoomToken)}`;
+  const waitingRoomPath = `/acceso/${encodeURIComponent(waitingRoomToken)}`;
 
   return {
     ...waitingRoomState,

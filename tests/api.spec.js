@@ -561,7 +561,7 @@ test('trainer API can generate a waiting room magic link after payment', async (
   expect(payload.waitingRoom).toEqual(
     expect.objectContaining({
       studentId: createdStudent.id,
-      waitingRoomPath: expect.stringContaining('/sala/'),
+      waitingRoomPath: expect.stringContaining('/acceso/'),
     }),
   );
   expect(payload.waitingRoom.paymentReceivedAt).toBeTruthy();
@@ -571,7 +571,7 @@ test('trainer API can generate a waiting room magic link after payment', async (
       status: 'ready-to-share',
       contactEmail: 'espera@saulofitness.app',
       contactPhone: '+34611111111',
-      waitingRoomUrl: expect.stringContaining('/sala/'),
+      waitingRoomUrl: expect.stringContaining('/acceso/'),
       shareMessage: expect.stringContaining('Saulo Fitness APP'),
       whatsappUrl: expect.stringContaining('wa.me'),
       mailtoUrl: expect.stringContaining('mailto:'),

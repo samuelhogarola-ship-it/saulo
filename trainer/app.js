@@ -983,7 +983,7 @@
     if (!waitingRoomToken) {
       return '';
     }
-    return `${window.location.origin}/sala/${encodeURIComponent(waitingRoomToken)}`;
+    return `${window.location.origin}/acceso/${encodeURIComponent(waitingRoomToken)}`;
   }
 
   function getInitialToken() {

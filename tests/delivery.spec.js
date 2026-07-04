@@ -46,8 +46,8 @@ test('signs and sends the magic link webhook payload', async () => {
       plan: 'Definición',
     },
     waitingRoom: {
-      waitingRoomUrl: 'https://saulofitness.com/sala/token-1',
-      waitingRoomPath: '/sala/token-1',
+      waitingRoomUrl: 'https://saulofitness.com/acceso/token-1',
+      waitingRoomPath: '/acceso/token-1',
     },
     access: {
       accessUrl: 'https://saulofitness.com/app/?access=abc',
@@ -97,7 +97,7 @@ test('signs and sends the magic link webhook payload', async () => {
         id: 'student-1',
       }),
       access: expect.objectContaining({
-        waitingRoomUrl: 'https://saulofitness.com/sala/token-1',
+        waitingRoomUrl: 'https://saulofitness.com/acceso/token-1',
       }),
     }),
   );

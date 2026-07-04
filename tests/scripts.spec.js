@@ -37,7 +37,7 @@ test('product:contract:delivery prints the provider contract with headers and pa
   expect(output).toContain('"x-provider-signature":');
   expect(output).toContain('"event": "student_magic_link_ready"');
   expect(output).toContain('"name": "Saulo Demo"');
-  expect(output).toContain('/sala/waiting-room-sample-456');
+  expect(output).toContain('/acceso/waiting-room-sample-456');
   expect(output).toContain('Manual test cURL');
   expect(output).toContain('curl -X POST');
   expect(output).toContain('https://provider.example/webhook/magic-link');

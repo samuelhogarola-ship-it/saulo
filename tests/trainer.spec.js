@@ -94,7 +94,7 @@ test('trainer panel loads students and can create waiting room access, update ro
     )
     .toBeGreaterThan(initialPaid);
   await expect(studentCard.locator('[data-waiting-room-link]')).toContainText(
-    '/sala/',
+    '/acceso/',
   );
   await expect(studentCard.locator('[data-student-delivery]')).toContainText(
     'Listo para compartir',

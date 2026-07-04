@@ -27,9 +27,9 @@ test('renders the public landing with multipage navigation and contact CTAs', as
     page.getByRole('link', { name: 'Hablar por WhatsApp' }),
   ).toHaveAttribute('href', 'https://wa.me/34622923988');
   await expect(
-    page.getByRole('link', { name: 'Escribir por email' }),
+    page.locator('#inicio').getByRole('link', { name: 'Escribir por email' }),
   ).toHaveAttribute('href', 'mailto:info@webfuengirola.com');
-  await expect(page.locator('[data-events-grid] article')).toHaveCount(2);
+  await expect(page.locator('[data-events-grid] article')).toHaveCount(5);
   await expect(page.locator('a[href^="/app"]')).toHaveCount(0);
 });
 

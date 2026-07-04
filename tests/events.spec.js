@@ -77,3 +77,16 @@ test('persists a public event registration and exposes it in admin', async ({
     ),
   ).toBeTruthy();
 });
+
+test('keeps the event detail when switching language', async ({ page }) => {
+  await page.goto('/eventos/reset-de-verano');
+
+  await expect(page.getByRole('link', { name: '🇧🇷 PT-BR' })).toHaveAttribute(
+    'href',
+    '/eventos/reset-de-verano?lang=pt-br',
+  );
+  await expect(page.getByRole('link', { name: '🇪🇸 ES' })).toHaveAttribute(
+    'href',
+    '/eventos/reset-de-verano',
+  );
+});

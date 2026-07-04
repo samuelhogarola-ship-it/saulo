@@ -51,15 +51,13 @@ test('opens the dedicated pages for casos de éxito and sobre mí', async ({
   ).toBeVisible();
 });
 
-test('shows the intro only on the first visit of the session', async ({
+test('shows the intro only on the first visit of the browser', async ({
   page,
 }) => {
   await page.goto('/');
 
   expect(
-    await page.evaluate(() =>
-      sessionStorage.getItem('saulo-landing-intro-seen'),
-    ),
+    await page.evaluate(() => localStorage.getItem('saulo-landing-intro-seen')),
   ).toBe('true');
 
   await page.reload();

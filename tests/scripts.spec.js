@@ -73,6 +73,9 @@ test('product:check highlights local delivery smoke and provider contract guidan
   expect(output).toContain(
     '- Next Supabase product command: configure-supabase-env',
   );
+  expect(output).toContain(
+    '- Next delivery command: configure-magic-link-webhook',
+  );
   expect(output).toContain('- PWA manifest: ready');
   expect(output).toContain('start_url: /app/?section=routines&day=1');
   expect(output).toContain('scope: /app/');
@@ -103,6 +106,9 @@ test('product:check highlights local delivery smoke and provider contract guidan
   );
   expect(output).toContain(
     'Define SMOKE_TRAINER_EMAIL y SMOKE_TRAINER_PASSWORD para poder ejecutar npm run product:smoke:supabase',
+  );
+  expect(output).toContain(
+    'Si quieres cerrar también la entrega automática, conecta MAGIC_LINK_WEBHOOK_URL y después lanza npm run product:smoke:delivery.',
   );
   expect(output).toContain('- Recommended provider 2xx response:');
   expect(output).toContain('channel: whatsapp');
@@ -147,6 +153,45 @@ test('product:check points to the real Supabase smoke when the environment is pr
   expect(output).toContain('- Student bootstrap helper vars: ready');
   expect(output).toContain(
     'Con el entorno listo, ejecuta npm run product:smoke:supabase para validar login real, ownership y lectura del alumno.',
+  );
+  expect(output).toContain(
+    '- Next delivery command: configure-magic-link-webhook',
+  );
+});
+
+test('product:check points to the real delivery smoke when webhook is configured', () => {
+  const output = execFileSync('node', ['scripts/check-product-setup.js'], {
+    cwd: repoRoot,
+    encoding: 'utf8',
+    env: {
+      ...process.env,
+      SAULO_DATA_MODE: 'supabase',
+      SUPABASE_URL: 'https://project.supabase.co',
+      SUPABASE_SERVICE_ROLE_KEY: 'service-role-real-value',
+      SUPABASE_PROGRESS_PHOTOS_BUCKET: 'progress-photos',
+      TRAINER_LOGIN_EMAIL: 'trainer-real@saulofitness.com',
+      TRAINER_LOGIN_PASSWORD: 'super-secret-trainer-password',
+      BOOTSTRAP_TRAINER_EMAIL: 'trainer-real@saulofitness.com',
+      BOOTSTRAP_TRAINER_PASSWORD: 'super-secret-trainer-password',
+      BOOTSTRAP_TRAINER_NAME: 'Saulo Trainer',
+      BOOTSTRAP_STUDENT_TEMPLATE_PATH:
+        'product-templates/students/lucia-ortega.json',
+      BOOTSTRAP_STUDENT_CONTACT_EMAIL: 'lucia@saulofitness.app',
+      SMOKE_TRAINER_EMAIL: 'trainer-real@saulofitness.com',
+      SMOKE_TRAINER_PASSWORD: 'super-secret-trainer-password',
+      SMOKE_STUDENT_CONTACT_EMAIL: 'lucia@saulofitness.app',
+      MAGIC_LINK_WEBHOOK_URL: 'https://provider.example/webhook/magic-link',
+      MAGIC_LINK_WEBHOOK_SECRET: 'provider-secret',
+    },
+  });
+
+  expect(output).toContain(
+    '- Next delivery command: npm run product:smoke:delivery',
+  );
+  expect(output).toContain('- Production auto-delivery webhook: configured');
+  expect(output).toContain('- Webhook signature: configured');
+  expect(output).toContain(
+    'Con el webhook configurado, ejecuta npm run product:smoke:delivery para validar el circuito pago recibido -> webhook -> sala de espera.',
   );
 });
 

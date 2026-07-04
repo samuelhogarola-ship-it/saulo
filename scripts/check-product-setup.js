@@ -183,6 +183,7 @@ const nextSupabaseCommand = resolveNextSupabaseCommand({
   runtime,
   supabase,
 });
+const nextDeliveryCommand = resolveNextDeliveryCommand({ delivery });
 
 notes.push(
   'Puedes validar la entrega automática sin proveedor final con: npm run product:smoke:delivery',
@@ -209,6 +210,7 @@ console.log(`- Webhook timeout: ${delivery.webhookTimeoutMs}ms`);
 console.log(`- SQL migrations: ${migrationFiles.length}`);
 console.log(`- Student templates: ${studentTemplateFiles.length}`);
 console.log(`- Next Supabase product command: ${nextSupabaseCommand}`);
+console.log(`- Next delivery command: ${nextDeliveryCommand}`);
 console.log(
   `- Supabase smoke trainer credentials: ${smokeSupabaseReadiness.credentialsReady ? 'ready' : 'missing'}`,
 );
@@ -475,6 +477,10 @@ function buildNextSteps({
     steps.push(
       'Si quieres cerrar también la entrega automática, conecta MAGIC_LINK_WEBHOOK_URL y después lanza npm run product:smoke:delivery.',
     );
+  } else {
+    steps.push(
+      'Con el webhook configurado, ejecuta npm run product:smoke:delivery para validar el circuito pago recibido -> webhook -> sala de espera.',
+    );
   }
 
   return steps;
@@ -507,4 +513,12 @@ function resolveNextSupabaseCommand({
   }
 
   return 'npm run product:smoke:supabase';
+}
+
+function resolveNextDeliveryCommand({ delivery }) {
+  if (!delivery.webhookUrl) {
+    return 'configure-magic-link-webhook';
+  }
+
+  return 'npm run product:smoke:delivery';
 }

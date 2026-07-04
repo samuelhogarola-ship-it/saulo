@@ -425,11 +425,15 @@ test('trainer panel can filter students by search, status and plan', async ({
   page,
   request,
 }) => {
-  const pendingStudentName = `Pendiente Filtro ${Date.now()}`;
-  const luciaCard = page.locator('.student-card', { hasText: 'Lucía Ortega' });
-  const hugoCard = page.locator('.student-card', { hasText: 'Hugo Martín' });
+  const stamp = Date.now();
+  const pendingStudentName = `Pendiente Filtro ${stamp}`;
+  const sentStudentName = `Enviado Filtro ${stamp}`;
+  const sentStudentPlan = `Plan sent ${stamp}`;
   const pendingCard = page.locator('.student-card', {
     hasText: pendingStudentName,
+  });
+  const sentCard = page.locator('.student-card', {
+    hasText: sentStudentName,
   });
 
   const createPendingStudent = await request.post('/api/trainer/students', {
@@ -443,6 +447,49 @@ test('trainer panel can filter students by search, status and plan', async ({
     },
   });
   expect(createPendingStudent.status()).toBe(201);
+
+  const createSentStudent = await request.post('/api/trainer/students', {
+    headers: {
+      Authorization: 'Bearer local-trainer-token',
+    },
+    data: {
+      name: sentStudentName,
+      plan: sentStudentPlan,
+      goal: 'Acceso enviado',
+      contactEmail: `sent-${stamp}@saulofitness.app`,
+      contactPhone: '+34611111111',
+    },
+  });
+  expect(createSentStudent.status()).toBe(201);
+  const sentStudent = (await createSentStudent.json()).student;
+
+  const markSentStudentPaid = await request.post(
+    `/api/trainer/students/${sentStudent.id}/payment-received`,
+    {
+      headers: {
+        Authorization: 'Bearer local-trainer-token',
+      },
+      data: {
+        deliver: true,
+      },
+    },
+  );
+  expect(markSentStudentPaid.status()).toBe(201);
+
+  const markSentStudentShared = await request.post(
+    `/api/trainer/students/${sentStudent.id}/access/delivery`,
+    {
+      headers: {
+        Authorization: 'Bearer local-trainer-token',
+      },
+      data: {
+        channel: 'copy',
+        status: 'shared',
+        note: 'Magic link compartido manualmente.',
+      },
+    },
+  );
+  expect(markSentStudentShared.status()).toBe(201);
 
   await page.addInitScript(() => {
     window.localStorage.setItem(
@@ -463,9 +510,8 @@ test('trainer panel can filter students by search, status and plan', async ({
 
   await page.goto('/trainer');
 
-  await expect(luciaCard).toBeVisible();
-  await expect(hugoCard).toBeVisible();
   await expect(pendingCard).toBeVisible();
+  await expect(sentCard).toBeVisible();
   expect(
     Number((await page.locator('#ops-pending-payment').textContent()) || '0'),
   ).toBeGreaterThan(0);
@@ -473,24 +519,24 @@ test('trainer panel can filter students by search, status and plan', async ({
     Number((await page.locator('#ops-sent').textContent()) || '0'),
   ).toBeGreaterThan(0);
 
-  await page.locator('#students-search').fill('lucía');
-  await expect(luciaCard).toBeVisible();
-  await expect(hugoCard).toHaveCount(0);
+  await page.locator('#students-search').fill(sentStudentName);
+  await expect(sentCard).toBeVisible();
+  await expect(pendingCard).toHaveCount(0);
 
   await page.locator('#students-search').fill('');
   await page.locator('#students-status-filter').selectOption('pending');
   await expect(pendingCard).toBeVisible();
-  await expect(luciaCard).toHaveCount(0);
+  await expect(sentCard).toHaveCount(0);
 
   await page.locator('#students-status-filter').selectOption('all');
-  await page.locator('#students-plan-filter').selectOption('Definición');
-  await expect(luciaCard).toBeVisible();
-  await expect(hugoCard).toHaveCount(0);
+  await page.locator('#students-plan-filter').selectOption(sentStudentPlan);
+  await expect(sentCard).toBeVisible();
+  await expect(pendingCard).toHaveCount(0);
 
   await page.locator('#students-plan-filter').selectOption('all');
   await page.locator('#students-status-filter').selectOption('sent');
-  await expect(luciaCard).toBeVisible();
-  await expect(hugoCard).toHaveCount(0);
+  await expect(sentCard).toBeVisible();
+  await expect(pendingCard).toHaveCount(0);
 });
 
 test('trainer panel can sort students and keeps summary metrics visible', async ({

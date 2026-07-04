@@ -177,6 +177,12 @@ const nextSteps = buildNextSteps({
   runtime,
   supabase,
 });
+const nextSupabaseCommand = resolveNextSupabaseCommand({
+  bootstrapReadiness,
+  smokeSupabaseReadiness,
+  runtime,
+  supabase,
+});
 
 notes.push(
   'Puedes validar la entrega automática sin proveedor final con: npm run product:smoke:delivery',
@@ -202,6 +208,7 @@ console.log(`- Progress photos bucket: ${supabase.storageBucket}`);
 console.log(`- Webhook timeout: ${delivery.webhookTimeoutMs}ms`);
 console.log(`- SQL migrations: ${migrationFiles.length}`);
 console.log(`- Student templates: ${studentTemplateFiles.length}`);
+console.log(`- Next Supabase product command: ${nextSupabaseCommand}`);
 console.log(
   `- Supabase smoke trainer credentials: ${smokeSupabaseReadiness.credentialsReady ? 'ready' : 'missing'}`,
 );
@@ -471,4 +478,33 @@ function buildNextSteps({
   }
 
   return steps;
+}
+
+function resolveNextSupabaseCommand({
+  bootstrapReadiness,
+  smokeSupabaseReadiness,
+  runtime,
+  supabase,
+}) {
+  if (runtime.requestedDataMode !== 'supabase' || !supabase.hasConfig) {
+    return 'configure-supabase-env';
+  }
+
+  if (!bootstrapReadiness.trainerReady) {
+    return 'npm run product:bootstrap:trainer';
+  }
+
+  if (!bootstrapReadiness.studentReady) {
+    return 'npm run product:bootstrap:student';
+  }
+
+  if (!smokeSupabaseReadiness.credentialsReady) {
+    return 'configure-smoke-trainer-credentials';
+  }
+
+  if (!smokeSupabaseReadiness.studentTargetConfigured) {
+    return 'configure-smoke-student-target';
+  }
+
+  return 'npm run product:smoke:supabase';
 }

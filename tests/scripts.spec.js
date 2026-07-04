@@ -70,6 +70,9 @@ test('product:check highlights local delivery smoke and provider contract guidan
   expect(output).toContain('Saulo Fitness APP · Product readiness');
   expect(output).toContain('- Production auto-delivery webhook: missing');
   expect(output).toContain('- Student templates: 1');
+  expect(output).toContain(
+    '- Next Supabase product command: configure-supabase-env',
+  );
   expect(output).toContain('- PWA manifest: ready');
   expect(output).toContain('start_url: /app/?section=routines&day=1');
   expect(output).toContain('scope: /app/');
@@ -107,6 +110,43 @@ test('product:check highlights local delivery smoke and provider contract guidan
   expect(output).toContain('persistencia de channel y deliveryId');
   expect(output).toContain(
     'SAULO_DATA_MODE no está en "supabase". El producto sigue arrancando en modo local.',
+  );
+});
+
+test('product:check points to the real Supabase smoke when the environment is prepared', () => {
+  const output = execFileSync('node', ['scripts/check-product-setup.js'], {
+    cwd: repoRoot,
+    encoding: 'utf8',
+    env: {
+      ...process.env,
+      SAULO_DATA_MODE: 'supabase',
+      SUPABASE_URL: 'https://project.supabase.co',
+      SUPABASE_SERVICE_ROLE_KEY: 'service-role-real-value',
+      SUPABASE_PROGRESS_PHOTOS_BUCKET: 'progress-photos',
+      TRAINER_LOGIN_EMAIL: 'trainer-real@saulofitness.com',
+      TRAINER_LOGIN_PASSWORD: 'super-secret-trainer-password',
+      BOOTSTRAP_TRAINER_EMAIL: 'trainer-real@saulofitness.com',
+      BOOTSTRAP_TRAINER_PASSWORD: 'super-secret-trainer-password',
+      BOOTSTRAP_TRAINER_NAME: 'Saulo Trainer',
+      BOOTSTRAP_STUDENT_TEMPLATE_PATH:
+        'product-templates/students/lucia-ortega.json',
+      BOOTSTRAP_STUDENT_CONTACT_EMAIL: 'lucia@saulofitness.app',
+      SMOKE_TRAINER_EMAIL: 'trainer-real@saulofitness.com',
+      SMOKE_TRAINER_PASSWORD: 'super-secret-trainer-password',
+      SMOKE_STUDENT_CONTACT_EMAIL: 'lucia@saulofitness.app',
+      MAGIC_LINK_WEBHOOK_URL: '',
+    },
+  });
+
+  expect(output).toContain(
+    '- Next Supabase product command: npm run product:smoke:supabase',
+  );
+  expect(output).toContain('- Supabase smoke trainer credentials: ready');
+  expect(output).toContain('- Supabase smoke student target: ready');
+  expect(output).toContain('- Trainer bootstrap helper vars: ready');
+  expect(output).toContain('- Student bootstrap helper vars: ready');
+  expect(output).toContain(
+    'Con el entorno listo, ejecuta npm run product:smoke:supabase para validar login real, ownership y lectura del alumno.',
   );
 });
 

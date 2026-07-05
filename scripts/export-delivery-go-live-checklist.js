@@ -21,5 +21,5 @@ fs.writeFileSync(outputPath, markdown);
 console.log('Saulo Fitness APP · Delivery go-live checklist exported');
 console.log(`- Output: ${outputPath}`);
 console.log(
-  '- Use this file as the operational checklist before enabling the real provider.',
+  '- Use this file as the operational checklist before enabling the Supabase delivery endpoint.',
 );

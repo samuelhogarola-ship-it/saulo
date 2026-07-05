@@ -1,6 +1,11 @@
 const crypto = require('node:crypto');
 
-const { projectRoot, runtime, supabase } = require('../lib/config');
+const {
+  projectRoot,
+  runtime,
+  supabase,
+  trainerLogin,
+} = require('../lib/config');
 const {
   loadStudentTemplate,
   normalizeMessagesTemplate,
@@ -49,13 +54,15 @@ async function main() {
 
 async function resolveTrainer() {
   const trainerId = String(process.env.BOOTSTRAP_TRAINER_ID || '').trim();
-  const trainerEmail = String(process.env.BOOTSTRAP_TRAINER_EMAIL || '')
+  const trainerEmail = String(
+    process.env.BOOTSTRAP_TRAINER_EMAIL || trainerLogin.email || '',
+  )
     .trim()
     .toLowerCase();
 
   if (!trainerId && !trainerEmail) {
     throw new Error(
-      'Define BOOTSTRAP_TRAINER_ID o BOOTSTRAP_TRAINER_EMAIL para asignar el alumno.',
+      'Define BOOTSTRAP_TRAINER_ID o BOOTSTRAP_TRAINER_EMAIL, o deja TRAINER_LOGIN_EMAIL real para asignar el alumno.',
     );
   }
 
@@ -74,10 +81,7 @@ async function resolveTrainer() {
 }
 
 function resolveStudentInput() {
-  const template = loadStudentTemplate(
-    projectRoot,
-    process.env.BOOTSTRAP_STUDENT_TEMPLATE_PATH,
-  );
+  const template = loadStudentTemplate(projectRoot, resolveTemplatePath());
   const validation = validateStudentTemplate(template);
   if (validation.errors.length) {
     throw new Error(
@@ -170,6 +174,31 @@ function resolveStudentInput() {
       template.photoSlots || template.photo_slots,
     ),
   };
+}
+
+function resolveTemplatePath() {
+  const explicit = String(
+    process.env.BOOTSTRAP_STUDENT_TEMPLATE_PATH || '',
+  ).trim();
+  if (explicit) {
+    return explicit;
+  }
+
+  const templatesDir = `${projectRoot}/product-templates/students`;
+  try {
+    const matches = require('node:fs')
+      .readdirSync(templatesDir)
+      .filter((file) => file.endsWith('.json'))
+      .sort();
+
+    if (matches.length === 1) {
+      return `product-templates/students/${matches[0]}`;
+    }
+  } catch {
+    return '';
+  }
+
+  return '';
 }
 
 async function createOrUpdateStudent(trainerId, input) {

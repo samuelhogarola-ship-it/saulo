@@ -86,7 +86,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(port, host, () => {
-  console.log('Saulo Fitness APP · Mock magic link provider');
+  console.log('Saulo Fitness APP · Mock magic link delivery');
   console.log(`- URL: http://${host}:${port}/webhook/magic-link`);
   console.log(`- Output file: ${outputPath || 'disabled'}`);
   console.log(

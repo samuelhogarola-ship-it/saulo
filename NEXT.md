@@ -17,3 +17,16 @@ CURRENT FOCUS
 - Mantener tambien la compatibilidad de enlaces heredados, pero siempre encauzados al flujo real de sala de espera, nunca a acceso directo de app.
 - Siguiente frente: cerrar la sesion real de entrenador con Supabase Auth completa en producción y completar el ciclo real `pago recibido -> magic link -> sala de espera -> app instalada`.
 - Cuando se retome eventos, integrar la landing real sin contaminar `/` ni `/app/`.
+
+OBJETIVOS FALTANTES
+
+- Configurar credenciales reales de bootstrap para entrenador: `BOOTSTRAP_TRAINER_EMAIL` y `BOOTSTRAP_TRAINER_PASSWORD`, o reutilizar `TRAINER_LOGIN_EMAIL` y `TRAINER_LOGIN_PASSWORD`.
+- Configurar el objetivo real del smoke de producto: `SMOKE_STUDENT_ID` o `SMOKE_STUDENT_CONTACT_EMAIL`.
+- Desplegar en Supabase la Edge Function `magic-link-delivery`.
+- Conectar `MAGIC_LINK_WEBHOOK_URL` con la URL real de la Edge Function desplegada.
+- Definir en producción `MAGIC_LINK_WEBHOOK_SECRET` y `MAGIC_LINK_WEBHOOK_BEARER_TOKEN` si el endpoint final va firmado/protegido.
+- Ejecutar en entorno real `npm run product:bootstrap:trainer`.
+- Ejecutar en entorno real `npm run product:bootstrap:student`.
+- Ejecutar en entorno real `npm run product:smoke:supabase`.
+- Ejecutar en entorno real `npm run product:smoke:delivery`.
+- Confirmar en entorno real `npm run product:smoke:activation` para validar `pago recibido -> entrega -> sala de espera -> sesión activa`.

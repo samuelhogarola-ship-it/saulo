@@ -13,6 +13,17 @@ async function main() {
   const serverUrl = `http://${HOST}:${port}`;
   const childEnv = createCleanEnv({
     PORT: String(port),
+    SAULO_DATA_MODE: process.env.PLAYWRIGHT_SERVER_DATA_MODE || 'local',
+    DEFAULT_STUDENT_ACCESS_TOKEN:
+      process.env.PLAYWRIGHT_SERVER_DEFAULT_STUDENT_ACCESS_TOKEN ||
+      'lucia-access',
+    TRAINER_API_TOKEN:
+      process.env.PLAYWRIGHT_SERVER_TRAINER_API_TOKEN || 'local-trainer-token',
+    TRAINER_LOGIN_EMAIL:
+      process.env.PLAYWRIGHT_SERVER_TRAINER_LOGIN_EMAIL ||
+      'local@saulofitness.app',
+    TRAINER_LOGIN_PASSWORD:
+      process.env.PLAYWRIGHT_SERVER_TRAINER_LOGIN_PASSWORD || 'saulo1234',
   });
 
   const server = spawn(process.execPath, ['server.js'], {

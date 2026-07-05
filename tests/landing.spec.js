@@ -27,9 +27,9 @@ test('renders the public landing with multipage navigation and contact CTAs', as
     page.getByRole('link', { name: 'Hablar por WhatsApp' }),
   ).toHaveAttribute('href', 'https://wa.me/34622923988');
   await expect(
-    page.getByRole('link', { name: 'Escribir por email' }),
+    page.locator('#inicio').getByRole('link', { name: 'Escribir por email' }),
   ).toHaveAttribute('href', 'mailto:info@webfuengirola.com');
-  await expect(page.locator('[data-events-grid] article')).toHaveCount(2);
+  await expect(page.locator('[data-events-grid] article')).toHaveCount(5);
   await expect(page.locator('a[href^="/app"]')).toHaveCount(0);
 });
 
@@ -51,15 +51,13 @@ test('opens the dedicated pages for casos de éxito and sobre mí', async ({
   ).toBeVisible();
 });
 
-test('shows the intro only on the first visit of the session', async ({
+test('shows the intro only on the first visit of the browser', async ({
   page,
 }) => {
   await page.goto('/');
 
   expect(
-    await page.evaluate(() =>
-      sessionStorage.getItem('saulo-landing-intro-seen'),
-    ),
+    await page.evaluate(() => localStorage.getItem('saulo-landing-intro-seen')),
   ).toBe('true');
 
   await page.reload();

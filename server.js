@@ -70,7 +70,7 @@ app.get(
 );
 
 app.get('/admin/eventos', (_req, res) => {
-  res.send(renderAdminEventsPage());
+  res.redirect(302, '/app/eventos');
 });
 
 app.get(

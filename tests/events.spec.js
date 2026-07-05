@@ -5,17 +5,24 @@ test('renders the public events list and event detail', async ({ page }) => {
 
   await expect(
     page.getByRole('heading', {
-      name: 'Entrenamientos en directo para vivir el cambio contigo.',
+      name: 'Próximos eventos para entrenar en directo con dirección.',
     }),
   ).toBeVisible();
   await expect(
-    page.getByRole('link', { name: 'Reservar plaza' }),
+    page
+      .locator('.events-list')
+      .getByRole('link', { name: 'Apúntate ya' })
+      .first(),
   ).toBeVisible();
 
-  await page.getByRole('link', { name: 'Reservar plaza' }).first().click();
+  await page
+    .locator('.events-list')
+    .getByRole('link', { name: 'Apúntate ya' })
+    .first()
+    .click();
 
   await expect(
-    page.getByRole('heading', { name: 'Girl Power Bootcamp' }),
+    page.getByRole('heading', { name: 'Reset de verano' }),
   ).toBeVisible();
   await expect(page.locator('[data-event-registration-form]')).toBeVisible();
 });
@@ -26,11 +33,11 @@ test('persists a public event registration and exposes it in admin', async ({
 }) => {
   const registrationName = `Test User ${Date.now()}`;
 
-  await page.goto('/eventos/girl-power-bootcamp');
+  await page.goto('/eventos/reset-de-verano');
   await page.getByLabel('Nombre completo').fill(registrationName);
   await page.getByLabel('Email').fill('test@example.com');
   await page.getByLabel('Mensaje').fill('Quiero reservar una plaza.');
-  await page.getByRole('button', { name: 'Reservar plaza' }).click();
+  await page.getByRole('button', { name: 'Apúntate ya' }).click();
 
   await expect(page.locator('[data-form-status]')).toContainText(
     'Solicitud recibida',
@@ -53,7 +60,7 @@ test('persists a public event registration and exposes it in admin', async ({
   expect(eventsResponse.ok()).toBeTruthy();
   const eventsPayload = await eventsResponse.json();
   const bootcamp = eventsPayload.events.find(
-    (item) => item.slug === 'girl-power-bootcamp',
+    (item) => item.slug === 'reset-de-verano',
   );
   expect(bootcamp).toBeTruthy();
 
@@ -69,4 +76,17 @@ test('persists a public event registration and exposes it in admin', async ({
       (registration) => registration.fullName === registrationName,
     ),
   ).toBeTruthy();
+});
+
+test('keeps the event detail when switching language', async ({ page }) => {
+  await page.goto('/eventos/reset-de-verano');
+
+  await expect(page.getByRole('link', { name: '🇧🇷 PT-BR' })).toHaveAttribute(
+    'href',
+    '/eventos/reset-de-verano?lang=pt-br',
+  );
+  await expect(page.getByRole('link', { name: '🇪🇸 ES' })).toHaveAttribute(
+    'href',
+    '/eventos/reset-de-verano',
+  );
 });

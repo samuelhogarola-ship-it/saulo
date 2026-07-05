@@ -87,7 +87,7 @@ test('product:check highlights local delivery smoke and provider contract guidan
   expect(output).toContain('scope: /app/');
   expect(output).toContain('display: standalone');
   expect(output).toContain('- App service worker: ready');
-  expect(output).toContain('cache prefix: saulo-fitness-app-v12');
+  expect(output).toContain('cache prefix: saulo-fitness-app-v13');
   expect(output).toContain('app shell routes cached: yes');
   expect(output).toContain('- Waiting room HTML: ready');
   expect(output).toContain('- Waiting room app: ready');

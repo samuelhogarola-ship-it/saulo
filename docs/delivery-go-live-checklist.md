@@ -2,11 +2,11 @@
 
 ## Estado actual
 
-- Generado: `2026-07-05T09:15:46.847Z`
+- Generado: `2026-07-05T13:55:35.376Z`
 - Requested data mode: `supabase`
 - Resolved data mode: `supabase`
 - Supabase: configurado
-- Webhook delivery: manual
+- Webhook delivery: manual-share fallback
 - Signature header: `x-saulo-signature`
 - Bucket fotos progreso: `progress-photos`
 
@@ -73,4 +73,4 @@ npm run product:handoff:delivery
 
 ## Nota operativa
 
-Mientras no estén cerrados el endpoint de entrega en Supabase, Supabase real y el smoke completo en móvil, la app no debe considerarse lista para entrega comercial final.
+Mientras no estén cerrados el endpoint de entrega en Supabase, el smoke completo en móvil y la validación real `trainer -> waiting room -> app instalada`, la app no debe considerarse lista para entrega comercial final.

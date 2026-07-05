@@ -393,6 +393,50 @@ test('trainer panel clears stale metrics when an expired saved session cannot re
   expect(persistedSession.session).toBeNull();
 });
 
+test('trainer panel clears an invalid persisted session even if it is not expired yet', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    window.localStorage.setItem(
+      'saulo-trainer-session',
+      JSON.stringify({
+        accessToken: 'invalid-local-trainer-token',
+        refreshToken: 'invalid-refresh-token',
+        expiresAt: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+        trainer: {
+          id: 'local-trainer',
+          email: 'local@saulofitness.app',
+          name: 'Saulo Trainer',
+          mode: 'local',
+        },
+      }),
+    );
+    window.localStorage.setItem(
+      'saulo-trainer-token',
+      'invalid-local-trainer-token',
+    );
+  });
+
+  await page.goto('/trainer');
+
+  await expect(page.locator('#trainer-identity')).toBeEmpty();
+  await expect(page.locator('.empty-state')).toContainText(
+    'No se pudo validar la sesión del entrenador.',
+  );
+  await expect(page.locator('#trainer-status')).toContainText(
+    'Acceso de entrenador requerido.',
+  );
+  await expect(page.locator('#summary-total')).toHaveText('0');
+  await expect(page.locator('#summary-paid')).toHaveText('0');
+
+  const persistedSession = await page.evaluate(() => ({
+    token: window.localStorage.getItem('saulo-trainer-token'),
+    session: window.localStorage.getItem('saulo-trainer-session'),
+  }));
+
+  expect(persistedSession.token).toBeNull();
+  expect(persistedSession.session).toBeNull();
+});
 test('trainer panel shows real follow-up data from the student activity', async ({
   page,
   request,

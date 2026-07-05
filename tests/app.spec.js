@@ -189,6 +189,23 @@ test('blocks invalid student access without showing routine data', async ({
   await expect(page.locator('#exercise-list')).toBeEmpty();
 });
 
+test('shows a clean error state for an invalid waiting-room link', async ({
+  page,
+}) => {
+  await page.goto('/sala/waiting-room-token-invalido');
+
+  await expect(page.locator('#waiting-title')).toHaveText(
+    'Enlace no disponible',
+  );
+  await expect(page.locator('#waiting-copy')).toContainText(
+    'ya no está activo',
+  );
+  await expect(page.locator('#waiting-panel')).toContainText(
+    'Enlace de acceso no disponible.',
+  );
+  await expect(page.locator('#waiting-actions')).toBeHidden();
+});
+
 test('persists student access locally after the first valid magic link', async ({
   page,
 }) => {
@@ -408,6 +425,57 @@ test('redirects legacy access links into the real waiting-room product flow', as
   await expect(page).toHaveURL(new RegExp(`/sala/${waitingRoomToken}`));
 });
 
+test('shows the old waiting-room link as unavailable after access rotation', async ({
+  page,
+  request,
+}) => {
+  const createStudent = await request.post('/api/trainer/students', {
+    headers: {
+      Authorization: 'Bearer local-trainer-token',
+    },
+    data: {
+      name: `Alumno Waiting Old ${Date.now()}`,
+      contactEmail: `waiting-old-${Date.now()}@saulofitness.app`,
+      contactPhone: '+34644444444',
+    },
+  });
+  expect(createStudent.status()).toBe(201);
+
+  const createdStudent = (await createStudent.json()).student;
+  const paymentReceived = await request.post(
+    `/api/trainer/students/${createdStudent.id}/payment-received`,
+    {
+      headers: {
+        Authorization: 'Bearer local-trainer-token',
+      },
+    },
+  );
+  expect(paymentReceived.status()).toBe(201);
+
+  const paymentPayload = await paymentReceived.json();
+  const previousWaitingRoomToken = paymentPayload.waitingRoom.waitingRoomToken;
+
+  const rotateAccess = await request.post(
+    `/api/trainer/students/${createdStudent.id}/access/rotate`,
+    {
+      headers: {
+        Authorization: 'Bearer local-trainer-token',
+      },
+    },
+  );
+  expect(rotateAccess.status()).toBe(201);
+
+  await page.goto(`/sala/${previousWaitingRoomToken}`);
+
+  await expect(page.locator('#waiting-title')).toHaveText(
+    'Enlace no disponible',
+  );
+  await expect(page.locator('#waiting-panel')).toContainText(
+    'Enlace de acceso no disponible.',
+  );
+  await expect(page.locator('#waiting-actions')).toBeHidden();
+});
+
 test.describe('PWA behavior', () => {
   test.use({ serviceWorkers: 'allow' });
 
@@ -423,7 +491,7 @@ test.describe('PWA behavior', () => {
     );
 
     const cacheKeys = await page.evaluate(() => caches.keys());
-    expect(cacheKeys).toContain('saulo-fitness-app-v12');
+    expect(cacheKeys).toContain('saulo-fitness-app-v13');
 
     await context.setOffline(true);
     await page.goto('/app/?access=lucia-access&section=messages');

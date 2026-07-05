@@ -6,6 +6,7 @@
 - `/app/` es la PWA del alumno, orientada a uso real del primer producto.
 - `/trainer/` existe ya como panel interno mínimo para gestionar alumnos, mensajes, pago recibido, sala de espera, accesos y una rutina semanal.
 - El formulario de presupuesto ya no forma parte de la experiencia pública principal.
+- La landing del evento `GIRLS` queda fuera de producción y se conserva solo como base genérica para futuros eventos.
 
 ## Dirección del producto
 
@@ -17,19 +18,24 @@
 - La capa Supabase ya contempla bootstrap operativo de entrenador y ownership de alumnos por `trainer_id`, reduciendo el riesgo de mezclar datos entre entrenadores.
 - La puesta en marcha de producto ya contempla también bootstrap del primer alumno con sus entidades mínimas, lo que reduce la dependencia del seed local para demos y primeras entregas reales.
 - El siguiente salto operativo ya no pasa por “semillas internas”, sino por plantillas versionadas de alumno reutilizables dentro del repo.
+- La cobertura QA ya valida shell offline de la PWA, waiting room, reapertura `already-opened`, sesión persistida del alumno, sesión persistida del entrenador, rotación de accesos y revocación de tokens.
 
 ## Decisiones cerradas
 
 - La landing debe ser mínima y orientada a producto.
 - La app del alumno debe sentirse como un producto real, no como un dashboard genérico.
 - La navegación pública debe permanecer limpia y sin duplicados.
+- El acceso del alumno siempre nace desde el waiting room; `/app/` no se entrega como enlace público estable.
+- Si un magic link se rota o revoca, el enlace anterior debe dejar de servir tanto en API como en UI.
 
 ## Riesgos / Alertas
 
 - Evitar reintroducir el formulario de presupuesto en la ruta pública.
 - Evitar sumar pantallas nuevas si el mismo bloque puede resolverse con navegación contextual.
 - Cualquier cambio de branding debe mantenerse coherente entre landing, app e iconos.
+- El producto sigue dependiendo de credenciales reales de Supabase y de una Edge Function real para considerar cerrado el circuito comercial.
+- Mientras `MAGIC_LINK_WEBHOOK_URL` no apunte al endpoint real, la entrega automática sigue en modo manual/share.
 
 ## Próximo foco
 
-- Completar la transición de producto: Supabase real, autenticación real de entrenador, acceso de alumno revocable con sesión persistida en PWA, shell offline y automatización del envío del magic link desde pago confirmado.
+- Completar la transición de producto: Supabase real, autenticación real de entrenador, acceso de alumno revocable con sesión persistida en PWA, shell offline ya validado y automatización final del envío del magic link desde pago confirmado.

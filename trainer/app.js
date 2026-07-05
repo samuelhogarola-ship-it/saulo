@@ -2,44 +2,47 @@
   const TOKEN_KEY = 'saulo-trainer-token';
   const SESSION_KEY = 'saulo-trainer-session';
   const DAY_NUMBERS = [1, 2, 3, 4, 5, 6, 7];
-
-  const authForm = document.querySelector('#trainer-auth-form');
-  const emailInput = document.querySelector('#trainer-email');
-  const passwordInput = document.querySelector('#trainer-password');
-  const logoutButton = document.querySelector('#trainer-logout');
-  const statusBanner = document.querySelector('#trainer-status');
-  const trainerIdentity = document.querySelector('#trainer-identity');
-  const createStudentForm = document.querySelector('#student-create-form');
-  const refreshButton = document.querySelector('#students-refresh-button');
-  const studentsList = document.querySelector('#students-list');
-  const summaryGroups = document.querySelectorAll('.students-summary');
-  const studentsSearch = document.querySelector('#students-search');
-  const studentsStatusFilter = document.querySelector(
-    '#students-status-filter',
-  );
-  const studentsPlanFilter = document.querySelector('#students-plan-filter');
-  const studentsSort = document.querySelector('#students-sort');
-  const summaryTotal = document.querySelector('#summary-total');
-  const summaryPaid = document.querySelector('#summary-paid');
-  const summaryPending = document.querySelector('#summary-pending');
-  const summaryActive = document.querySelector('#summary-active');
-  const opsPendingPayment = document.querySelector('#ops-pending-payment');
-  const opsReady = document.querySelector('#ops-ready');
-  const opsSent = document.querySelector('#ops-sent');
-  const opsOpened = document.querySelector('#ops-opened');
-  const opsAttention = document.querySelector('#ops-attention');
-  const studentCardTemplate = document.querySelector('#student-card-template');
+  const refs = window.SauloTrainerRefs.createTrainerRefs();
+  const {
+    buildEmailLink,
+    buildMagicLinkMessage,
+    buildWhatsAppLink,
+    compareNames,
+    createFallbackDay,
+    escapeHtml,
+    formatContact,
+    formatDate,
+    formatDelivery,
+    formatDeliveryHistory,
+    formatDeliverySummary,
+    formatLatestReport,
+    formatMessageDetail,
+    formatMessageSummary,
+    formatNextAction,
+    formatOperationalState,
+    formatPhotoDetail,
+    formatPhotoSummary,
+    formatReportHistory,
+    getOperationalPriority,
+    getOperationalState,
+    matchesStudentStatus,
+    parseExerciseLines,
+    parseExerciseLinesDetailed,
+    readStudentSummary,
+    renderInsightList,
+    serializeExercisesForEditor,
+  } = window.SauloTrainerUtils;
 
   let trainerSession = getInitialSession();
   let trainerToken = trainerSession?.accessToken || getInitialToken();
   let allStudents = [];
   hydrateLocalHints();
 
-  authForm?.addEventListener('submit', async (event) => {
+  refs.authForm?.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const email = emailInput?.value.trim();
-    const password = passwordInput?.value.trim();
+    const email = refs.emailInput?.value.trim();
+    const password = refs.passwordInput?.value.trim();
 
     if (!email || !password) {
       showStatus('Introduce email y contraseña para continuar.', true);
@@ -70,17 +73,17 @@
     }
   });
 
-  logoutButton?.addEventListener('click', () => {
+  refs.logoutButton?.addEventListener('click', () => {
     clearTrainerSession();
-    if (passwordInput) {
-      passwordInput.value = '';
+    if (refs.passwordInput) {
+      refs.passwordInput.value = '';
     }
     showStatus('Sesión cerrada. El panel ha quedado bloqueado.', false);
     renderTrainerIdentity(null);
     resetStudentsState('Inicia sesión para cargar alumnos.');
   });
 
-  createStudentForm?.addEventListener('submit', async (event) => {
+  refs.createStudentForm?.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     if (!trainerToken) {
@@ -88,7 +91,7 @@
       return;
     }
 
-    const formData = new FormData(createStudentForm);
+    const formData = new FormData(refs.createStudentForm);
     const name = String(formData.get('name') || '').trim();
     const plan = String(formData.get('plan') || '').trim();
     const goal = String(formData.get('goal') || '').trim();
@@ -111,7 +114,7 @@
           contactPhone,
         }),
       });
-      createStudentForm.reset();
+      refs.createStudentForm.reset();
       showStatus('Alumno creado correctamente.');
       await loadStudents();
     } catch (error) {
@@ -119,27 +122,27 @@
     }
   });
 
-  refreshButton?.addEventListener('click', async () => {
+  refs.refreshButton?.addEventListener('click', async () => {
     await loadStudents();
   });
 
-  studentsSearch?.addEventListener('input', () => {
+  refs.studentsSearch?.addEventListener('input', () => {
     renderStudents(allStudents);
   });
 
-  studentsStatusFilter?.addEventListener('change', () => {
+  refs.studentsStatusFilter?.addEventListener('change', () => {
     renderStudents(allStudents);
   });
 
-  studentsPlanFilter?.addEventListener('change', () => {
+  refs.studentsPlanFilter?.addEventListener('change', () => {
     renderStudents(allStudents);
   });
 
-  studentsSort?.addEventListener('change', () => {
+  refs.studentsSort?.addEventListener('change', () => {
     renderStudents(allStudents);
   });
 
-  summaryGroups.forEach((group) => {
+  refs.summaryGroups.forEach((group) => {
     group.addEventListener('click', (event) => {
       const chip = event.target.closest('[data-summary-filter]');
       if (!(chip instanceof HTMLElement)) {
@@ -164,7 +167,7 @@
     });
   });
 
-  studentsList?.addEventListener('click', async (event) => {
+  refs.studentsList?.addEventListener('click', async (event) => {
     const button = event.target.closest('[data-action]');
     if (!(button instanceof HTMLButtonElement)) {
       return;
@@ -322,7 +325,7 @@
     }
   });
 
-  studentsList?.addEventListener('submit', async (event) => {
+  refs.studentsList?.addEventListener('submit', async (event) => {
     const form = event.target.closest('[data-message-form]');
     if (form instanceof HTMLFormElement) {
       event.preventDefault();
@@ -491,12 +494,12 @@
       }),
     );
 
-    studentsList.innerHTML = '';
-    cards.forEach((card) => studentsList.appendChild(card));
+    refs.studentsList.innerHTML = '';
+    cards.forEach((card) => refs.studentsList.appendChild(card));
   }
 
   function createStudentCard(student) {
-    const fragment = studentCardTemplate.content.cloneNode(true);
+    const fragment = refs.studentCardTemplate.content.cloneNode(true);
     const card = fragment.querySelector('.student-card');
     const accessState = student.accessRevokedAt
       ? 'Acceso revocado'
@@ -703,65 +706,6 @@
     return { days, errors };
   }
 
-  function parseExerciseLinesDetailed(rawValue) {
-    const errors = [];
-
-    const exercises = String(rawValue || '')
-      .split('\n')
-      .map((line) => line.trim())
-      .filter(Boolean)
-      .map((line, index) => {
-        const [name, reps, load, rest, videoUrl] = line
-          .split('|')
-          .map((part) => part.trim());
-
-        if (!name || !reps || !load || !rest) {
-          errors.push(
-            `la línea ${index + 1} debe usar "Nombre | reps | carga | descanso | video opcional"`,
-          );
-          return null;
-        }
-
-        if (videoUrl && !isSupportedVideoUrl(videoUrl)) {
-          errors.push(
-            `la línea ${index + 1} tiene un vídeo no compatible; usa YouTube o youtu.be`,
-          );
-          return null;
-        }
-
-        return {
-          name,
-          reps,
-          load,
-          rest,
-          ...(videoUrl ? { videoUrl } : {}),
-        };
-      })
-      .filter(Boolean);
-
-    return { exercises, errors };
-  }
-
-  function parseExerciseLines(rawValue) {
-    return parseExerciseLinesDetailed(rawValue).exercises;
-  }
-
-  function serializeExercisesForEditor(exercises) {
-    return exercises
-      .map((exercise) =>
-        [
-          exercise.name || '',
-          exercise.reps || '',
-          exercise.load || '',
-          exercise.rest || '',
-          exercise.videoUrl || exercise.video_url || '',
-        ]
-          .filter((value, index) => index < 4 || value)
-          .join(' | '),
-      )
-      .join('\n');
-  }
-
   function bindRoutinePreview(daysRoot) {
     daysRoot.addEventListener('input', (event) => {
       if (!(event.target instanceof HTMLTextAreaElement)) {
@@ -824,58 +768,12 @@
     });
   }
 
-  function isSupportedVideoUrl(value) {
-    try {
-      const url = new URL(String(value || '').trim());
-      return (
-        url.hostname.includes('youtube.com') ||
-        url.hostname.includes('youtu.be')
-      );
-    } catch (_error) {
-      return false;
-    }
-  }
-
-  function createFallbackDay(dayNumber) {
-    const isRecovery = ![1, 3, 5].includes(dayNumber);
-
-    if (isRecovery) {
-      return {
-        day: dayNumber,
-        title: 'Descanso activo',
-        meta: 'Recuperación · Cardio ligero',
-        exercises: [
-          {
-            name: 'Cardio suave',
-            reps: '20 min',
-            load: 'Suave',
-            rest: 'Continuo',
-          },
-        ],
-      };
-    }
-
-    return {
-      day: dayNumber,
-      title: `Día ${dayNumber} · Fuerza`,
-      meta: 'Activa · Ganancia muscular',
-      exercises: [
-        {
-          name: 'Ejercicio base',
-          reps: '4 x 10',
-          load: '75%',
-          rest: '90 s',
-        },
-      ],
-    };
-  }
-
   function renderEmptyState(message) {
-    if (!studentsList) {
+    if (!refs.studentsList) {
       return;
     }
 
-    studentsList.innerHTML = `<p class="empty-state">${escapeHtml(message)}</p>`;
+    refs.studentsList.innerHTML = `<p class="empty-state">${escapeHtml(message)}</p>`;
   }
 
   function resetStudentsState(message) {
@@ -886,29 +784,29 @@
   }
 
   function showStatus(message, isError = false) {
-    if (!statusBanner) {
+    if (!refs.statusBanner) {
       return;
     }
 
-    statusBanner.hidden = false;
-    statusBanner.textContent = message;
-    statusBanner.classList.toggle('is-error', isError);
-    statusBanner.classList.toggle('is-success', !isError);
+    refs.statusBanner.hidden = false;
+    refs.statusBanner.textContent = message;
+    refs.statusBanner.classList.toggle('is-error', isError);
+    refs.statusBanner.classList.toggle('is-success', !isError);
   }
 
   function renderTrainerIdentity(trainer) {
-    if (!trainerIdentity) {
+    if (!refs.trainerIdentity) {
       return;
     }
 
     if (!trainer) {
-      trainerIdentity.hidden = true;
-      trainerIdentity.textContent = '';
+      refs.trainerIdentity.hidden = true;
+      refs.trainerIdentity.textContent = '';
       return;
     }
 
-    trainerIdentity.hidden = false;
-    trainerIdentity.textContent = `${trainer.name} · ${trainer.email || 'sin email'} · ${trainer.mode}`;
+    refs.trainerIdentity.hidden = false;
+    refs.trainerIdentity.textContent = `${trainer.name} · ${trainer.email || 'sin email'} · ${trainer.mode}`;
   }
 
   async function trainerRequest(url, options = {}) {
@@ -1058,298 +956,57 @@
     const params = new URLSearchParams(window.location.search);
     const email = params.get('email');
 
-    if (emailInput) {
-      emailInput.value = email || 'local@saulofitness.app';
+    if (refs.emailInput) {
+      refs.emailInput.value = email || 'local@saulofitness.app';
     }
-  }
-
-  function escapeHtml(value) {
-    return String(value ?? '')
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;')
-      .replaceAll('"', '&quot;')
-      .replaceAll("'", '&#039;');
-  }
-
-  function formatDate(value) {
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) {
-      return 'pendiente';
-    }
-    return date.toLocaleDateString('es-ES', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    });
-  }
-
-  function formatLatestReport(report) {
-    if (!report) {
-      return 'Todavía no hay informes de entrenamiento enviados.';
-    }
-
-    const dayLabel = report.day ? `Día ${report.day}` : 'Entrenamiento';
-    const feedback = report.feedback ? ` · ${report.feedback}` : '';
-    const createdAt = report.createdAt
-      ? ` · ${formatDate(report.createdAt)}`
-      : '';
-    return `${dayLabel}${feedback}${createdAt}`;
-  }
-
-  function formatPhotoSummary(summary) {
-    if (!summary) {
-      return 'Sin fotos de progreso registradas todavía.';
-    }
-
-    const parts = [
-      `Pendientes: ${summary.pendingCount || 0}`,
-      `Histórico: ${summary.historyCount || 0}`,
-    ];
-
-    if (summary.nextDueDate) {
-      parts.push(`Próximo registro: ${formatDate(summary.nextDueDate)}`);
-    }
-
-    return parts.join(' · ');
-  }
-
-  function formatReportHistory(history) {
-    if (!Array.isArray(history) || !history.length) {
-      return [
-        {
-          title: 'Sin histórico reciente',
-          meta: 'Cuando el alumno finalice entrenamientos, aparecerán aquí.',
-        },
-      ];
-    }
-
-    return history.map((report) => ({
-      title: `Día ${report.day || '—'} · ${report.feedback || 'Sin feedback'}`,
-      meta: report.createdAt
-        ? `Enviado el ${formatDate(report.createdAt)}`
-        : 'Sin fecha registrada',
-    }));
-  }
-
-  function formatPhotoDetail(detail) {
-    const items = [];
-
-    if (detail?.pendingSlots?.length) {
-      items.push({
-        title: 'Pendientes de revisión',
-        meta: detail.pendingSlots.join(', '),
-      });
-    }
-
-    if (Array.isArray(detail?.historyItems) && detail.historyItems.length) {
-      detail.historyItems.forEach((item) => {
-        items.push({
-          title: item.label || 'Registro',
-          meta: item.meta || 'Seguimiento disponible',
-        });
-      });
-    }
-
-    return items.length
-      ? items
-      : [
-          {
-            title: 'Sin detalle todavía',
-            meta: 'Cuando el alumno suba fotos aparecerán aquí.',
-          },
-        ];
-  }
-
-  function formatMessageSummary(summary) {
-    if (!summary) {
-      return 'Sin actividad de mensajes todavía.';
-    }
-
-    const parts = [
-      `Recibidos: ${summary.inboxCount || 0}`,
-      `Enviados: ${summary.sentCount || 0}`,
-      `Recordatorios: ${summary.remindersCount || 0}`,
-    ];
-
-    if (summary.latestTitle) {
-      parts.push(`Último: ${summary.latestTitle}`);
-    }
-
-    return parts.join(' · ');
-  }
-
-  function formatMessageDetail(detail) {
-    if (!Array.isArray(detail) || !detail.length) {
-      return [
-        {
-          title: 'Sin conversación reciente',
-          meta: 'Cuando haya intercambio de mensajes aparecerá aquí.',
-        },
-      ];
-    }
-
-    return detail;
-  }
-
-  function formatContact(student) {
-    const parts = [student.contactEmail, student.contactPhone].filter(Boolean);
-    return parts.length ? parts.join(' · ') : 'Pendiente de registrar';
-  }
-
-  function formatDelivery(student) {
-    if (!student.deliveryStatus) {
-      return 'Pendiente de activar';
-    }
-
-    const statusLabels = {
-      pending: 'Pendiente de envío',
-      ready: 'Listo para compartir',
-      'ready-to-share': 'Listo para compartir',
-      shared: 'Compartido manualmente',
-      sent: 'Enviado automáticamente',
-      delivered: 'Enviado automáticamente',
-      opened: 'Acceso abierto',
-      failed: 'Fallo de envío',
-      'missing-contact': 'Falta contacto',
-    };
-
-    const parts = [
-      statusLabels[student.deliveryStatus] || student.deliveryStatus,
-    ];
-
-    if (student.deliveryChannel) {
-      parts.push(student.deliveryChannel);
-    }
-
-    if (student.deliverySentAt) {
-      parts.push(formatDate(student.deliverySentAt));
-    }
-
-    if (student.deliveryError) {
-      parts.push(student.deliveryError);
-    }
-
-    return parts.join(' · ');
-  }
-
-  function formatDeliverySummary(student) {
-    if (student.waitingRoomConsumedAt) {
-      return `Último estado: acceso abierto · ${formatDate(student.waitingRoomConsumedAt)}`;
-    }
-
-    if (
-      !Array.isArray(student.deliveryHistory) ||
-      !student.deliveryHistory.length
-    ) {
-      return 'Sin entregas registradas todavía.';
-    }
-
-    return `Último estado: ${formatDelivery(student)}`;
-  }
-
-  function formatDeliveryHistory(history) {
-    if (!Array.isArray(history) || !history.length) {
-      return [
-        {
-          title: 'Sin historial todavía',
-          meta: 'Cuando se comparta o envíe el acceso aparecerá aquí.',
-        },
-      ];
-    }
-
-    return history;
-  }
-
-  function renderInsightList(container, items) {
-    if (!container) {
-      return;
-    }
-
-    container.innerHTML = items
-      .map(
-        (item) => `
-          <article class="insight-item">
-            <strong>${escapeHtml(item.title || '')}</strong>
-            <span>${escapeHtml(item.meta || '')}</span>
-          </article>
-        `,
-      )
-      .join('');
-  }
-
-  function readStudentSummary(card) {
-    return {
-      name: String(card?.dataset.studentName || '').trim(),
-      contactEmail: String(card?.dataset.studentContactEmail || '').trim(),
-      contactPhone: String(card?.dataset.studentContactPhone || '').trim(),
-    };
-  }
-
-  function buildMagicLinkMessage(student, waitingRoomLink) {
-    return [
-      `Hola ${student.name || 'cliente'}, tu acceso a Saulo Fitness APP ya está listo.`,
-      `Abre este enlace único y de un solo uso para entrar en tu sala de espera y activar la app en tu móvil: ${waitingRoomLink}`,
-      'Cuando la abras, tu sesión quedará activa y podrás añadirla a la pantalla de inicio como PWA.',
-    ].join(' ');
-  }
-
-  function buildEmailLink(student, waitingRoomLink) {
-    const email = String(student.contactEmail || '').trim();
-    if (!email || !waitingRoomLink) {
-      return '';
-    }
-
-    const subject = 'Saulo Fitness APP · Tu acceso está listo';
-    const body = buildMagicLinkMessage(student, waitingRoomLink);
-    return `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }
-
-  function buildWhatsAppLink(student, waitingRoomLink) {
-    const phone = String(student.contactPhone || '').trim();
-    if (!phone || !waitingRoomLink) {
-      return '';
-    }
-
-    const body = buildMagicLinkMessage(student, waitingRoomLink);
-    return `https://wa.me/${String(phone).replace(/[^\d]/g, '')}?text=${encodeURIComponent(body)}`;
   }
 
   function renderStudentsSummary(students) {
-    if (!summaryTotal || !summaryPaid || !summaryPending || !summaryActive) {
+    if (
+      !refs.summaryTotal ||
+      !refs.summaryPaid ||
+      !refs.summaryPending ||
+      !refs.summaryActive
+    ) {
       return;
     }
 
-    summaryTotal.textContent = String(students.length);
-    summaryPaid.textContent = String(
+    refs.summaryTotal.textContent = String(students.length);
+    refs.summaryPaid.textContent = String(
       students.filter((student) => Boolean(student.paymentReceivedAt)).length,
     );
-    summaryPending.textContent = String(
+    refs.summaryPending.textContent = String(
       students.filter((student) => !student.paymentReceivedAt).length,
     );
-    summaryActive.textContent = String(
+    refs.summaryActive.textContent = String(
       students.filter((student) => !student.accessRevokedAt).length,
     );
 
-    if (opsPendingPayment && opsReady && opsSent && opsOpened && opsAttention) {
-      opsPendingPayment.textContent = String(
+    if (
+      refs.opsPendingPayment &&
+      refs.opsReady &&
+      refs.opsSent &&
+      refs.opsOpened &&
+      refs.opsAttention
+    ) {
+      refs.opsPendingPayment.textContent = String(
         students.filter(
           (student) => getOperationalState(student) === 'pending-payment',
         ).length,
       );
-      opsReady.textContent = String(
+      refs.opsReady.textContent = String(
         students.filter((student) => getOperationalState(student) === 'ready')
           .length,
       );
-      opsSent.textContent = String(
+      refs.opsSent.textContent = String(
         students.filter((student) => getOperationalState(student) === 'sent')
           .length,
       );
-      opsOpened.textContent = String(
+      refs.opsOpened.textContent = String(
         students.filter((student) => getOperationalState(student) === 'opened')
           .length,
       );
-      opsAttention.textContent = String(
+      refs.opsAttention.textContent = String(
         students.filter((student) =>
           ['attention', 'revoked'].includes(getOperationalState(student)),
         ).length,
@@ -1360,11 +1017,11 @@
   }
 
   function filterStudents(students) {
-    const search = String(studentsSearch?.value || '')
+    const search = String(refs.studentsSearch?.value || '')
       .trim()
       .toLowerCase();
-    const status = String(studentsStatusFilter?.value || 'all');
-    const plan = String(studentsPlanFilter?.value || 'all');
+    const status = String(refs.studentsStatusFilter?.value || 'all');
+    const plan = String(refs.studentsPlanFilter?.value || 'all');
 
     return students.filter((student) => {
       const matchesSearch =
@@ -1381,7 +1038,7 @@
   }
 
   function sortStudents(students) {
-    const sort = String(studentsSort?.value || 'operational');
+    const sort = String(refs.studentsSort?.value || 'operational');
     const sorted = [...students];
 
     sorted.sort((left, right) => {
@@ -1416,17 +1073,17 @@
   }
 
   function applySummaryFilter(filterValue) {
-    if (!studentsStatusFilter) {
+    if (!refs.studentsStatusFilter) {
       return;
     }
 
-    studentsStatusFilter.value = filterValue || 'all';
+    refs.studentsStatusFilter.value = filterValue || 'all';
     syncSummaryFilterState();
     renderStudents(allStudents);
   }
 
   function syncSummaryFilterState() {
-    const currentFilter = String(studentsStatusFilter?.value || 'all');
+    const currentFilter = String(refs.studentsStatusFilter?.value || 'all');
     document.querySelectorAll('[data-summary-filter]').forEach((chip) => {
       chip.classList.toggle(
         'is-active',
@@ -1435,136 +1092,17 @@
     });
   }
 
-  function compareNames(left, right) {
-    return String(left?.name || '').localeCompare(
-      String(right?.name || ''),
-      'es',
-    );
-  }
-
-  function matchesStudentStatus(student, status) {
-    if (status === 'all') {
-      return true;
-    }
-
-    if (status === 'active') {
-      return !student.accessRevokedAt;
-    }
-
-    if (status === 'revoked') {
-      return Boolean(student.accessRevokedAt);
-    }
-
-    if (status === 'paid') {
-      return Boolean(student.paymentReceivedAt);
-    }
-
-    if (status === 'pending') {
-      return !student.paymentReceivedAt;
-    }
-
-    if (status === 'ready') {
-      return getOperationalState(student) === 'ready';
-    }
-
-    if (status === 'opened') {
-      return getOperationalState(student) === 'opened';
-    }
-
-    if (status === 'sent') {
-      return getOperationalState(student) === 'sent';
-    }
-
-    if (status === 'attention') {
-      return ['attention', 'revoked'].includes(getOperationalState(student));
-    }
-
-    return true;
-  }
-
-  function getOperationalState(student) {
-    if (student.accessRevokedAt) {
-      return 'revoked';
-    }
-
-    if (!student.paymentReceivedAt) {
-      return 'pending-payment';
-    }
-
-    if (student.deliveryStatus === 'failed') {
-      return 'attention';
-    }
-
-    if (student.deliveryStatus === 'missing-contact') {
-      return 'attention';
-    }
-
-    if (student.waitingRoomConsumedAt) {
-      return 'opened';
-    }
-
-    if (['ready', 'pending'].includes(student.deliveryStatus)) {
-      return 'ready';
-    }
-
-    if (['shared', 'sent'].includes(student.deliveryStatus)) {
-      return student.waitingRoomConsumedAt ? 'opened' : 'sent';
-    }
-
-    return 'attention';
-  }
-
-  function getOperationalPriority(student) {
-    const priorities = {
-      'pending-payment': 0,
-      ready: 1,
-      attention: 2,
-      sent: 3,
-      opened: 4,
-      revoked: 5,
-    };
-
-    return priorities[getOperationalState(student)] ?? 99;
-  }
-
-  function formatOperationalState(student) {
-    const labels = {
-      'pending-payment': 'Pago pendiente',
-      ready: 'Listo para enviar',
-      sent: 'Ya enviado',
-      opened: 'Acceso abierto',
-      attention: 'Revisar entrega',
-      revoked: 'Acceso revocado',
-    };
-
-    return labels[getOperationalState(student)] || 'Revisar entrega';
-  }
-
-  function formatNextAction(student) {
-    const state = getOperationalState(student);
-    const nextActions = {
-      'pending-payment': 'Confirmar pago para generar el acceso',
-      ready: 'Compartir el magic link único con el alumno',
-      sent: 'Esperar a que el alumno abra la sala de espera',
-      opened: 'Comprobar instalación y uso de la app',
-      attention: 'Revisar contacto o reintentar entrega',
-      revoked: 'Rotar o reactivar acceso si procede',
-    };
-
-    return nextActions[state] || 'Revisar caso';
-  }
-
   function syncPlanFilter(students) {
-    if (!studentsPlanFilter) {
+    if (!refs.studentsPlanFilter) {
       return;
     }
 
-    const currentValue = studentsPlanFilter.value || 'all';
+    const currentValue = refs.studentsPlanFilter.value || 'all';
     const plans = [
       ...new Set(students.map((student) => student.plan).filter(Boolean)),
     ].sort((left, right) => left.localeCompare(right, 'es'));
 
-    studentsPlanFilter.innerHTML = [
+    refs.studentsPlanFilter.innerHTML = [
       '<option value="all">Todos los planes</option>',
       ...plans.map(
         (plan) =>
@@ -1572,7 +1110,7 @@
       ),
     ].join('');
 
-    studentsPlanFilter.value = plans.includes(currentValue)
+    refs.studentsPlanFilter.value = plans.includes(currentValue)
       ? currentValue
       : 'all';
   }

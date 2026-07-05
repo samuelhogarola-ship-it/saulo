@@ -54,13 +54,21 @@ No incluye ya el formulario de presupuesto/cuestionario ni su backend asociado.
 - `SAULO_DATA_MODE=supabase`: activa el backend real con Supabase Auth, tablas SQL y Storage.
 - `npm run product:check`: valida si el proyecto está realmente listo para arrancar en modo producto.
 - `npm run product:contract:delivery`: imprime el contrato exacto del webhook de magic link con headers y payload de ejemplo según la configuración actual.
+- `npm run product:env:activate-supabase`: activa `SAULO_DATA_MODE=supabase` en `.env`.
+- `npm run product:env:commands`: exporta comandos listos para bootstrap, smoke y handoff del producto.
+- `npm run product:env:function`: exporta una plantilla específica para los secrets y vars de la Edge Function `magic-link-delivery`.
+- `npm run product:env:template`: exporta una plantilla accionable de `.env` para el modo producto real.
+- `npm run product:handoff:activation`: exporta un runbook ordenado de activación real del producto.
+- `npm run product:handoff:bundle`: regenera de una vez todo el paquete operativo de producto.
+- `npm run product:handoff:function`: exporta un handoff Markdown con deploy, secrets y wiring final de la Edge Function.
 - `npm run product:handoff:go-live`: exporta un checklist Markdown de salida a producción para el flujo real `pago recibido -> magic link -> sala de espera -> PWA`.
-- `npm run product:handoff:delivery`: exporta un documento Markdown listo para enviar al proveedor final con contrato, payload y `curl` de prueba.
+- `npm run product:handoff:delivery`: exporta un documento Markdown listo para conectar la Edge Function de Supabase con contrato, payload y `curl` de prueba.
 - `npm run product:bootstrap:trainer`: crea o enlaza el entrenador inicial en Supabase Auth + tabla `trainers`.
 - `npm run product:bootstrap:student`: crea o actualiza un alumno real con sus entidades base de producto.
 - `npm run product:check:templates`: valida todas las plantillas JSON de alumnos del repo.
 - `npm run product:mock:delivery`: levanta un receptor local para probar `MAGIC_LINK_WEBHOOK_URL`.
-- `npm run product:smoke:delivery`: levanta un smoke local de entrega real contra el mock provider y valida que `pago recibido` dispara el webhook con el waiting room link esperado.
+- `npm run product:smoke:delivery`: levanta un smoke local de entrega real contra un mock de delivery y valida que `pago recibido` dispara el webhook con el waiting room link esperado.
+- `npm run product:smoke:activation`: valida en local el circuito completo `pago recibido -> entrega -> sala de espera -> sesión activa de alumno`.
 - `npm run product:smoke:supabase`: valida login real, refresh real, ownership del entrenador y lectura real de un alumno en Supabase.
 
 Para que el modo producto sea real y no caiga a local, necesitas:
@@ -73,13 +81,111 @@ Opcional pero recomendado para producción:
 
 - `MAGIC_LINK_WEBHOOK_URL` para enviar el acceso automáticamente por email o WhatsApp
 - `MAGIC_LINK_WEBHOOK_SECRET` para firmar el webhook con HMAC SHA256
-- `MAGIC_LINK_WEBHOOK_BEARER_TOKEN` si el proveedor exige bearer auth
+- `MAGIC_LINK_WEBHOOK_BEARER_TOKEN` si tu Edge Function o el servicio aguas abajo exige bearer auth
 - `MAGIC_LINK_WEBHOOK_TIMEOUT_MS` para controlar el timeout de entrega
 - `SUPABASE_PROGRESS_PHOTOS_BUCKET` para separar el bucket final de fotos de progreso
+- `supabase/functions/magic-link-delivery/` como endpoint real de entrega en Supabase
+
+### Activación mínima del producto real
+
+Cuando quieras salir del modo local y probar el MVP real de extremo a extremo, la secuencia mínima es esta:
+
+1. Copia `.env.example` a `.env`.
+2. Cambia `SAULO_DATA_MODE=supabase`.
+3. Rellena `SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY` con valores reales.
+4. Aplica las migraciones de `supabase/migrations` en tu proyecto Supabase.
+5. Configura `BOOTSTRAP_TRAINER_EMAIL`, `BOOTSTRAP_TRAINER_PASSWORD` y `BOOTSTRAP_TRAINER_NAME`.
+6. Ejecuta `npm run product:bootstrap:trainer`.
+7. Configura `BOOTSTRAP_STUDENT_TEMPLATE_PATH` o las variables `BOOTSTRAP_STUDENT_*`.
+8. Ejecuta `npm run product:bootstrap:student`.
+9. Configura `SMOKE_TRAINER_EMAIL` y `SMOKE_TRAINER_PASSWORD`.
+10. Ejecuta `npm run product:smoke:supabase`.
+11. Despliega `supabase/functions/magic-link-delivery`.
+12. Configura `MAGIC_LINK_WEBHOOK_URL` con la URL real de esa función si quieres entrega automática real.
+13. Ejecuta `npm run product:smoke:delivery`.
+14. Ejecuta `npm run product:smoke:activation`.
+
+Comprobación rápida antes de empezar:
+
+```bash
+npm run product:check
+npm run product:env:template
+```
+
+Si ese comando sigue marcando `SAULO_DATA_MODE=local` o `Supabase configured: no`, el producto todavía no está usando la capa real.
+
+Si quieres una base de `.env` ya orientada a producción MVP:
+
+```bash
+npm run product:env:template
+```
+
+Por defecto se genera en:
+
+- `docs/product-env-template.env`
+
+Si ya tienes las credenciales reales en `.env` y solo falta activar el modo producto:
+
+```bash
+npm run product:env:activate-supabase
+```
+
+Si quieres además un bloque de comandos listo para ejecutar los siguientes pasos:
+
+```bash
+npm run product:env:commands
+```
+
+Por defecto se genera en:
+
+- `docs/product-next-commands.md`
+
+Si quieres una plantilla separada solo para los secrets de la Edge Function:
+
+```bash
+npm run product:env:function
+```
+
+Por defecto se genera en:
+
+- `docs/supabase-function-template.env`
+
+Si quieres además un handoff ejecutable con deploy, secrets y wiring final:
+
+```bash
+npm run product:handoff:function
+```
+
+Por defecto se genera en:
+
+- `docs/supabase-function-handoff.md`
+
+Si quieres una guía única y ordenada de activación total:
+
+```bash
+npm run product:handoff:activation
+```
+
+Por defecto se genera en:
+
+- `docs/product-activation-runbook.md`
+
+Si quieres regenerar de una vez todos los artefactos operativos:
+
+```bash
+npm run product:handoff:bundle
+```
+
+Atajos operativos ya soportados:
+
+- `product:bootstrap:trainer` puede reutilizar `TRAINER_LOGIN_EMAIL` y `TRAINER_LOGIN_PASSWORD` si no defines `BOOTSTRAP_TRAINER_*`.
+- `BOOTSTRAP_TRAINER_NAME` es opcional y por defecto usa `Saulo Trainer`.
+- `product:bootstrap:student` puede reutilizar `TRAINER_LOGIN_EMAIL` para localizar el entrenador si no defines `BOOTSTRAP_TRAINER_EMAIL`.
+- Si existe una sola plantilla en `product-templates/students/`, `product:bootstrap:student` la detecta automáticamente aunque no definas `BOOTSTRAP_STUDENT_TEMPLATE_PATH`.
 
 ### Contrato del webhook de magic link
 
-Cuando `MAGIC_LINK_WEBHOOK_URL` está configurado, el backend hace `POST` con JSON a tu proveedor.
+Cuando `MAGIC_LINK_WEBHOOK_URL` está configurado, el backend hace `POST` con JSON a tu endpoint de entrega en Supabase.
 
 Headers opcionales:
 
@@ -98,20 +204,20 @@ Payload:
 - `mailtoUrl`
 - `whatsappUrl`
 
-Si el proveedor no responde a tiempo o devuelve error, la app cae a modo manual y deja trazado `provider-error`.
+Si la Edge Function no responde a tiempo o devuelve error, la app cae a modo manual y deja trazado `provider-error`.
 
-Respuesta recomendada del proveedor cuando acepta la entrega:
+Respuesta recomendada del endpoint cuando acepta la entrega:
 
 - `2xx`
 - JSON opcional con:
   - `channel`: canal real usado, por ejemplo `email` o `whatsapp`
-  - `deliveryId`: identificador interno del proveedor para trazabilidad
+  - `deliveryId`: identificador interno de la función o del canal final para trazabilidad
 
 Si esos campos llegan, el panel de entrenador persiste el canal real confirmado y el identificador de entrega.
 
-### Exportar contrato exacto para el proveedor
+### Exportar contrato exacto para Supabase
 
-Si necesitas entregar al proveedor final un ejemplo exacto del POST que recibirá:
+Si necesitas conectar una Edge Function de Supabase con un ejemplo exacto del POST que recibirá:
 
 ```bash
 npm run product:contract:delivery
@@ -124,20 +230,20 @@ Este comando imprime:
 - bearer si existe
 - cabecera de firma si existe
 - payload JSON completo de ejemplo
-- `curl` listo para probar manualmente el POST contra el proveedor
+- `curl` listo para probar manualmente el POST contra la Edge Function
 
 Puedes ajustar el ejemplo con variables opcionales:
 
-- `PROVIDER_CONTRACT_ORIGIN`
-- `PROVIDER_CONTRACT_WAITING_ROOM_TOKEN`
-- `PROVIDER_CONTRACT_ACCESS_TOKEN`
-- `PROVIDER_CONTRACT_STUDENT_ID`
-- `PROVIDER_CONTRACT_STUDENT_NAME`
-- `PROVIDER_CONTRACT_PLAN`
-- `PROVIDER_CONTRACT_CONTACT_EMAIL`
-- `PROVIDER_CONTRACT_CONTACT_PHONE`
+- `DELIVERY_CONTRACT_ORIGIN` o `PROVIDER_CONTRACT_ORIGIN`
+- `DELIVERY_CONTRACT_WAITING_ROOM_TOKEN` o `PROVIDER_CONTRACT_WAITING_ROOM_TOKEN`
+- `DELIVERY_CONTRACT_ACCESS_TOKEN` o `PROVIDER_CONTRACT_ACCESS_TOKEN`
+- `DELIVERY_CONTRACT_STUDENT_ID` o `PROVIDER_CONTRACT_STUDENT_ID`
+- `DELIVERY_CONTRACT_STUDENT_NAME` o `PROVIDER_CONTRACT_STUDENT_NAME`
+- `DELIVERY_CONTRACT_PLAN` o `PROVIDER_CONTRACT_PLAN`
+- `DELIVERY_CONTRACT_CONTACT_EMAIL` o `PROVIDER_CONTRACT_CONTACT_EMAIL`
+- `DELIVERY_CONTRACT_CONTACT_PHONE` o `PROVIDER_CONTRACT_CONTACT_PHONE`
 
-Si además quieres generar un documento entregable para enviar al proveedor:
+Si además quieres generar un documento entregable para conectar la Edge Function:
 
 ```bash
 npm run product:handoff:delivery
@@ -183,9 +289,35 @@ La ruta pública canónica del magic link es:
 
 Y la ruta antigua `/demo/:token` se mantiene solo como redirección compatible hacia la sala de espera.
 
+### Función real de Supabase para entrega
+
+El scaffold actual vive en:
+
+- `supabase/functions/magic-link-delivery/index.ts`
+
+Incluye:
+
+- validación opcional de bearer
+- validación opcional de firma HMAC
+- respuesta `2xx` compatible con el panel
+- modo `echo` para cerrar el circuito sin canal externo
+- modo `forward` opcional si luego quieres reenviar a WhatsApp, email o automatización externa
+
+Deploy básico:
+
+```bash
+supabase functions deploy magic-link-delivery
+```
+
+Y luego:
+
+```bash
+MAGIC_LINK_WEBHOOK_URL='https://<project-ref>.supabase.co/functions/v1/magic-link-delivery'
+```
+
 ### Probar el webhook en local
 
-Puedes levantar un proveedor local de prueba:
+Puedes levantar un endpoint local de prueba:
 
 ```bash
 MAGIC_LINK_WEBHOOK_SECRET=tu-secreto \
@@ -216,13 +348,13 @@ npm run product:smoke:delivery
 
 Qué hace:
 
-- levanta el mock provider local
+- levanta el mock local de delivery
 - levanta la app en modo `local` con `MAGIC_LINK_WEBHOOK_URL` apuntando al mock
 - crea un alumno de prueba
 - marca `pago recibido`
 - verifica que el webhook sale en estado `delivered`
 - valida que el payload recibido contiene el alumno correcto y el `waitingRoomUrl` esperado
-- valida que el detalle del alumno persiste `deliveryStatus=sent`, `channel` y `deliveryId` devueltos por el proveedor mock
+- valida que el detalle del alumno persiste `deliveryStatus=sent`, `channel` y `deliveryId` devueltos por el mock de delivery
 
 Variables opcionales:
 
@@ -230,6 +362,26 @@ Variables opcionales:
 - `DELIVERY_SMOKE_PROVIDER_PORT`
 - `DELIVERY_SMOKE_PROVIDER_HOST`
 - `DELIVERY_SMOKE_OUTPUT_PATH`
+
+### Smoke local de activación completa
+
+Si quieres validar además que la sala de espera consume el acceso y deja la sesión activa del alumno:
+
+```bash
+npm run product:smoke:activation
+```
+
+Qué hace:
+
+- levanta la app local y el mock de delivery
+- crea un alumno temporal
+- marca `pago recibido`
+- confirma que el webhook se dispara y llega al mock
+- abre la preview de sala de espera por API
+- consume la sala de espera
+- valida que `/api/student/session` y `/api/student/routine` responden con el access token activado
+- comprueba que reabrir la sala de espera devuelve `already-opened`
+- comprueba que el detalle del alumno acaba en `deliveryStatus=opened`
 
 ## Bootstrap real de entrenador
 

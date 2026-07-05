@@ -1,4 +1,4 @@
-const { runtime, supabase } = require('../lib/config');
+const { runtime, supabase, trainerLogin } = require('../lib/config');
 
 async function main() {
   if (runtime.requestedDataMode !== 'supabase' || !supabase.hasConfig) {
@@ -7,9 +7,14 @@ async function main() {
     );
   }
 
-  const email = String(process.env.BOOTSTRAP_TRAINER_EMAIL || '').trim();
-  const password = String(process.env.BOOTSTRAP_TRAINER_PASSWORD || '').trim();
-  const name = String(process.env.BOOTSTRAP_TRAINER_NAME || '').trim();
+  const email = String(
+    process.env.BOOTSTRAP_TRAINER_EMAIL || trainerLogin.email || '',
+  ).trim();
+  const password = String(
+    process.env.BOOTSTRAP_TRAINER_PASSWORD || trainerLogin.password || '',
+  ).trim();
+  const name =
+    String(process.env.BOOTSTRAP_TRAINER_NAME || '').trim() || 'Saulo Trainer';
   const adoptUnassigned =
     String(process.env.BOOTSTRAP_ADOPT_UNASSIGNED_STUDENTS || '')
       .trim()
@@ -17,7 +22,7 @@ async function main() {
 
   if (!email || !password || !name) {
     throw new Error(
-      'Define BOOTSTRAP_TRAINER_EMAIL, BOOTSTRAP_TRAINER_PASSWORD y BOOTSTRAP_TRAINER_NAME.',
+      'Define BOOTSTRAP_TRAINER_EMAIL y BOOTSTRAP_TRAINER_PASSWORD, o deja TRAINER_LOGIN_EMAIL y TRAINER_LOGIN_PASSWORD reales. BOOTSTRAP_TRAINER_NAME es opcional y por defecto usa "Saulo Trainer".',
     );
   }
 

@@ -1,9 +1,17 @@
-const fs = require('node:fs');
-const http = require('node:http');
 const os = require('node:os');
 const path = require('node:path');
-const { spawn } = require('node:child_process');
-const { verifySignedPayload } = require('../lib/magic-link-delivery');
+const {
+  createMockDeliveryServer,
+  waitForWebhookFile,
+} = require('./_mock-delivery');
+const {
+  removeFileIfExists,
+  spawnProcess,
+  startHttpServer,
+  stopHttpServer,
+  stopProcess,
+  waitForOutput,
+} = require('./_smoke-runtime');
 
 async function main() {
   const projectRoot = path.resolve(__dirname, '..');
@@ -20,7 +28,7 @@ async function main() {
     process.env.MAGIC_LINK_WEBHOOK_SECRET || 'smoke-secret';
   const providerBearerToken =
     process.env.MAGIC_LINK_WEBHOOK_BEARER_TOKEN || 'smoke-bearer-token';
-  const providerServer = createMockProviderServer({
+  const providerServer = createMockDeliveryServer({
     host: providerHost,
     port: providerPort,
     outputPath,
@@ -82,7 +90,7 @@ async function main() {
       );
       console.log(`- Output file: ${outputPath}`);
       console.log(
-        '\nLocal delivery path is working: payment received triggered the webhook, delivered the waiting room link and persisted the provider metadata.',
+        '\nLocal delivery path is working: payment received triggered the webhook, delivered the waiting room link and persisted the delivery metadata.',
       );
     } finally {
       await stopProcess(appProcess);
@@ -235,7 +243,7 @@ function assertWebhookRecord({
 
   if (studentDetail.deliveryChannel !== 'whatsapp') {
     throw new Error(
-      `El detalle del alumno no persistió el canal del proveedor. Canal recibido: ${studentDetail.deliveryChannel || 'desconocido'}.`,
+      `El detalle del alumno no persistió el canal de entrega. Canal recibido: ${studentDetail.deliveryChannel || 'desconocido'}.`,
     );
   }
 
@@ -254,178 +262,9 @@ function assertWebhookRecord({
     )
   ) {
     throw new Error(
-      'El detalle del alumno no guardó el deliveryId del proveedor mock.',
+      'El detalle del alumno no guardó el deliveryId del mock de delivery.',
     );
   }
-}
-
-function createMockProviderServer({
-  host,
-  port,
-  outputPath,
-  secret,
-  bearerToken,
-}) {
-  return http.createServer((req, res) => {
-    if (req.method !== 'POST' || req.url !== '/webhook/magic-link') {
-      respond(res, 404, { ok: false, message: 'Ruta no encontrada.' });
-      return;
-    }
-
-    let body = '';
-    req.on('data', (chunk) => {
-      body += chunk;
-    });
-
-    req.on('end', () => {
-      try {
-        const authorization = req.headers.authorization || '';
-        const signature = req.headers['x-saulo-signature'];
-
-        if (authorization !== `Bearer ${bearerToken}`) {
-          respond(res, 401, {
-            ok: false,
-            message: 'Bearer token no válido.',
-          });
-          return;
-        }
-
-        if (!verifySignedPayload(body, secret, signature)) {
-          respond(res, 401, {
-            ok: false,
-            message: 'Firma HMAC no válida.',
-          });
-          return;
-        }
-
-        const payload = JSON.parse(body || '{}');
-        fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-        fs.writeFileSync(
-          outputPath,
-          JSON.stringify(
-            {
-              receivedAt: new Date().toISOString(),
-              host,
-              port,
-              headers: req.headers,
-              payload,
-            },
-            null,
-            2,
-          ),
-        );
-
-        respond(res, 200, {
-          ok: true,
-          student: payload.student?.name || '',
-          channel: payload.student?.contactPhone ? 'whatsapp' : 'email',
-          deliveryId: 'mock-delivery-001',
-        });
-      } catch (error) {
-        respond(res, 400, {
-          ok: false,
-          message: error.message || 'No se pudo procesar el webhook.',
-        });
-      }
-    });
-  });
-}
-
-function spawnProcess(command, args, options) {
-  const child = spawn(command, args, {
-    ...options,
-    stdio: ['ignore', 'pipe', 'pipe'],
-  });
-
-  child.stdout.setEncoding('utf8');
-  child.stderr.setEncoding('utf8');
-  child.__stdout = '';
-  child.__stderr = '';
-
-  child.stdout.on('data', (chunk) => {
-    child.__stdout += chunk;
-  });
-
-  child.stderr.on('data', (chunk) => {
-    child.__stderr += chunk;
-  });
-
-  return child;
-}
-
-async function waitForOutput(child, expectedText, label) {
-  const timeoutAt = Date.now() + 12000;
-
-  while (Date.now() < timeoutAt) {
-    if (child.exitCode != null) {
-      throw new Error(
-        `${label} terminó antes de tiempo.\nSTDOUT:\n${child.__stdout}\nSTDERR:\n${child.__stderr}`,
-      );
-    }
-
-    if (
-      child.__stdout.includes(expectedText) ||
-      child.__stderr.includes(expectedText)
-    ) {
-      return;
-    }
-
-    await sleep(100);
-  }
-
-  throw new Error(
-    `Timeout esperando a ${label}.\nSTDOUT:\n${child.__stdout}\nSTDERR:\n${child.__stderr}`,
-  );
-}
-
-async function stopProcess(child) {
-  if (!child || child.exitCode != null) {
-    return;
-  }
-
-  child.kill('SIGTERM');
-  const timeoutAt = Date.now() + 3000;
-
-  while (Date.now() < timeoutAt) {
-    if (child.exitCode != null) {
-      return;
-    }
-    await sleep(50);
-  }
-
-  child.kill('SIGKILL');
-}
-
-async function startHttpServer(server, port, host) {
-  await new Promise((resolve, reject) => {
-    server.once('error', reject);
-    server.listen(port, host, resolve);
-  });
-}
-
-async function stopHttpServer(server) {
-  if (!server.listening) {
-    return;
-  }
-
-  await new Promise((resolve) => server.close(resolve));
-}
-
-function removeFileIfExists(filePath) {
-  try {
-    fs.rmSync(filePath, { force: true });
-  } catch (_error) {
-    // Best effort cleanup.
-  }
-}
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function respond(res, status, payload) {
-  res.writeHead(status, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify(payload));
 }
 
 main().catch((error) => {

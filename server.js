@@ -23,6 +23,25 @@ const store = createSauloStore();
 const eventsStore = createEventsStore();
 
 app.use(express.json({ limit: '8mb' }));
+app.use((req, res, next) => {
+  if (
+    !runtime.publicAppSurfacesEnabled &&
+    isProtectedSurfaceRequest(req.path)
+  ) {
+    if (req.path.startsWith('/api/')) {
+      res.status(404).json({
+        ok: false,
+        message: 'No disponible en esta publicación.',
+      });
+      return;
+    }
+
+    res.status(404).sendFile(path.join(publicDir, 'index.html'));
+    return;
+  }
+
+  next();
+});
 app.use(express.static(publicDir, { extensions: ['html'] }));
 
 app.get('/', (_req, res) => {
@@ -772,4 +791,22 @@ function buildWaitingRoomActivationPayload(waitingRoom) {
     accessToken: waitingRoom.accessToken,
     appPath: `/app/?access=${encodeURIComponent(waitingRoom.accessToken)}`,
   };
+}
+
+function isProtectedSurfaceRequest(requestPath) {
+  return [
+    '/app',
+    '/trainer',
+    '/waiting-room',
+    '/sala',
+    '/acceso',
+    '/demo',
+    '/admin/eventos',
+    '/api/student',
+    '/api/trainer',
+    '/api/waiting-room',
+    '/api/admin/events',
+  ].some((prefix) => {
+    return requestPath === prefix || requestPath.startsWith(`${prefix}/`);
+  });
 }

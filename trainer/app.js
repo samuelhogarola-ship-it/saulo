@@ -36,6 +36,7 @@
   let trainerSession = getInitialSession();
   let trainerToken = trainerSession?.accessToken || getInitialToken();
   let allStudents = [];
+  let studentsRenderVersion = 0;
   hydrateLocalHints();
 
   refs.authForm?.addEventListener('submit', async (event) => {
@@ -466,17 +467,22 @@
   }
 
   async function renderStudents(students) {
+    const renderVersion = ++studentsRenderVersion;
     const filteredStudents = sortStudents(filterStudents(students));
 
     if (!students.length) {
-      renderEmptyState('Todavía no hay alumnos creados.');
+      if (renderVersion === studentsRenderVersion) {
+        renderEmptyState('Todavía no hay alumnos creados.');
+      }
       return;
     }
 
     if (!filteredStudents.length) {
-      renderEmptyState(
-        'No hay alumnos que coincidan con los filtros actuales.',
-      );
+      if (renderVersion === studentsRenderVersion) {
+        renderEmptyState(
+          'No hay alumnos que coincidan con los filtros actuales.',
+        );
+      }
       return;
     }
 
@@ -493,6 +499,10 @@
         }
       }),
     );
+
+    if (renderVersion !== studentsRenderVersion) {
+      return;
+    }
 
     refs.studentsList.innerHTML = '';
     cards.forEach((card) => refs.studentsList.appendChild(card));

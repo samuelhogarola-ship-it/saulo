@@ -1,0 +1,35 @@
+{
+  "routes": [
+    {
+      "src": "^/app(?:/.*)?$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/trainer(?:/.*)?$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/waiting-room(?:/.*)?$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/sala(?:/.*)?$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/acceso(?:/.*)?$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/demo(?:/.*)?$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/admin(?:/.*)?$",
+      "dest": "/index.html"
+    },
+    {
+      "handle": "filesystem"
+    }
+  ]
+}

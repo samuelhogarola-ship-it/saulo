@@ -321,17 +321,18 @@ p {
 }
 
 .hero__background {
-  background: url('./landing-saulo-torso.png') 100% 100% / auto 110% no-repeat;
+  background: url('./landing-saulo-torso.png') 108% 100% / auto 112% no-repeat;
 }
 
 .hero__overlay {
   background:
     linear-gradient(
       90deg,
-      rgba(5, 2, 9, 0.98) 0%,
-      rgba(5, 2, 9, 0.84) 34%,
-      rgba(5, 2, 9, 0.24) 58%,
-      rgba(5, 2, 9, 0) 72%
+      rgba(5, 2, 9, 0.995) 0%,
+      rgba(5, 2, 9, 0.96) 28%,
+      rgba(5, 2, 9, 0.82) 48%,
+      rgba(5, 2, 9, 0.34) 66%,
+      rgba(5, 2, 9, 0.02) 82%
     ),
     linear-gradient(180deg, rgba(5, 2, 9, 0.02) 56%, rgba(5, 2, 9, 0.9) 100%),
     radial-gradient(
@@ -364,38 +365,38 @@ p {
   z-index: 1;
   display: flex;
   align-items: center;
-  min-height: calc(85svh - 110px);
-  padding: 44px 0 36px;
+  min-height: calc(88svh - 110px);
+  padding: 52px 0 42px;
 }
 
 .hero__copy {
-  max-width: 41rem;
-}
-
-.hero__eyebrow {
-  display: block;
-  color: rgba(250, 246, 255, 0.84);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  flex: 0 1 54%;
+  max-width: 50rem;
 }
 
 .hero__copy h1 {
-  margin-top: 18px;
-  max-width: 11ch;
-  font-size: clamp(3rem, 7vw, 7rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.08em;
+  max-width: none;
+  color: #fff;
+  font-size: clamp(4rem, 7vw, 7rem);
+  font-weight: 900;
   line-height: 0.9;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
   text-transform: uppercase;
 }
 
-.hero__copy p {
-  max-width: 60ch;
-  margin-top: 18px;
-  color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.75;
+.hero__copy h1 span {
+  display: block;
+}
+
+.hero__summary {
+  max-width: 680px;
+  margin-top: 28px;
+  color: rgba(250, 246, 255, 0.75);
+  font-size: clamp(1.125rem, 1.45vw, 1.35rem);
+  line-height: 1.55;
 }
 
 .hero__actions,
@@ -408,7 +409,7 @@ p {
 }
 
 .hero__actions {
-  margin-top: 28px;
+  margin-top: 30px;
 }
 
 .primary-link,
@@ -1577,7 +1578,7 @@ p {
   }
 
   .hero__background {
-    background-position: 76% 100%;
+    background-position: 78% 100%;
     background-size: auto 112%;
   }
 
@@ -1591,8 +1592,14 @@ p {
     padding: 42px 0 32px;
   }
 
-  .hero__eyebrow {
-    font-size: 0.72rem;
+  .hero__copy {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+
+  .hero__summary {
+    max-width: 34rem;
+    margin-top: 22px;
   }
 
   .success-story__gallery {
@@ -1637,6 +1644,16 @@ p {
     font-size: 2.7rem;
   }
 
+  .hero__copy h1 {
+    line-height: 0.94;
+    letter-spacing: -0.045em;
+  }
+
+  .hero__summary {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
   .hero__actions,
   .about-actions,
   .events-preview__footer,
@@ -1665,7 +1682,7 @@ p {
   }
 
   .hero__background {
-    background-position: 142% 100%;
+    background-position: 146% 100%;
     background-size: auto 108%;
   }
 

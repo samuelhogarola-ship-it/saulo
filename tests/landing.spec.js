@@ -17,15 +17,17 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   ).toHaveAttribute('href', './sobre-mi.html');
   await expect(
     page.getByRole('heading', {
-      name: 'Transforma tu físico con un plan personal, seguimiento real y entrenamientos adaptados a ti.',
+      name: 'TRANSFORMA TU CUERPO CON UN PLAN PERSONALIZADO',
     }),
   ).toBeVisible();
   await expect(
     page.locator('#inicio').getByRole('link', { name: 'Solicitar valoración' }),
   ).toHaveAttribute('href', 'https://wa.me/34622923988');
   await expect(
-    page.locator('#inicio').getByRole('link', { name: 'Ver resultados' }),
-  ).toHaveAttribute('href', '#resultados');
+    page.getByText(
+      'Entrenamiento personalizado · Nutrición · Seguimiento semanal · Coaching online',
+    ),
+  ).toBeVisible();
   await expect(page.locator('[data-events-grid]')).toHaveCount(0);
   await expect(page.locator('a[href^="/app"]')).toHaveCount(0);
   await expect(page.locator('a[href^="/trainer"]')).toHaveCount(0);
@@ -33,7 +35,6 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   await expect(
     page.getByRole('navigation').getByRole('link', { name: 'Eventos' }),
   ).toHaveCount(0);
-  await expect(page.getByText('Entrenamiento personal online')).toBeVisible();
   await expect(
     page.getByText('Cambios visibles cuando el trabajo está bien planteado.'),
   ).toBeVisible();

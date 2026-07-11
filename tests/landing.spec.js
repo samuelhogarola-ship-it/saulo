@@ -16,6 +16,9 @@ test('renders the public landing with multipage navigation and contact CTAs', as
     page.getByRole('navigation').getByRole('link', { name: 'Sobre mí' }),
   ).toHaveAttribute('href', './sobre-mi.html');
   await expect(
+    page.getByRole('navigation').getByRole('link', { name: 'Eventos' }),
+  ).toHaveAttribute('href', '/eventos');
+  await expect(
     page.getByRole('heading', {
       name: 'Transforma tu físico con un plan personal, seguimiento real y entrenamientos adaptados a ti.',
     }),
@@ -26,13 +29,15 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   await expect(
     page.locator('#inicio').getByRole('link', { name: 'Ver resultados' }),
   ).toHaveAttribute('href', '#resultados');
-  await expect(page.locator('[data-events-grid]')).toHaveCount(0);
+  await expect(page.locator('[data-events-grid]')).toHaveCount(1);
   await expect(page.locator('a[href^="/app"]')).toHaveCount(0);
   await expect(page.locator('a[href^="/trainer"]')).toHaveCount(0);
   await expect(page.locator('a[href*="/acceso/"]')).toHaveCount(0);
   await expect(
-    page.getByRole('navigation').getByRole('link', { name: 'Eventos' }),
-  ).toHaveCount(0);
+    page.getByText(
+      'Encuentros presenciales para entrenar en directo, compartir energía y reforzar el proceso.',
+    ),
+  ).toBeVisible();
   await expect(page.getByText('Entrenamiento personal online')).toBeVisible();
   await expect(
     page.getByText('Cambios visibles cuando el trabajo está bien planteado.'),

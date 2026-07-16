@@ -161,24 +161,6 @@ async function markPaymentReceived(appPort, studentId) {
   return payload;
 }
 
-async function waitForWebhookFile(outputPath) {
-  const timeoutAt = Date.now() + 8000;
-
-  while (Date.now() < timeoutAt) {
-    if (fs.existsSync(outputPath)) {
-      const raw = fs.readFileSync(outputPath, 'utf8');
-      if (raw.trim()) {
-        return JSON.parse(raw);
-      }
-    }
-    await sleep(150);
-  }
-
-  throw new Error(
-    'El proveedor mock no escribió el payload del webhook a tiempo.',
-  );
-}
-
 async function getStudentDetail(appPort, studentId) {
   const response = await fetch(
     `http://127.0.0.1:${appPort}/api/trainer/students/${encodeURIComponent(studentId)}`,

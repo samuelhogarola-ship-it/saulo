@@ -1087,7 +1087,7 @@ p {
   padding: 22px;
 }
 
-.success-story--featured .success-proof img {
+.success-story--featured .success-proof {
   aspect-ratio: 3 / 4;
 }
 
@@ -1115,6 +1115,7 @@ p {
   margin: 0;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 24px;
+  aspect-ratio: 4 / 5;
   background: rgba(255, 255, 255, 0.04);
 }
 
@@ -1127,11 +1128,15 @@ p {
 }
 
 .success-proof img {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 5;
+  height: 124%;
   object-fit: cover;
-  object-position: center top;
+  object-position: center center;
   transition:
     transform 0.45s ease,
     filter 0.45s ease;
@@ -1152,7 +1157,7 @@ p {
   .success-story--proof:not(.success-story--featured)
   .success-proof
   img {
-  height: 100%;
+  height: 145%;
   min-height: 250px;
   aspect-ratio: auto;
 }

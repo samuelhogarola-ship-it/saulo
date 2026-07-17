@@ -8,6 +8,12 @@ test('renders the public events list and event detail', async ({ page }) => {
       name: 'Próximos eventos para entrenar en directo con dirección.',
     }),
   ).toBeVisible();
+  await expect(page.locator('.events-hero--marked')).toBeVisible();
+  await expect(page.locator('.events-hero__poster')).toHaveAttribute(
+    'src',
+    '/event-assets/girl-power-hero.png',
+  );
+  await expect(page.locator('.events-experience-grid article')).toHaveCount(3);
   await expect(
     page
       .locator('.events-list')
@@ -24,6 +30,8 @@ test('renders the public events list and event detail', async ({ page }) => {
   await expect(
     page.getByRole('heading', { name: 'Reset de verano' }),
   ).toBeVisible();
+  await expect(page.locator('.event-detail-hero--marked')).toBeVisible();
+  await expect(page.locator('.event-detail-meta-grid article')).toHaveCount(3);
   await expect(page.locator('[data-event-registration-form]')).toBeVisible();
 });
 

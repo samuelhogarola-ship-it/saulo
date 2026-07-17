@@ -1370,6 +1370,38 @@ p {
   overflow: hidden;
 }
 
+.events-list--marked {
+  gap: 22px;
+}
+
+.events-list--marked .event-card {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.36fr) minmax(0, 1fr);
+  border-color: rgba(113, 145, 255, 0.22);
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(97, 132, 255, 0.14),
+      transparent 36%
+    ),
+    rgba(17, 12, 42, 0.9);
+  box-shadow: 0 22px 90px rgba(97, 132, 255, 0.14);
+}
+
+.event-card__poster {
+  position: relative;
+  min-height: 260px;
+  margin: 0;
+  overflow: hidden;
+}
+
+.event-card__poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .event-preview-card__body,
 .event-card__body {
   display: grid;
@@ -1377,6 +1409,11 @@ p {
   align-items: center;
   gap: 18px;
   padding: 18px 22px;
+}
+
+.events-list--marked .event-card__body {
+  grid-template-columns: minmax(120px, 0.22fr) minmax(0, 1fr) auto;
+  padding: 24px;
 }
 
 .event-preview-card + .event-preview-card,
@@ -1409,6 +1446,14 @@ p {
 .event-preview-card__body h3,
 .event-card__body h2 {
   margin-bottom: 8px;
+}
+
+.events-list--marked .event-card__body h2 {
+  font-family: 'Bebas Neue', var(--font-display);
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .event-preview-card__footer,
@@ -1611,6 +1656,21 @@ p {
   display: none;
 }
 
+.events-page {
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(108, 141, 255, 0.22),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at left top,
+      rgba(112, 73, 255, 0.18),
+      transparent 24%
+    ),
+    linear-gradient(180deg, #09051b 0%, #10092b 100%);
+}
+
 .events-shell,
 .event-detail-shell,
 .admin-shell {
@@ -1643,8 +1703,136 @@ p {
   margin-bottom: 34px;
 }
 
+.events-hero--marked {
+  position: relative;
+  display: grid;
+  align-items: center;
+  min-height: min(82svh, 780px);
+  margin: -42px calc(50% - 50vw) 32px;
+  padding: 144px max(32px, calc((100vw - 1180px) / 2)) 82px;
+  overflow: hidden;
+  border-radius: 0 0 42px 42px;
+  isolation: isolate;
+}
+
+.events-hero__poster,
+.events-hero__overlay,
+.event-detail-hero__poster,
+.event-detail-hero__overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.events-hero__poster,
+.event-detail-hero__poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.92;
+  z-index: -2;
+}
+
+.events-hero__overlay,
+.event-detail-hero__overlay {
+  z-index: -1;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(4, 4, 18, 0.82) 0%,
+      rgba(4, 4, 18, 0.44) 46%,
+      rgba(4, 4, 18, 0.08) 100%
+    ),
+    linear-gradient(180deg, rgba(9, 5, 27, 0) 58%, rgba(9, 5, 27, 0.92) 100%);
+}
+
 .events-hero__copy {
   max-width: 46rem;
+}
+
+.events-hero--marked .events-hero__copy {
+  max-width: 34rem;
+}
+
+.events-hero--marked h1,
+.event-detail-hero--marked h1 {
+  max-width: 9ch;
+  font-family: 'Bebas Neue', var(--font-display);
+  font-size: clamp(5.2rem, 12vw, 10rem);
+  line-height: 0.86;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 22px rgba(125, 155, 255, 0.18),
+    0 0 54px rgba(92, 115, 255, 0.1);
+}
+
+.events-hero__script {
+  margin-top: 16px;
+  color: rgba(232, 214, 255, 0.9);
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  line-height: 1.4;
+}
+
+.events-hero--marked .events-hero__actions,
+.event-detail-hero__actions {
+  margin-top: 28px;
+}
+
+.events-hero__next {
+  position: absolute;
+  right: max(32px, calc((100vw - 1180px) / 2));
+  bottom: 42px;
+  width: min(360px, calc(100% - 64px));
+  padding: 20px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 24px;
+  background: rgba(17, 12, 42, 0.76);
+  box-shadow: 0 24px 90px rgba(97, 132, 255, 0.16);
+  backdrop-filter: blur(14px);
+}
+
+.events-hero__next span,
+.events-experience-grid span,
+.event-detail-meta-grid span {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(255, 236, 252, 0.7);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.events-hero__next strong,
+.event-detail-meta-grid strong {
+  color: var(--text);
+  font-family: 'Bebas Neue', var(--font-display);
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.events-experience-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.events-experience-grid article,
+.event-detail-meta-grid article {
+  padding: 22px 24px;
+  border: 1px solid rgba(113, 145, 255, 0.22);
+  border-radius: 24px;
+  background: rgba(14, 11, 35, 0.88);
+  box-shadow: 0 22px 90px rgba(97, 132, 255, 0.12);
+  backdrop-filter: blur(10px);
+}
+
+.events-experience-grid p {
+  color: rgba(255, 236, 252, 0.76);
+  line-height: 1.65;
 }
 
 .event-detail-hero {
@@ -1654,8 +1842,22 @@ p {
   margin-bottom: 28px;
 }
 
+.event-detail-hero--marked {
+  position: relative;
+  min-height: min(78svh, 720px);
+  margin: -42px calc(50% - 50vw) 28px;
+  padding: 150px max(32px, calc((100vw - 1180px) / 2)) 82px;
+  overflow: hidden;
+  border-radius: 0 0 42px 42px;
+  isolation: isolate;
+}
+
 .event-detail-hero__copy {
   align-self: end;
+}
+
+.event-detail-hero--marked .event-detail-hero__copy {
+  max-width: 45rem;
 }
 
 .event-detail-panel--intro {
@@ -1690,9 +1892,16 @@ p {
 
 .event-detail-price {
   margin: 18px 0 12px;
-  color: var(--accent-strong);
+  color: #9fb3ff;
   font-size: 1.05rem;
   font-weight: 700;
+}
+
+.event-detail-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 28px;
 }
 
 .event-detail-grid {
@@ -2017,6 +2226,30 @@ p {
     align-items: start;
   }
 
+  .events-hero--marked,
+  .event-detail-hero--marked {
+    min-height: 74svh;
+    padding: 126px 24px 62px;
+  }
+
+  .events-hero__next {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    margin-top: 26px;
+  }
+
+  .events-experience-grid,
+  .event-detail-meta-grid,
+  .events-list--marked .event-card {
+    grid-template-columns: 1fr;
+  }
+
+  .event-card__poster {
+    min-height: 320px;
+  }
+
   .stacking-cards__collection {
     --deck-stack-padding-top-mobile: 72px;
     --deck-stack-top-mobile: 88px;
@@ -2094,7 +2327,8 @@ p {
   }
 
   .event-preview-card__body,
-  .event-card__body {
+  .event-card__body,
+  .events-list--marked .event-card__body {
     grid-template-columns: 1fr;
     gap: 14px;
   }

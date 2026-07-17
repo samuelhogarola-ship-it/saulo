@@ -23,6 +23,10 @@ const store = createSauloStore();
 const eventsStore = createEventsStore();
 
 app.use(express.json({ limit: '8mb' }));
+app.get('/index.html', (_req, res) => {
+  res.redirect(301, '/');
+});
+
 app.use((req, res, next) => {
   if (
     !runtime.publicAppSurfacesEnabled &&

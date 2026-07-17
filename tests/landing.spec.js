@@ -8,7 +8,16 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   await expect(page.locator('[data-intro-screen]')).toHaveClass(/is-hidden/);
   await expect(
     page.getByRole('navigation').getByRole('link', { name: 'Inicio' }),
-  ).toHaveAttribute('href', './index.html');
+  ).toHaveAttribute('href', '/');
+  await expect(page.locator('.site-logo')).toHaveAttribute('href', '/');
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    'content',
+    'https://saulofitness.com/saulo-fitness-og.png',
+  );
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    'https://saulofitness.com/',
+  );
   await expect(
     page.getByRole('navigation').getByRole('link', { name: 'Casos de éxito' }),
   ).toHaveAttribute('href', './casos-exito.html');
@@ -46,6 +55,14 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   await expect(
     page.locator('#resultados .success-story--proof').nth(2).locator('img'),
   ).toHaveAttribute('src', './assets/casos-reales/todos/caso-real-07.jpeg');
+});
+
+test('redirects the explicit index page to the clean home URL', async ({
+  page,
+}) => {
+  await page.goto('/index.html');
+
+  await expect(page).toHaveURL(/\/$/);
 });
 
 test('opens the dedicated pages for casos de éxito and sobre mí', async ({

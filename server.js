@@ -74,7 +74,7 @@ app.get(
   '/eventos',
   asyncHandler(async (_req, res) => {
     const lang = normalizePublicLanguage(_req.query.lang);
-    const events = await eventsStore.listPublicEvents();
+    const events = await listPublicEventsSafely();
     res.send(renderEventsListPage({ events, lang }));
   }),
 );
@@ -99,7 +99,7 @@ app.get(
       req.query.limit == null
         ? undefined
         : Number.parseInt(req.query.limit, 10);
-    const events = await eventsStore.listPublicEvents({
+    const events = await listPublicEventsSafely({
       limit: Number.isFinite(limit) ? limit : undefined,
     });
     res.json({ events });
@@ -571,6 +571,18 @@ function asyncHandler(handler) {
   return (req, res, next) => {
     Promise.resolve(handler(req, res, next)).catch(next);
   };
+}
+
+async function listPublicEventsSafely(options) {
+  try {
+    return await eventsStore.listPublicEvents(options);
+  } catch (error) {
+    if (String(error?.message || '').includes('PGRST205')) {
+      return [];
+    }
+
+    throw error;
+  }
 }
 
 function normalizePublicLanguage(value) {

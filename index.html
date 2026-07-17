@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Saulo Fitness</title>
+    <link
+      rel="icon"
+      href="./app/icons/icon-192.png?v=saulo-v13"
+      type="image/png"
+    />
     <meta
       name="description"
       content="Entrenamiento online premium 1:1 con seguimiento real, criterio y contacto directo con Saulo Fitness."
@@ -56,8 +61,13 @@
         <a class="lang-switch__link is-active" href="./index.html">🇪🇸 ES</a>
         <a class="lang-switch__link" href="./index-pt-br.html">🇧🇷 PT-BR</a>
       </div>
-      <nav class="site-nav" id="site-nav" data-site-nav>
-        <a href="./index.html">Inicio</a>
+      <nav
+        class="site-nav"
+        id="site-nav"
+        data-site-nav
+        aria-label="Navegación principal"
+      >
+        <a href="./index.html" aria-current="page">Inicio</a>
         <a href="./casos-exito.html">Casos de éxito</a>
         <a href="./sobre-mi.html">Sobre mí</a>
         <a href="/eventos">Eventos</a>
@@ -134,85 +144,46 @@
         </div>
 
         <div class="success-grid">
-          <article class="success-story">
+          <article class="success-story success-story--proof">
+            <figure class="success-proof">
+              <img
+                src="./assets/casos-reales/caso-01-espalda-hombre.jpeg"
+                alt="Evolución física real de un alumno de Saulo Fitness vista de espalda"
+                loading="lazy"
+              />
+            </figure>
             <div class="success-story__intro">
-              <span class="section-label">Caso 01</span>
-              <h2>Marta Ruiz</h2>
+              <span class="section-label">Caso real 01</span>
+              <h2>Más masa muscular y presencia física</h2>
               <p class="success-story__summary">
-                Llegó con miedo a entrenar fuerza, cero constancia y la
-                sensación de no reconocerse en el espejo.
-              </p>
-            </div>
-            <div class="success-story__gallery">
-              <article class="success-card success-card--before">
-                <div class="success-card__media"></div>
-                <div class="success-card__body">
-                  <span>Antes</span>
-                  <h3>Sin estructura ni confianza</h3>
-                  <p>Entrenaba a rachas y no sabía medir progreso real.</p>
-                </div>
-              </article>
-              <article class="success-card success-card--after">
-                <div class="success-card__media"></div>
-                <div class="success-card__body">
-                  <span>Después</span>
-                  <h3>Más fuerte y más segura</h3>
-                  <p>Recuperó tono, aprendió técnica y consolidó hábitos.</p>
-                </div>
-              </article>
-            </div>
-            <div class="success-story__note">
-              <p>
-                Marta pasó de evitar el gimnasio a entrenar con criterio tres
-                días por semana y sostener hábitos por primera vez.
+                Un proceso centrado en fuerza, adherencia y mejora progresiva de
+                la composición corporal.
               </p>
             </div>
           </article>
 
-          <article class="success-story">
+          <article class="success-story success-story--proof">
+            <figure class="success-proof">
+              <img
+                src="./assets/casos-reales/caso-02-frontal-mujer.jpeg"
+                alt="Evolución física real de una alumna de Saulo Fitness en vista frontal"
+                loading="lazy"
+              />
+            </figure>
             <div class="success-story__intro">
-              <span class="section-label">Caso 02</span>
-              <h2>Diego Salas</h2>
+              <span class="section-label">Caso real 02</span>
+              <h2>Definición, cintura y control</h2>
               <p class="success-story__summary">
-                Venía de meses desordenados, dolor de espalda recurrente y la
-                sensación de estar siempre empezando de cero.
-              </p>
-            </div>
-            <div class="success-story__gallery">
-              <article
-                class="success-card success-card--before success-card--before-alt"
-              >
-                <div class="success-card__media"></div>
-                <div class="success-card__body">
-                  <span>Antes</span>
-                  <h3>Fatiga y malas sensaciones</h3>
-                  <p>
-                    Mucha irregularidad, poca movilidad y una relación
-                    frustrante con su progreso.
-                  </p>
-                </div>
-              </article>
-              <article
-                class="success-card success-card--after success-card--after-alt"
-              >
-                <div class="success-card__media"></div>
-                <div class="success-card__body">
-                  <span>Después</span>
-                  <h3>Postura, energía y control</h3>
-                  <p>
-                    Mejoró composición corporal, ganó estabilidad y volvió a
-                    entrenar sin improvisar.
-                  </p>
-                </div>
-              </article>
-            </div>
-            <div class="success-story__note">
-              <p>
-                Diego dejó de entrenar con dolor y empezó a notar seguridad en
-                cada sesión.
+                Entrenamiento y hábitos ajustados para conseguir un cambio
+                visible sin perder una estructura sostenible.
               </p>
             </div>
           </article>
+        </div>
+        <div class="success-section__footer">
+          <a class="secondary-link" href="./casos-exito.html">
+            Ver casos completos
+          </a>
         </div>
       </section>
 
@@ -310,12 +281,18 @@
                 data-stacking-cards-img
                 data-deck-stack-media
               >
-                <span>CÓMO SE TRABAJA</span>
-                <ol class="deck-step-list">
-                  <li>Evaluación inicial y definición del objetivo.</li>
-                  <li>Plan personalizado y entrega de la rutina.</li>
-                  <li>Seguimiento, revisión y ajustes.</li>
-                </ol>
+                <img
+                  src="./assets/servicio/entrenamiento-supervisado-saulo.jpg"
+                  alt="Saulo supervisando la técnica durante una sesión de entrenamiento"
+                  loading="lazy"
+                />
+                <div class="deck-photo-caption">
+                  <span>Técnica supervisada</span>
+                  <strong
+                    >Entrenas con dirección, criterio y correcciones
+                    reales.</strong
+                  >
+                </div>
               </div>
             </div>
           </article>
@@ -415,17 +392,17 @@
         </div>
         <div class="testimonials-grid">
           <article class="testimonial-card">
-            <span>Marta Ruiz</span>
+            <span>Proceso real</span>
             <p>
-              Pasó de evitar el gimnasio a entrenar con criterio tres días por
-              semana y sostener hábitos por primera vez.
+              Cambios visibles cuando el entrenamiento, la nutrición y el
+              seguimiento dejan de ir cada uno por su cuenta.
             </p>
           </article>
           <article class="testimonial-card">
-            <span>Diego Salas</span>
+            <span>Seguimiento cercano</span>
             <p>
-              Dejó de entrenar con dolor y volvió a notar seguridad en cada
-              sesión, con una mejora clara en postura y energía.
+              Cada evolución se trabaja con estructura, ajustes semanales y una
+              comunicación clara para sostener el proceso.
             </p>
           </article>
         </div>

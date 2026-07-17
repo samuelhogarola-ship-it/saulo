@@ -63,6 +63,40 @@ test('opens the dedicated pages for casos de éxito and sobre mí', async ({
   ).toBeVisible();
 });
 
+test('renders the curated real-cases gallery without duplicate-person slots', async ({
+  page,
+}) => {
+  await page.goto('/casos-reales');
+
+  const items = page.locator('.proof-gallery__item');
+  await expect(items).toHaveCount(27);
+
+  await expect(items.nth(10).locator('figcaption')).toHaveText('Caso real 11');
+  await expect(items.nth(11).locator('figcaption')).toHaveText('Caso real 11');
+  await expect(items.nth(12).locator('figcaption')).toHaveText('Caso real 13');
+  await expect(items.nth(13).locator('figcaption')).toHaveText('Caso real 13');
+  await expect(items.nth(19).locator('figcaption')).toHaveText('Caso real 18');
+  await expect(items.nth(22).locator('img')).toHaveAttribute(
+    'src',
+    './assets/casos-reales/todos/caso-real-30.jpeg',
+  );
+  await expect(items.nth(22).locator('figcaption')).toHaveText('Caso real 24');
+  await expect(items.nth(26).locator('figcaption')).toHaveText('Caso real 28');
+
+  const renderedSources = await items
+    .locator('img')
+    .evaluateAll((images) => images.map((image) => image.getAttribute('src')));
+  expect(renderedSources).not.toContain(
+    './assets/casos-reales/todos/caso-real-15.jpeg',
+  );
+  expect(renderedSources).not.toContain(
+    './assets/casos-reales/todos/caso-real-22.jpeg',
+  );
+  expect(renderedSources).not.toContain(
+    './assets/casos-reales/todos/caso-real-25.jpeg',
+  );
+});
+
 test('shows the intro only on the first visit of the browser', async ({
   page,
 }) => {

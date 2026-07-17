@@ -81,7 +81,7 @@
 
       <section class="content-section proof-gallery-section">
         <div class="proof-gallery-heading">
-          <p class="section-label">30 procesos documentados</p>
+          <p class="section-label">Archivo curado de resultados</p>
           <h2>
             Resultados visibles, sin nombres inventados ni historias falsas.
           </h2>
@@ -89,7 +89,6 @@
         <div
           class="proof-gallery"
           data-proof-gallery
-          data-total="30"
           data-alt-prefix="Resultado real documentado de Saulo Fitness"
         ></div>
       </section>
@@ -112,26 +111,53 @@
 
     <script>
       document.querySelectorAll('[data-proof-gallery]').forEach((gallery) => {
-        const total = Number(gallery.dataset.total || 0);
         const altPrefix = gallery.dataset.altPrefix || 'Resultado real';
+        const proofCases = [
+          ['01', '01'],
+          ['02', '02'],
+          ['03', '03'],
+          ['04', '04'],
+          ['05', '05'],
+          ['06', '06'],
+          ['07', '07'],
+          ['08', '08'],
+          ['09', '09'],
+          ['10', '10'],
+          ['11', '11'],
+          ['12', '11'],
+          ['13', '13'],
+          ['14', '13'],
+          ['16', '16'],
+          ['17', '17'],
+          ['18', '18'],
+          ['19', '19'],
+          ['20', '20'],
+          ['21', '18'],
+          ['23', '23'],
+          ['24', '24'],
+          ['30', '24'],
+          ['26', '26'],
+          ['27', '27'],
+          ['28', '28'],
+          ['29', '28'],
+        ];
         const fragment = document.createDocumentFragment();
 
-        for (let index = 1; index <= total; index += 1) {
-          const number = String(index).padStart(2, '0');
+        proofCases.forEach(([imageNumber, caseNumber], index) => {
           const figure = document.createElement('figure');
           figure.className = 'proof-gallery__item';
 
           const image = document.createElement('img');
-          image.src = `./assets/casos-reales/todos/caso-real-${number}.jpeg`;
-          image.alt = `${altPrefix} ${number}`;
+          image.src = `./assets/casos-reales/todos/caso-real-${imageNumber}.jpeg`;
+          image.alt = `${altPrefix} ${caseNumber}`;
           image.loading = index <= 6 ? 'eager' : 'lazy';
 
           const caption = document.createElement('figcaption');
-          caption.textContent = `Caso real ${number}`;
+          caption.textContent = `Caso real ${caseNumber}`;
 
           figure.append(image, caption);
           fragment.append(figure);
-        }
+        });
 
         gallery.append(fragment);
       });

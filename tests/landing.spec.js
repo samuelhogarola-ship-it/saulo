@@ -20,7 +20,7 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   ).toHaveAttribute('href', '/eventos');
   await expect(
     page.getByRole('heading', {
-      name: 'TRANSFORMA TU CUERPO CON UN PLAN PERSONALIZADO',
+      name: 'TRANSFORMA TU CUERPO',
     }),
   ).toBeVisible();
   await expect(

@@ -328,7 +328,7 @@ p {
 }
 
 .hero__background {
-  background: url('./landing-saulo-torso.png') 108% 100% / auto 112% no-repeat;
+  background: url('./landing-saulo-torso.png') 108% 124% / auto 112% no-repeat;
 }
 
 .hero__overlay {
@@ -377,8 +377,8 @@ p {
 }
 
 .hero__copy {
-  flex: 0 1 58%;
-  max-width: 58rem;
+  flex: 0 1 54%;
+  max-width: 52rem;
 }
 
 .hero__copy h1 {
@@ -1928,7 +1928,7 @@ p {
   }
 
   .hero__background {
-    background-position: 78% 100%;
+    background-position: 78% 118%;
     background-size: auto 112%;
   }
 
@@ -2103,7 +2103,7 @@ p {
   }
 
   .hero__background {
-    background-position: 146% 100%;
+    background-position: 146% 116%;
     background-size: auto 108%;
   }
 

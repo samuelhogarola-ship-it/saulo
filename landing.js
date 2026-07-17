@@ -19,6 +19,16 @@ if (navToggle && siteNav) {
       navToggle.setAttribute('aria-expanded', 'false');
     });
   });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || !siteNav.classList.contains('is-open')) {
+      return;
+    }
+
+    siteNav.classList.remove('is-open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.focus();
+  });
 }
 
 if (introScreen) {
@@ -65,7 +75,7 @@ function runIntro() {
   window.setTimeout(() => {
     introScreen.classList.add('is-hidden');
     document.body.classList.add('intro-complete');
-  }, 3180);
+  }, 4180);
 }
 
 function readIntroFlag() {

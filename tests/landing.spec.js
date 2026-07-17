@@ -43,6 +43,9 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   await expect(
     page.getByText('Cambios visibles cuando el trabajo está bien planteado.'),
   ).toBeVisible();
+  await expect(
+    page.locator('#resultados .success-story--proof').nth(2).locator('img'),
+  ).toHaveAttribute('src', './assets/casos-reales/todos/caso-real-07.jpeg');
 });
 
 test('opens the dedicated pages for casos de éxito and sobre mí', async ({
@@ -54,6 +57,12 @@ test('opens the dedicated pages for casos de éxito and sobre mí', async ({
       name: 'Resultados que se notan en el cuerpo, en la técnica y en la cabeza.',
     }),
   ).toBeVisible();
+  await expect(
+    page.locator('.success-story--proof').nth(2).locator('img'),
+  ).toHaveAttribute('src', './assets/casos-reales/todos/caso-real-07.jpeg');
+  await expect(
+    page.locator('.success-story--proof').nth(4).locator('img'),
+  ).toHaveAttribute('src', './assets/casos-reales/todos/caso-real-20.jpeg');
 
   await page.goto('/sobre-mi');
   await expect(

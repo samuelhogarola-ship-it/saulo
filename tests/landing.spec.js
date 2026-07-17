@@ -78,23 +78,29 @@ test('renders the curated real-cases gallery without duplicate-person slots', as
   await page.goto('/casos-reales');
 
   const items = page.locator('.proof-gallery__item');
-  await expect(items).toHaveCount(27);
+  await expect(items).toHaveCount(25);
 
-  await expect(items.nth(10).locator('figcaption')).toHaveText('Caso real 11');
-  await expect(items.nth(11).locator('figcaption')).toHaveText('Caso real 11');
-  await expect(items.nth(12).locator('figcaption')).toHaveText('Caso real 13');
-  await expect(items.nth(13).locator('figcaption')).toHaveText('Caso real 13');
-  await expect(items.nth(19).locator('figcaption')).toHaveText('Caso real 18');
-  await expect(items.nth(22).locator('img')).toHaveAttribute(
+  await expect(items.nth(8).locator('figcaption')).toHaveText('Caso real 10');
+  await expect(items.nth(9).locator('figcaption')).toHaveText('Caso real 10');
+  await expect(items.nth(10).locator('figcaption')).toHaveText('Caso real 13');
+  await expect(items.nth(11).locator('figcaption')).toHaveText('Caso real 13');
+  await expect(items.nth(17).locator('figcaption')).toHaveText('Caso real 18');
+  await expect(items.nth(20).locator('img')).toHaveAttribute(
     'src',
     './assets/casos-reales/todos/caso-real-30.jpeg',
   );
-  await expect(items.nth(22).locator('figcaption')).toHaveText('Caso real 24');
-  await expect(items.nth(26).locator('figcaption')).toHaveText('Caso real 28');
+  await expect(items.nth(20).locator('figcaption')).toHaveText('Caso real 24');
+  await expect(items.nth(24).locator('figcaption')).toHaveText('Caso real 28');
 
   const renderedSources = await items
     .locator('img')
     .evaluateAll((images) => images.map((image) => image.getAttribute('src')));
+  expect(renderedSources).not.toContain(
+    './assets/casos-reales/todos/caso-real-08.jpeg',
+  );
+  expect(renderedSources).not.toContain(
+    './assets/casos-reales/todos/caso-real-12.jpeg',
+  );
   expect(renderedSources).not.toContain(
     './assets/casos-reales/todos/caso-real-15.jpeg',
   );

@@ -123,6 +123,24 @@ test('renders the public app landing without exposing direct app access', async 
   await expect(page.locator('a[href*="/app/?"]')).toHaveCount(0);
 });
 
+test('shows the events coming-soon photo when the agenda is empty', async ({
+  page,
+}) => {
+  await page.route('**/api/public/events?limit=5', async (route) => {
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ events: [] }),
+    });
+  });
+
+  await page.goto('/');
+
+  await expect(page.getByText('Próximamente nuevos eventos')).toBeVisible();
+  await expect(
+    page.locator('.event-preview-card--coming-soon img'),
+  ).toHaveAttribute('src', './event-assets/proximos-eventos-playa.jpg');
+});
+
 test('keeps key conversion pages inside the mobile viewport', async ({
   page,
 }) => {

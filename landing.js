@@ -1,10 +1,11 @@
-const INTRO_KEY = 'saulo-landing-intro-seen';
+const INTRO_SKIP_ONCE_KEY = 'saulo-skip-intro-once';
 const pageLanguage = document.documentElement.lang === 'pt-BR' ? 'pt-br' : 'es';
 const introScreen = document.querySelector('[data-intro-screen]');
 const navToggle = document.querySelector('[data-nav-toggle]');
 const siteNav = document.querySelector('[data-site-nav]');
 const eventsGrid = document.querySelector('[data-events-grid]');
 const deckStackRoot = document.querySelector('[data-deck-stack]');
+const cluesoStage = document.querySelector('[data-clueso-stage]');
 const isFilePreview = window.location.protocol === 'file:';
 
 if (navToggle && siteNav) {
@@ -31,6 +32,15 @@ if (navToggle && siteNav) {
   });
 }
 
+document.addEventListener('click', (event) => {
+  const homeLink = event.target.closest('[data-site-nav] a');
+  if (!homeLink || !isHomeNavigationLink(homeLink)) {
+    return;
+  }
+
+  markIntroToSkipOnce();
+});
+
 if (introScreen) {
   runIntro();
 }
@@ -55,42 +65,87 @@ if (deckStackRoot && typeof window.initDeckStack === 'function') {
   });
 }
 
+if (cluesoStage) {
+  initCluesoStage(cluesoStage);
+}
+
+function initCluesoStage(stage) {
+  let frame = 0;
+
+  const update = () => {
+    frame = 0;
+    const rect = stage.getBoundingClientRect();
+    const viewportHeight = Math.max(window.innerHeight, 1);
+    const travel = Math.max(rect.height - viewportHeight, 1);
+    const progress = Math.min(Math.max(-rect.top / travel, 0), 1);
+    const reveal = Math.min(Math.max((progress - 0.08) / 0.18, 0), 1);
+    const exit = 1 - Math.min(Math.max((progress - 0.82) / 0.18, 0), 1);
+    const opacity = reveal * exit;
+
+    stage.style.setProperty('--clueso-progress', progress.toFixed(4));
+    stage.style.setProperty('--clueso-opacity', opacity.toFixed(4));
+  };
+
+  const requestUpdate = () => {
+    if (frame) {
+      return;
+    }
+
+    frame = window.requestAnimationFrame(update);
+  };
+
+  update();
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', requestUpdate);
+}
+
 function runIntro() {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const hasSeenIntro = readIntroFlag();
+  const shouldSkipIntro = consumeIntroSkipOnce();
 
-  if (reduceMotion.matches || hasSeenIntro) {
+  if (reduceMotion.matches || shouldSkipIntro) {
     introScreen.classList.add('is-hidden');
     document.body.classList.add('intro-complete');
     return;
   }
 
   document.body.classList.add('has-intro');
-  writeIntroFlag();
 
   window.setTimeout(() => {
     introScreen.classList.add('is-animating');
-  }, 1180);
+  }, 2180);
 
   window.setTimeout(() => {
     introScreen.classList.add('is-hidden');
     document.body.classList.add('intro-complete');
-  }, 4180);
+  }, 3580);
+
+  window.setTimeout(() => {
+    document.body.classList.add('intro-title-reveal');
+  }, 3700);
 }
 
-function readIntroFlag() {
+function isHomeNavigationLink(link) {
+  const href = link.getAttribute('href');
+  return href === '/' || href === './index-pt-br.html';
+}
+
+function markIntroToSkipOnce() {
   try {
-    return window.localStorage.getItem(INTRO_KEY) === 'true';
+    window.sessionStorage.setItem(INTRO_SKIP_ONCE_KEY, 'true');
   } catch (_error) {
-    return false;
+    // Navigation still works if session storage is unavailable.
   }
 }
 
-function writeIntroFlag() {
+function consumeIntroSkipOnce() {
   try {
-    window.localStorage.setItem(INTRO_KEY, 'true');
+    const shouldSkip =
+      window.sessionStorage.getItem(INTRO_SKIP_ONCE_KEY) === 'true';
+    window.sessionStorage.removeItem(INTRO_SKIP_ONCE_KEY);
+    return shouldSkip;
   } catch (_error) {
-    // Ignore storage failures and keep the intro working for this visit.
+    return false;
   }
 }
 

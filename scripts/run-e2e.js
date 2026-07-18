@@ -14,6 +14,7 @@ async function main() {
   const childEnv = createCleanEnv({
     PORT: String(port),
     SAULO_DATA_MODE: process.env.PLAYWRIGHT_SERVER_DATA_MODE || 'local',
+    SAULO_SHOW_DEMO_EVENTS: 'true',
     DEFAULT_STUDENT_ACCESS_TOKEN:
       process.env.PLAYWRIGHT_SERVER_DEFAULT_STUDENT_ACCESS_TOKEN ||
       'lucia-access',

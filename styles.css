@@ -420,16 +420,16 @@ p {
 }
 
 .home-clueso-stage__title {
-  width: 100%;
+  width: min(100%, 11ch);
   padding-inline: clamp(32px, 3.5vw, 72px);
   color: rgba(232, 216, 255, 0.2);
-  font-size: clamp(5.5rem, 8.15vw, 10.75rem);
+  font-size: clamp(5rem, 7.2vw, 9.4rem);
   font-weight: 900;
   line-height: 0.86;
-  letter-spacing: -0.065em;
+  letter-spacing: 0;
   text-shadow: 0 0 54px rgba(169, 60, 255, 0.12);
   text-transform: uppercase;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .home-clueso-stage > :not(.home-clueso-stage__sticky) {
@@ -453,9 +453,9 @@ p {
 }
 
 .hero__background {
-  left: 52%;
+  left: 54%;
   right: 0;
-  background: url('./landing-saulo-hero.png') right 8% / auto 142% no-repeat;
+  background: url('./landing-saulo-hero.png') right bottom / auto 96% no-repeat;
 }
 
 .hero__background::after {
@@ -531,7 +531,7 @@ p {
 .hero__copy {
   flex: 0 1 100%;
   width: 100%;
-  max-width: 58%;
+  max-width: 54%;
   padding-inline: clamp(32px, 3.5vw, 72px);
 }
 
@@ -540,12 +540,12 @@ p {
   z-index: 2;
   display: block;
   width: 100%;
-  max-width: 10ch;
+  max-width: 9.6ch;
   color: #fff;
-  font-size: clamp(4.8rem, 7vw, 7.6rem);
+  font-size: clamp(4.8rem, 7vw, 7.3rem);
   font-weight: 900;
   line-height: 0.86;
-  letter-spacing: -0.065em;
+  letter-spacing: 0;
   text-shadow: 0 18px 44px rgba(5, 2, 9, 0.56);
   text-transform: uppercase;
   white-space: normal;
@@ -559,7 +559,7 @@ body.has-intro .hero__copy h1 {
   opacity: 0;
   clip-path: inset(0 100% 0 0);
   filter: blur(14px);
-  transform: translate3d(-96px, 16px, 0) scale(0.975);
+  transform: translate3d(0, 16px, 0) scale(0.975);
 }
 
 body.has-intro.intro-title-reveal .hero__copy h1 {
@@ -581,7 +581,7 @@ body.has-intro.intro-title-reveal .hero__background {
     opacity: 0;
     clip-path: inset(0 100% 0 0);
     filter: blur(14px);
-    transform: translate3d(-96px, 16px, 0) scale(0.975);
+    transform: translate3d(0, 16px, 0) scale(0.975);
   }
 
   38% {
@@ -3148,17 +3148,17 @@ body.has-intro.intro-title-reveal .hero__background {
 
   .hero__copy {
     flex-basis: 100%;
-    max-width: 58%;
+    max-width: 54%;
   }
 
   .hero__copy h1 {
-    font-size: clamp(4.2rem, 7.2vw, 6.7rem);
+    font-size: clamp(4.1rem, 6.4vw, 6.2rem);
   }
 
   .hero__background {
-    left: 52%;
-    background-position: right 8%;
-    background-size: auto 142%;
+    left: 54%;
+    background-position: right bottom;
+    background-size: auto 94%;
   }
 }
 
@@ -3243,7 +3243,7 @@ body.has-intro.intro-title-reveal .hero__background {
     top: 30%;
     left: 0;
     background-image: url('./landing-saulo-hero.png');
-    background-position: 50% 0;
+    background-position: 50% bottom;
     background-size: auto 100%;
   }
 
@@ -3490,7 +3490,7 @@ body.has-intro.intro-title-reveal .hero__background {
   .hero__copy h1 {
     font-size: clamp(2.85rem, 12vw, 3.6rem);
     line-height: 0.92;
-    letter-spacing: -0.045em;
+    letter-spacing: 0;
   }
 
   .home-clueso-stage__title {
@@ -3575,9 +3575,9 @@ body.has-intro.intro-title-reveal .hero__background {
   }
 
   .hero__background {
-    top: 42%;
-    background-position: 50% 18%;
-    background-size: 100% auto;
+    top: 30%;
+    background-position: 50% bottom;
+    background-size: auto 82%;
   }
 
   .hero__background::after {

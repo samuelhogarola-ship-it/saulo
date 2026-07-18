@@ -154,6 +154,30 @@ test('keeps key conversion pages inside the mobile viewport', async ({
   ).toBeVisible();
 });
 
+test('keeps the desktop hero photo clear of the headline', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+
+  const heroLayout = await page.locator('#inicio').evaluate((hero) => {
+    const heading = hero.querySelector('h1').getBoundingClientRect();
+    const photo = hero
+      .querySelector('.hero__background')
+      .getBoundingClientRect();
+    const photoStyle = getComputedStyle(
+      hero.querySelector('.hero__background'),
+    );
+
+    return {
+      headingRight: heading.right,
+      photoLeft: photo.left,
+      photoAsset: photoStyle.backgroundImage,
+    };
+  });
+
+  expect(heroLayout.headingRight).toBeLessThanOrEqual(heroLayout.photoLeft + 8);
+  expect(heroLayout.photoAsset).toContain('landing-saulo-hero.png');
+});
+
 test('redirects the explicit index page to the clean home URL', async ({
   page,
 }) => {

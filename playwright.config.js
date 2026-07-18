@@ -17,6 +17,7 @@ module.exports = defineConfig({
   webServer: useManagedWebServer
     ? {
         command: 'npm run dev',
+        env: { SAULO_SHOW_DEMO_EVENTS: 'true' },
         timeout: 120 * 1000,
         url: 'http://127.0.0.1:4173',
         reuseExistingServer: !process.env.CI,

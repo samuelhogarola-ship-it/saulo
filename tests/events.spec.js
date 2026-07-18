@@ -1,19 +1,32 @@
 const { test, expect } = require('@playwright/test');
 
 test('renders the public events list and event detail', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/eventos');
 
   await expect(
     page.getByRole('heading', {
-      name: 'Próximos eventos para entrenar en directo con dirección.',
+      name: 'Próximos eventos',
+      level: 1,
     }),
   ).toBeVisible();
   await expect(page.locator('.events-hero--marked')).toBeVisible();
+  const heroHeadingFits = await page
+    .locator('.events-hero h1')
+    .evaluate((heading) => heading.scrollWidth <= heading.clientWidth);
+  expect(heroHeadingFits).toBe(true);
+  await expect(
+    page.getByText(
+      'Energía real, entrenamiento guiado y una experiencia auténtica.',
+    ),
+  ).toBeVisible();
   await expect(page.locator('.events-hero__poster')).toHaveAttribute(
     'src',
     '/event-assets/girl-power-hero.png',
   );
   await expect(page.locator('.events-experience-grid article')).toHaveCount(3);
+  await expect(page.locator('.events-list__backdrop')).toHaveCount(1);
+  await expect(page.locator('.events-list .event-card__poster')).toHaveCount(0);
   await expect(
     page
       .locator('.events-list')

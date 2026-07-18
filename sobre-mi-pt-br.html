@@ -4,11 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sobre mim | Saulo Fitness</title>
-    <link
-      rel="icon"
-      href="./app/icons/icon-192.png?v=saulo-v13"
-      type="image/png"
-    />
+    <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
+    <link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png" />
+    <link rel="apple-touch-icon" href="/favicon-192.png" />
     <meta
       name="description"
       content="Conheça a abordagem da Saulo Fitness como personal trainer premium."
@@ -22,7 +20,7 @@
     <link rel="stylesheet" href="./core/cookies-banner.css" />
     <link rel="stylesheet" href="./styles.css" />
     <script src="./core/cookies-banner.js" defer></script>
-    <script src="./landing.js" defer></script>
+    <script src="./landing.js?v=20260718-entry1" defer></script>
   </head>
   <body class="inner-page">
     <header class="site-header">
@@ -52,14 +50,7 @@
         <a href="./casos-exito-pt-br.html">Casos de sucesso</a>
         <a href="./sobre-mi-pt-br.html" aria-current="page">Sobre mim</a>
         <a href="/eventos?lang=pt-br">Eventos</a>
-        <a
-          class="site-nav__cta"
-          href="https://wa.me/34622923988"
-          target="_blank"
-          rel="noreferrer"
-        >
-          WhatsApp
-        </a>
+        <a class="site-nav__cta" href="./app-pt-br.html">App</a>
       </nav>
     </header>
 
@@ -87,26 +78,38 @@
               sólidos.
             </p>
           </article>
-          <article class="about-card about-card--accent">
-            <h3>Minha mensagem</h3>
-            <p>
-              Se você quer uma mudança séria, precisa de estrutura, foco e de
-              alguém que acompanhe o processo com exigência e clareza.
-            </p>
-            <div class="about-actions">
-              <a
-                class="primary-link"
-                href="https://wa.me/34622923988"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Falar pelo WhatsApp
-              </a>
-              <a class="secondary-link" href="mailto:info@webfuengirola.com">
-                Escrever por e-mail
-              </a>
-            </div>
-          </article>
+          <div class="about-profile">
+            <figure class="about-portrait">
+              <img
+                src="./landing-saulo-torso.png"
+                alt="Saulo, personal trainer da Saulo Fitness"
+              />
+              <figcaption>
+                <span>14+ anos de experiência</span>
+                <span>Acompanhamento próximo</span>
+              </figcaption>
+            </figure>
+            <article class="about-card about-card--accent">
+              <h3>Minha mensagem</h3>
+              <p>
+                Se você quer uma mudança séria, precisa de estrutura, foco e de
+                alguém que acompanhe o processo com exigência e clareza.
+              </p>
+              <div class="about-actions">
+                <a
+                  class="primary-link"
+                  href="https://wa.me/34622923988"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Solicitar avaliação
+                </a>
+                <a class="secondary-link" href="mailto:info@webfuengirola.com">
+                  Escrever por e-mail
+                </a>
+              </div>
+            </article>
+          </div>
         </div>
       </section>
 
@@ -125,5 +128,14 @@
         </p>
       </footer>
     </main>
+    <a
+      class="floating-whatsapp"
+      href="https://wa.me/34622923988"
+      target="_blank"
+      rel="noreferrer"
+      aria-label="Abrir WhatsApp de Saulo Fitness"
+    >
+      WhatsApp
+    </a>
   </body>
 </html>

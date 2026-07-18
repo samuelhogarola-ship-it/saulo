@@ -4,11 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Saulo Fitness</title>
-    <link
-      rel="icon"
-      href="./app/icons/icon-192.png?v=saulo-v13"
-      type="image/png"
-    />
+    <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
+    <link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png" />
+    <link rel="apple-touch-icon" href="/favicon-192.png" />
     <meta
       name="description"
       content="Entrenamiento online premium 1:1 con seguimiento real, criterio y contacto directo con Saulo Fitness."
@@ -30,6 +28,15 @@
       content="https://saulofitness.com/saulo-fitness-og.png"
     />
     <link rel="canonical" href="https://saulofitness.com/" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Saulo Fitness",
+        "url": "https://saulofitness.com/",
+        "logo": "https://saulofitness.com/favicon-192.png"
+      }
+    </script>
     <meta name="theme-color" content="#09030f" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -39,10 +46,10 @@
     />
     <link rel="stylesheet" href="./core/deck-stack.css" />
     <link rel="stylesheet" href="./core/cookies-banner.css" />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=20260718-intro4" />
     <script src="./core/deck-stack.js" defer></script>
     <script src="./core/cookies-banner.js" defer></script>
-    <script src="./landing.js" defer></script>
+    <script src="./landing.js?v=20260718-entry3" defer></script>
   </head>
   <body>
     <div class="intro-screen" data-intro-screen aria-hidden="true">
@@ -78,252 +85,214 @@
         <a href="./casos-exito.html">Casos de éxito</a>
         <a href="./sobre-mi.html">Sobre mí</a>
         <a href="/eventos">Eventos</a>
-        <a
-          class="site-nav__cta"
-          href="https://wa.me/34622923988"
-          target="_blank"
-          rel="noreferrer"
-        >
-          WhatsApp
-        </a>
+        <a class="site-nav__cta" href="./app.html">App</a>
       </nav>
     </header>
 
     <main class="landing-page">
-      <section class="hero hero--home" id="inicio">
-        <div class="hero__background"></div>
-        <div class="hero__overlay"></div>
-        <div class="hero__content">
-          <div class="hero__copy">
-            <h1>
-              <span>TRANSFORMA TU CUERPO</span>
-            </h1>
-            <p class="hero__summary">
-              Entrenamiento personalizado · Nutrición · Seguimiento semanal ·
-              Coaching online
-            </p>
-            <div class="hero__actions">
-              <a
-                class="primary-link"
-                href="https://wa.me/34622923988"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Solicitar valoración
-              </a>
+      <div class="home-clueso-stage" data-clueso-stage>
+        <div class="home-clueso-stage__sticky" aria-hidden="true">
+          <p class="home-clueso-stage__title">TRANSFORMA TU CUERPO</p>
+        </div>
+
+        <section class="hero hero--home" id="inicio">
+          <div class="hero__background"></div>
+          <div class="hero__overlay"></div>
+          <div class="hero__content">
+            <div class="hero__copy">
+              <h1>
+                <span>TRANSFORMA TU CUERPO</span>
+              </h1>
+              <p class="hero__summary">
+                Entrenamiento personalizado · Nutrición · Seguimiento semanal ·
+                Coaching&nbsp;online
+              </p>
+              <div class="hero__actions">
+                <a
+                  class="primary-link"
+                  href="https://wa.me/34622923988"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Solicitar valoración
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section class="trust-bar" aria-label="Puntos clave del servicio">
-        <article class="trust-bar__item">
-          <span>Planificación individual</span>
-          <p>Cada proceso parte de tu objetivo, nivel y contexto real.</p>
-        </article>
-        <article class="trust-bar__item">
-          <span>Seguimiento real</span>
-          <p>Revisión, ajustes y control de evolución durante el proceso.</p>
-        </article>
-        <article class="trust-bar__item">
-          <span>Vídeos y ejecución</span>
-          <p>Rutinas con apoyo visual para entrenar con más seguridad.</p>
-        </article>
-        <article class="trust-bar__item">
-          <span>Contacto directo</span>
-          <p>Una relación de trabajo cercana, clara y orientada a progreso.</p>
-        </article>
-      </section>
-
-      <section
-        class="content-section success-section success-section--home"
-        id="resultados"
-      >
-        <div class="section-heading section-heading--results">
-          <div>
-            <p class="section-label">Resultados</p>
-            <h2>Cambios visibles cuando el trabajo está bien planteado.</h2>
-          </div>
-          <p>
-            La transformación no depende de una rutina aislada. Depende de una
-            estructura sólida, buen seguimiento y constancia bien dirigida.
-          </p>
-        </div>
-
-        <div class="results-proof-strip" aria-label="Criterios de resultados">
-          <span>Casos reales</span>
-          <span>Seguimiento individual</span>
-          <span>Proceso documentado</span>
-        </div>
-
-        <div class="success-grid success-grid--home-premium">
-          <article
-            class="success-story success-story--proof success-story--featured"
+          <a
+            class="hero__scroll-cue"
+            href="#resultados"
+            aria-label="Ver resultados"
           >
-            <figure class="success-proof">
-              <img
-                src="./assets/casos-reales/caso-01-espalda-hombre.jpeg"
-                alt="Evolución física real de un alumno de Saulo Fitness vista de espalda"
-                loading="lazy"
-              />
-            </figure>
-            <div class="success-story__intro">
-              <span class="section-label">Caso real 01</span>
-              <h2>Más masa muscular y presencia física</h2>
-              <p class="success-story__summary">
-                Un proceso centrado en fuerza, adherencia y mejora progresiva de
-                la composición corporal.
-              </p>
-            </div>
-          </article>
-
-          <article class="success-story success-story--proof">
-            <figure class="success-proof">
-              <img
-                src="./assets/casos-reales/caso-02-frontal-mujer.jpeg"
-                alt="Evolución física real de una alumna de Saulo Fitness en vista frontal"
-                loading="lazy"
-              />
-            </figure>
-            <div class="success-story__intro">
-              <span class="section-label">Caso real 02</span>
-              <h2>Definición, cintura y control</h2>
-              <p class="success-story__summary">
-                Entrenamiento y hábitos ajustados para conseguir un cambio
-                visible sin perder una estructura sostenible.
-              </p>
-            </div>
-          </article>
-
-          <article class="success-story success-story--proof">
-            <figure class="success-proof">
-              <img
-                src="./assets/casos-reales/todos/caso-real-07.jpeg"
-                alt="Evolución física real de un alumno de Saulo Fitness en vista frontal"
-                loading="lazy"
-              />
-            </figure>
-            <div class="success-story__intro">
-              <span class="section-label">Caso real 07</span>
-              <h2>Menos grasa, más estructura</h2>
-              <p class="success-story__summary">
-                Reeducación del entrenamiento y del seguimiento para dejar de
-                improvisar y avanzar con una dirección clara.
-              </p>
-            </div>
-          </article>
-
-          <article class="success-story success-story--proof">
-            <figure class="success-proof">
-              <img
-                src="./assets/casos-reales/caso-04-perfil-mujer.jpeg"
-                alt="Evolución física real de una alumna de Saulo Fitness en perfil"
-                loading="lazy"
-              />
-            </figure>
-            <div class="success-story__intro">
-              <span class="section-label">Caso real 04</span>
-              <h2>Trabajo técnico y forma física</h2>
-              <p class="success-story__summary">
-                Un cambio construido con sesiones bien planteadas, constancia y
-                seguimiento cercano.
-              </p>
-            </div>
-          </article>
-        </div>
-        <div class="success-section__footer">
-          <a class="secondary-link" href="./casos-exito.html">
-            Ver casos completos
+            <span>Resultados</span>
+            <span class="hero__scroll-arrow" aria-hidden="true">↓</span>
           </a>
-        </div>
-      </section>
+        </section>
+
+        <section class="trust-bar" aria-label="Puntos clave del servicio">
+          <article class="trust-bar__item">
+            <span>Planificación individual</span>
+            <p>Cada proceso parte de tu objetivo, nivel y contexto real.</p>
+          </article>
+          <article class="trust-bar__item">
+            <span>Seguimiento real</span>
+            <p>Revisión, ajustes y control de evolución durante el proceso.</p>
+          </article>
+          <article class="trust-bar__item">
+            <span>Vídeos y ejecución</span>
+            <p>Rutinas con apoyo visual para entrenar con más seguridad.</p>
+          </article>
+          <article class="trust-bar__item">
+            <span>Contacto directo</span>
+            <p>
+              Una relación de trabajo cercana, clara y orientada a progreso.
+            </p>
+          </article>
+        </section>
+
+        <section
+          class="content-section success-section success-section--home"
+          id="resultados"
+        >
+          <div class="section-heading section-heading--results">
+            <div>
+              <p class="section-label">Resultados</p>
+              <h2>Cambios visibles cuando el trabajo está bien planteado.</h2>
+            </div>
+            <p>
+              La transformación no depende de una rutina aislada. Depende de una
+              estructura sólida, buen seguimiento y constancia bien dirigida.
+            </p>
+          </div>
+
+          <div class="results-proof-strip" aria-label="Criterios de resultados">
+            <span>Casos reales</span>
+            <span>Seguimiento individual</span>
+            <span>Proceso documentado</span>
+          </div>
+
+          <div class="success-grid success-grid--home-premium">
+            <article
+              class="success-story success-story--proof success-story--featured"
+            >
+              <figure class="success-proof">
+                <img
+                  src="./assets/casos-reales/caso-01-espalda-hombre.jpeg"
+                  alt="Evolución física real de un alumno de Saulo Fitness vista de espalda"
+                  loading="lazy"
+                />
+              </figure>
+              <div class="success-story__intro">
+                <span class="section-label">Caso real 01</span>
+                <h2>Más masa muscular y presencia física</h2>
+                <p class="success-story__summary">
+                  Un proceso centrado en fuerza, adherencia y mejora progresiva
+                  de la composición corporal.
+                </p>
+              </div>
+            </article>
+
+            <article class="success-story success-story--proof">
+              <figure class="success-proof">
+                <img
+                  src="./assets/casos-reales/caso-02-frontal-mujer.jpeg"
+                  alt="Evolución física real de una alumna de Saulo Fitness en vista frontal"
+                  loading="lazy"
+                />
+              </figure>
+              <div class="success-story__intro">
+                <span class="section-label">Caso real 02</span>
+                <h2>Definición, cintura y control</h2>
+                <p class="success-story__summary">
+                  Entrenamiento y hábitos ajustados para conseguir un cambio
+                  visible sin perder una estructura sostenible.
+                </p>
+              </div>
+            </article>
+
+            <article class="success-story success-story--proof">
+              <figure class="success-proof">
+                <img
+                  src="./assets/casos-reales/todos/caso-real-07.jpeg"
+                  alt="Evolución física real de un alumno de Saulo Fitness en vista frontal"
+                  loading="lazy"
+                />
+              </figure>
+              <div class="success-story__intro">
+                <span class="section-label">Caso real 07</span>
+                <h2>Menos grasa, más estructura</h2>
+                <p class="success-story__summary">
+                  Reeducación del entrenamiento y del seguimiento para dejar de
+                  improvisar y avanzar con una dirección clara.
+                </p>
+              </div>
+            </article>
+
+            <article class="success-story success-story--proof">
+              <figure class="success-proof">
+                <img
+                  src="./assets/casos-reales/caso-04-perfil-mujer.jpeg"
+                  alt="Evolución física real de una alumna de Saulo Fitness en perfil"
+                  loading="lazy"
+                />
+              </figure>
+              <div class="success-story__intro">
+                <span class="section-label">Caso real 04</span>
+                <h2>Trabajo técnico y forma física</h2>
+                <p class="success-story__summary">
+                  Un cambio construido con sesiones bien planteadas, constancia
+                  y seguimiento cercano.
+                </p>
+              </div>
+            </article>
+          </div>
+          <div class="success-section__footer">
+            <a class="secondary-link" href="./casos-exito.html">
+              Ver casos completos
+            </a>
+          </div>
+        </section>
+      </div>
 
       <section
         class="stacking-cards__collection home-stack"
+        id="saulo-fitness"
         data-deck-stack
         aria-label="Secciones destacadas"
       >
         <div class="stacking-cards__list" data-deck-stack-list>
           <article
-            class="stacking-cards__item stacking-cards__item--success"
-            data-stacking-cards-item
-            data-deck-stack-card
-          >
-            <div class="stacking-cards__item-top">
-              <span>Saulo Fitness</span>
-              <span>01 / 03</span>
-            </div>
-            <div class="stacking-cards__item-layout">
-              <div class="stacking-cards__item-copy">
-                <p class="section-label">Entrenamientos</p>
-                <h2>
-                  Rutinas adaptadas a tu nivel, con ejecución clara y progreso
-                  medible.
-                </h2>
-                <p>
-                  El trabajo se plantea con una planificación personalizada,
-                  vídeos de apoyo, control de cargas y ajustes según tu
-                  evolución real.
-                </p>
-                <div class="stacking-cards__item-actions">
-                  <a class="primary-link" href="https://wa.me/34622923988"
-                    >Solicitar información</a
-                  >
-                  <a
-                    class="secondary-link secondary-link--whatsapp"
-                    href="#como-funciona"
-                  >
-                    Ver proceso
-                  </a>
-                </div>
-              </div>
-              <div
-                class="stacking-cards__item-visual stacking-cards__item-visual--training"
-                data-stacking-cards-img
-                data-deck-stack-media
-              >
-                <span>QUÉ INCLUYE</span>
-                <ul class="deck-feature-list">
-                  <li>Plan personalizado según objetivo y nivel.</li>
-                  <li>Vídeos explicativos de ejercicios.</li>
-                  <li>Seguimiento de progreso y adaptación continua.</li>
-                </ul>
-              </div>
-            </div>
-          </article>
-
-          <article
             class="stacking-cards__item stacking-cards__item--about"
             data-stacking-cards-item
             data-deck-stack-card
           >
-            <div class="stacking-cards__item-top">
-              <span>Saulo Fitness</span>
-              <span>02 / 03</span>
-            </div>
             <div class="stacking-cards__item-layout">
               <div class="stacking-cards__item-copy">
-                <p class="section-label">Coaching online</p>
+                <p class="section-label">Entrenamiento y coaching online</p>
                 <h2>
-                  Un servicio profesional requiere evaluación, planificación y
-                  seguimiento.
+                  Un plan personal, supervisado y ajustado a tu progreso real.
                 </h2>
                 <p>
-                  El acompañamiento se organiza en pasos claros para mantener el
-                  foco, ajustar el plan cuando toca y sostener el progreso en el
-                  tiempo.
+                  Evaluamos tu punto de partida, planificamos el entrenamiento y
+                  revisamos tu evolución para ajustar cargas, técnica y hábitos
+                  cuando toca.
                 </p>
+                <ul class="deck-feature-list deck-feature-list--service">
+                  <li>Plan personalizado según objetivo y nivel.</li>
+                  <li>Vídeos explicativos y correcciones técnicas.</li>
+                  <li>Seguimiento semanal y adaptación continua.</li>
+                </ul>
                 <div class="stacking-cards__item-actions">
-                  <a class="primary-link" href="./sobre-mi.html">
-                    Conocer el enfoque
-                  </a>
                   <a
-                    class="secondary-link"
+                    class="primary-link"
                     href="https://wa.me/34622923988"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Hablar por WhatsApp
+                    Solicitar valoración
+                  </a>
+                  <a class="secondary-link" href="./sobre-mi.html">
+                    Conocer el enfoque
                   </a>
                 </div>
               </div>
@@ -353,10 +322,6 @@
             data-stacking-cards-item
             data-deck-stack-card
           >
-            <div class="stacking-cards__item-top">
-              <span>Saulo Fitness</span>
-              <span>03 / 03</span>
-            </div>
             <div
               class="stacking-cards__item-layout stacking-cards__item-layout--events"
             >
@@ -436,29 +401,6 @@
         </div>
       </section>
 
-      <section class="content-section testimonials-section">
-        <div class="section-heading">
-          <p class="section-label">Historias reales</p>
-          <h2>Procesos distintos, una misma forma de trabajar.</h2>
-        </div>
-        <div class="testimonials-grid">
-          <article class="testimonial-card">
-            <span>Proceso real</span>
-            <p>
-              Cambios visibles cuando el entrenamiento, la nutrición y el
-              seguimiento dejan de ir cada uno por su cuenta.
-            </p>
-          </article>
-          <article class="testimonial-card">
-            <span>Seguimiento cercano</span>
-            <p>
-              Cada evolución se trabaja con estructura, ajustes semanales y una
-              comunicación clara para sostener el proceso.
-            </p>
-          </article>
-        </div>
-      </section>
-
       <section class="content-section">
         <div class="closing-panel">
           <div class="closing-panel__copy">
@@ -501,5 +443,14 @@
         </p>
       </footer>
     </main>
+    <a
+      class="floating-whatsapp"
+      href="https://wa.me/34622923988"
+      target="_blank"
+      rel="noreferrer"
+      aria-label="Abrir WhatsApp de Saulo Fitness"
+    >
+      WhatsApp
+    </a>
   </body>
 </html>

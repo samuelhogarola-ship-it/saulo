@@ -1,16 +1,17 @@
 .cookies-banner {
   position: fixed;
-  right: 18px;
+  left: 18px;
+  right: auto;
   bottom: 18px;
   z-index: 26;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 18px;
+  gap: 14px;
   align-items: end;
-  width: min(560px, calc(100% - 24px));
-  padding: 20px 20px 18px;
+  width: min(430px, calc(100% - 120px));
+  padding: 13px 14px 12px;
   border: 1px solid rgba(211, 180, 255, 0.18);
-  border-radius: 26px;
+  border-radius: 22px;
   background:
     radial-gradient(
       circle at top right,
@@ -40,31 +41,32 @@
 }
 
 .cookies-banner__kicker {
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   color: var(--accent-strong);
-  font-size: 0.76rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
 .cookies-banner h2 {
-  margin-bottom: 8px;
-  font-size: 1.08rem;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
   line-height: 1.15;
   letter-spacing: -0.03em;
 }
 
 .cookies-banner p {
   color: var(--muted);
-  line-height: 1.6;
+  font-size: 0.82rem;
+  line-height: 1.42;
 }
 
 .cookies-banner__actions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  min-width: 154px;
+  gap: 8px;
+  min-width: 128px;
 }
 
 .cookies-banner__accept,
@@ -72,10 +74,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
-  padding: 0 16px;
+  min-height: 36px;
+  padding: 0 12px;
   border-radius: 999px;
-  font-size: 0.86rem;
+  font-size: 0.78rem;
   font-weight: 700;
   text-decoration: none;
 }
@@ -100,9 +102,25 @@
   .cookies-banner {
     right: 12px;
     left: 12px;
-    bottom: 12px;
+    bottom: 74px;
     grid-template-columns: 1fr;
     width: auto;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 20px;
+  }
+
+  .cookies-banner__kicker {
+    display: none;
+  }
+
+  .cookies-banner h2 {
+    margin-bottom: 5px;
+    font-size: 0.92rem;
+  }
+
+  .cookies-banner p {
+    display: none;
   }
 
   .cookies-banner__actions {
@@ -113,5 +131,8 @@
   .cookies-banner__accept,
   .cookies-banner__link {
     flex: 1;
+    min-height: 44px;
+    padding: 0 12px;
+    font-size: 0.78rem;
   }
 }

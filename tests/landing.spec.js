@@ -5,7 +5,10 @@ test('renders the public landing with multipage navigation and contact CTAs', as
 }) => {
   await page.goto('/');
 
-  await expect(page.locator('[data-intro-screen]')).toHaveClass(/is-hidden/);
+  await expect(page.locator('[data-intro-screen]')).toHaveClass(/is-hidden/, {
+    timeout: 7000,
+  });
+  await expect(page.locator('.intro-screen__logo')).toHaveCount(0);
   await expect(
     page.getByRole('navigation').getByRole('link', { name: 'Inicio' }),
   ).toHaveAttribute('href', '/');
@@ -17,6 +20,19 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     'href',
     'https://saulofitness.com/',
+  );
+  await expect(page.locator('link[rel="icon"][sizes="48x48"]')).toHaveAttribute(
+    'href',
+    '/favicon-48.png',
+  );
+  await expect(
+    page.locator('link[rel="icon"][sizes="192x192"]'),
+  ).toHaveAttribute('href', '/favicon-192.png');
+  const organizationData = await page
+    .locator('script[type="application/ld+json"]')
+    .evaluate((script) => JSON.parse(script.textContent));
+  expect(organizationData.logo).toBe(
+    'https://saulofitness.com/favicon-192.png',
   );
   await expect(
     page.getByRole('navigation').getByRole('link', { name: 'Casos de éxito' }),
@@ -32,6 +48,21 @@ test('renders the public landing with multipage navigation and contact CTAs', as
       name: 'TRANSFORMA TU CUERPO',
     }),
   ).toBeVisible();
+  await expect(page.locator('[data-clueso-stage]')).toHaveCount(1);
+  await expect(page.locator('.home-clueso-stage__sticky')).toHaveCSS(
+    'position',
+    'sticky',
+  );
+  await expect(page.locator('#saulo-fitness')).toHaveCount(1);
+  await expect(
+    page.locator('#saulo-fitness [data-deck-stack-card]'),
+  ).toHaveCount(2);
+  await expect(
+    page.locator('#saulo-fitness .stacking-cards__item-top'),
+  ).toHaveCount(0);
+  await expect(
+    page.locator('#saulo-fitness .stacking-cards__item-visual--coaching img'),
+  ).toBeVisible();
   await expect(
     page.locator('#inicio').getByRole('link', { name: 'Solicitar valoración' }),
   ).toHaveAttribute('href', 'https://wa.me/34622923988');
@@ -41,9 +72,14 @@ test('renders the public landing with multipage navigation and contact CTAs', as
     ),
   ).toBeVisible();
   await expect(page.locator('[data-events-grid]')).toHaveCount(1);
-  await expect(page.locator('a[href^="/app"]')).toHaveCount(0);
+  await expect(
+    page.getByRole('navigation').getByRole('link', { name: 'App' }),
+  ).toHaveAttribute('href', './app.html');
   await expect(page.locator('a[href^="/trainer"]')).toHaveCount(0);
   await expect(page.locator('a[href*="/acceso/"]')).toHaveCount(0);
+  await expect(
+    page.getByRole('navigation').getByRole('link', { name: 'App' }),
+  ).not.toHaveAttribute('href', '/app');
   await expect(
     page.getByText(
       'Encuentros presenciales para entrenar en directo, compartir energía y reforzar el proceso.',
@@ -55,6 +91,67 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   await expect(
     page.locator('#resultados .success-story--proof').nth(2).locator('img'),
   ).toHaveAttribute('src', './assets/casos-reales/todos/caso-real-07.jpeg');
+});
+
+test('renders the public app landing without exposing direct app access', async ({
+  page,
+}) => {
+  await page.goto('/app.html');
+
+  await expect(
+    page.getByRole('heading', {
+      name: 'El complemento ideal para tus entrenamientos.',
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByText('Screenshots reales', { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.locator('img[src="./assets/app-showcase/saulo-app-rutinas.png"]'),
+  ).toHaveCount(2);
+  await expect(page.locator('.app-device-phone')).toHaveCount(1);
+  await expect(page.locator('.app-laptop')).toHaveCount(1);
+  await expect(page.locator('.routine-demo__exercise')).toHaveCount(3);
+  await expect(
+    page.getByText('Pierna + glúteo', { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Solicitar valoración' }),
+  ).toHaveAttribute('href', 'https://wa.me/34622923988');
+  await expect(page.locator('a[href="/app"]')).toHaveCount(0);
+  await expect(page.locator('a[href^="/app/"]')).toHaveCount(0);
+  await expect(page.locator('a[href*="/app/?"]')).toHaveCount(0);
+});
+
+test('keeps key conversion pages inside the mobile viewport', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  await expect(page.locator('.hero__background')).toHaveCSS(
+    'background-size',
+    /100%/,
+  );
+
+  await page.goto('/app.html');
+
+  const appHeroFits = await page.locator('.app-hero__copy').evaluate((copy) => {
+    const copyRect = copy.getBoundingClientRect();
+    const heroRect = copy.closest('.app-hero').getBoundingClientRect();
+    return copyRect.left >= heroRect.left && copyRect.right <= heroRect.right;
+  });
+  expect(appHeroFits).toBe(true);
+
+  await page.goto('/sobre-mi.html');
+  await expect(page.locator('.about-portrait img')).toBeVisible();
+
+  await page.goto('/casos-exito.html');
+  await expect(
+    page.locator('.cases-closing').getByRole('link', {
+      name: 'Solicitar valoración',
+    }),
+  ).toBeVisible();
 });
 
 test('redirects the explicit index page to the clean home URL', async ({
@@ -87,6 +184,10 @@ test('opens the dedicated pages for casos de éxito and sobre mí', async ({
       name: 'Entrenar bien no es castigo. Es dirección, exigencia y criterio.',
     }),
   ).toBeVisible();
+  await expect(page.locator('.about-portrait img')).toHaveAttribute(
+    'src',
+    './landing-saulo-torso.png',
+  );
 });
 
 test('renders the curated real-cases gallery without duplicate-person slots', async ({
@@ -129,16 +230,33 @@ test('renders the curated real-cases gallery without duplicate-person slots', as
   );
 });
 
-test('shows the intro only on the first visit of the browser', async ({
-  page,
-}) => {
+test('shows the intro again whenever the home is loaded', async ({ page }) => {
   await page.goto('/');
 
-  expect(
-    await page.evaluate(() => localStorage.getItem('saulo-landing-intro-seen')),
-  ).toBe('true');
+  await expect(page.locator('body')).toHaveClass(/has-intro/);
+  await expect(page.locator('[data-intro-screen]')).not.toHaveClass(
+    /is-hidden/,
+  );
 
   await page.reload();
 
+  await expect(page.locator('body')).toHaveClass(/has-intro/);
+  await expect(page.locator('[data-intro-screen]')).not.toHaveClass(
+    /is-hidden/,
+  );
+});
+
+test('skips the intro once when returning through the Inicio navigation link', async ({
+  page,
+}) => {
+  await page.goto('/sobre-mi.html');
+
+  await page
+    .getByRole('navigation')
+    .getByRole('link', { name: 'Inicio' })
+    .click();
+
+  await expect(page).toHaveURL('/');
   await expect(page.locator('[data-intro-screen]')).toHaveClass(/is-hidden/);
+  await expect(page.locator('body')).toHaveClass(/intro-complete/);
 });

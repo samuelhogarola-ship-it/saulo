@@ -882,8 +882,19 @@ body.has-intro.intro-title-reveal .hero__background {
     linear-gradient(180deg, rgba(18, 10, 29, 0.985), rgba(9, 5, 15, 0.99));
 }
 
-.stacking-cards__item--events {
+.stacking-cards__item--online {
   z-index: 5;
+  background:
+    radial-gradient(
+      circle at 86% 14%,
+      rgba(133, 88, 255, 0.18),
+      transparent 31%
+    ),
+    linear-gradient(180deg, rgba(16, 10, 26, 0.985), rgba(8, 5, 14, 0.995));
+}
+
+.stacking-cards__item--events {
+  z-index: 6;
   background:
     radial-gradient(
       circle at 84% 16%,
@@ -1073,10 +1084,26 @@ body.has-intro.intro-title-reveal .hero__background {
 }
 
 .stacking-cards__item-visual--app,
+.stacking-cards__item-visual--online,
 .stacking-cards__item-visual--events {
   background:
     linear-gradient(180deg, rgba(25, 13, 42, 0.86), rgba(10, 6, 18, 0.92)),
     rgba(255, 255, 255, 0.02);
+}
+
+.stacking-cards__item-visual--online img {
+  object-position: center center;
+  transform: scale(1.04);
+}
+
+.stacking-cards__item-visual--online::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(7, 4, 12, 0.04), rgba(7, 4, 12, 0.72)),
+    linear-gradient(90deg, rgba(7, 4, 12, 0.26), rgba(7, 4, 12, 0.02));
 }
 
 .deck-feature-list,

@@ -56,13 +56,16 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   await expect(page.locator('#saulo-fitness')).toHaveCount(1);
   await expect(
     page.locator('#saulo-fitness [data-deck-stack-card]'),
-  ).toHaveCount(2);
+  ).toHaveCount(3);
   await expect(
     page.locator('#saulo-fitness .stacking-cards__item-top'),
   ).toHaveCount(0);
   await expect(
     page.locator('#saulo-fitness .stacking-cards__item-visual--coaching img'),
   ).toBeVisible();
+  await expect(
+    page.locator('#saulo-fitness .stacking-cards__item-visual--online img'),
+  ).toHaveAttribute('src', './saulo-fitness-og.png');
   await expect(
     page.locator('#inicio').getByRole('link', { name: 'Solicitar valoración' }),
   ).toHaveAttribute('href', 'https://wa.me/34622923988');
@@ -82,7 +85,7 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   ).not.toHaveAttribute('href', '/app');
   await expect(
     page.getByText(
-      'Encuentros presenciales para entrenar en directo, compartir energía y reforzar el proceso.',
+      'Experiencias presenciales con fecha, plazas limitadas y una energía que no se entrena solo.',
     ),
   ).toBeVisible();
   await expect(

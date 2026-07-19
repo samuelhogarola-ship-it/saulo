@@ -138,10 +138,15 @@ test('shows the events coming-soon photo when the agenda is empty', async ({
 
   await page.goto('/');
 
-  await expect(page.getByText('Próximamente nuevos eventos')).toBeVisible();
+  await expect(page.getByText('Nuevos eventos')).toBeVisible();
   await expect(
     page.locator('.event-preview-card--coming-soon img'),
   ).toHaveAttribute('src', './event-assets/proximos-eventos-playa.jpg');
+
+  const comingSoonTitleFits = await page
+    .locator('.event-preview-card--coming-soon h3')
+    .evaluate((heading) => heading.scrollWidth <= heading.clientWidth + 1);
+  expect(comingSoonTitleFits).toBe(true);
 });
 
 test('keeps key conversion pages inside the mobile viewport', async ({

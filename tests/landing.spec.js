@@ -56,13 +56,16 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   await expect(page.locator('#saulo-fitness')).toHaveCount(1);
   await expect(
     page.locator('#saulo-fitness [data-deck-stack-card]'),
-  ).toHaveCount(2);
+  ).toHaveCount(3);
   await expect(
     page.locator('#saulo-fitness .stacking-cards__item-top'),
   ).toHaveCount(0);
   await expect(
     page.locator('#saulo-fitness .stacking-cards__item-visual--coaching img'),
   ).toBeVisible();
+  await expect(
+    page.locator('#saulo-fitness .stacking-cards__item-visual--online img'),
+  ).toHaveAttribute('src', './saulo-fitness-og.png');
   await expect(
     page.locator('#inicio').getByRole('link', { name: 'Solicitar valoración' }),
   ).toHaveAttribute('href', 'https://wa.me/34622923988');
@@ -82,7 +85,7 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   ).not.toHaveAttribute('href', '/app');
   await expect(
     page.getByText(
-      'Encuentros presenciales para entrenar en directo, compartir energía y reforzar el proceso.',
+      'Experiencias presenciales con fecha, plazas limitadas y una energía que no se entrena solo.',
     ),
   ).toBeVisible();
   await expect(
@@ -123,6 +126,24 @@ test('renders the public app landing without exposing direct app access', async 
   await expect(page.locator('a[href*="/app/?"]')).toHaveCount(0);
 });
 
+test('shows the events coming-soon photo when the agenda is empty', async ({
+  page,
+}) => {
+  await page.route('**/api/public/events?limit=5', async (route) => {
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ events: [] }),
+    });
+  });
+
+  await page.goto('/');
+
+  await expect(page.getByText('Próximamente nuevos eventos')).toBeVisible();
+  await expect(
+    page.locator('.event-preview-card--coming-soon img'),
+  ).toHaveAttribute('src', './event-assets/proximos-eventos-playa.jpg');
+});
+
 test('keeps key conversion pages inside the mobile viewport', async ({
   page,
 }) => {
@@ -131,7 +152,7 @@ test('keeps key conversion pages inside the mobile viewport', async ({
 
   await expect(page.locator('.hero__background')).toHaveCSS(
     'background-size',
-    /100%/,
+    /auto/,
   );
 
   await page.goto('/app.html');
@@ -154,28 +175,57 @@ test('keeps key conversion pages inside the mobile viewport', async ({
   ).toBeVisible();
 });
 
-test('keeps the desktop hero photo clear of the headline', async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/');
+test('keeps the hero headline and portrait safely framed', async ({ page }) => {
+  const desktopViewports = [
+    { width: 1440, height: 900 },
+    { width: 1280, height: 820 },
+    { width: 1024, height: 768 },
+  ];
 
-  const heroLayout = await page.locator('#inicio').evaluate((hero) => {
-    const heading = hero.querySelector('h1').getBoundingClientRect();
-    const photo = hero
-      .querySelector('.hero__background')
-      .getBoundingClientRect();
-    const photoStyle = getComputedStyle(
-      hero.querySelector('.hero__background'),
+  for (const viewport of desktopViewports) {
+    await page.setViewportSize(viewport);
+    await page.goto('/');
+
+    const heroLayout = await page.locator('#inicio').evaluate((hero) => {
+      const heading = hero.querySelector('h1').getBoundingClientRect();
+      const headlineLines = [...hero.querySelectorAll('h1 span')].map((line) =>
+        line.getBoundingClientRect(),
+      );
+      const photo = hero
+        .querySelector('.hero__background')
+        .getBoundingClientRect();
+      const photoStyle = getComputedStyle(
+        hero.querySelector('.hero__background'),
+      );
+
+      return {
+        headingLeft: heading.left,
+        headingRight: heading.right,
+        headlineLines: headlineLines.map((line) => ({
+          left: line.left,
+          right: line.right,
+        })),
+        photoLeft: photo.left,
+        photoAsset: photoStyle.backgroundImage,
+        photoPosition: photoStyle.backgroundPosition,
+        photoSize: photoStyle.backgroundSize,
+        viewportWidth: window.innerWidth,
+      };
+    });
+
+    expect(heroLayout.headingLeft).toBeGreaterThanOrEqual(0);
+    expect(heroLayout.headingRight).toBeLessThanOrEqual(
+      heroLayout.viewportWidth,
     );
+    expect(heroLayout.photoAsset).toContain('landing-saulo-hero.png');
+    expect(heroLayout.photoPosition).toContain('100%');
+    expect(heroLayout.photoSize).toContain('auto');
 
-    return {
-      headingRight: heading.right,
-      photoLeft: photo.left,
-      photoAsset: photoStyle.backgroundImage,
-    };
-  });
-
-  expect(heroLayout.headingRight).toBeLessThanOrEqual(heroLayout.photoLeft + 8);
-  expect(heroLayout.photoAsset).toContain('landing-saulo-hero.png');
+    for (const line of heroLayout.headlineLines) {
+      expect(line.left).toBeGreaterThanOrEqual(0);
+      expect(line.right).toBeLessThanOrEqual(heroLayout.photoLeft - 12);
+    }
+  }
 });
 
 test('redirects the explicit index page to the clean home URL', async ({

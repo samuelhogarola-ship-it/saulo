@@ -221,10 +221,19 @@ async function loadFeaturedEvents() {
 
 function renderEventsFallback(title, description) {
   eventsGrid.innerHTML = `
-    <article class="event-preview-card">
+    <article class="event-preview-card event-preview-card--coming-soon">
+      <figure class="event-preview-card__image">
+        <img
+          src="./event-assets/proximos-eventos-playa.jpg"
+          alt="Entrenamiento presencial de Saulo Fitness en la playa"
+          loading="lazy"
+        />
+      </figure>
       <div class="event-preview-card__body">
-        <h3>${title}</h3>
-        <p>${description}</p>
+        <div class="event-preview-card__content">
+          <h3>${title}</h3>
+          <p>${description}</p>
+        </div>
       </div>
     </article>
   `;

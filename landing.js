@@ -173,9 +173,7 @@ async function loadFeaturedEvents() {
 
     if (!events.length) {
       renderEventsFallback(
-        pageLanguage === 'pt-br'
-          ? 'Novos eventos em breve'
-          : 'Próximamente nuevos eventos',
+        pageLanguage === 'pt-br' ? 'Novos eventos' : 'Nuevos eventos',
         pageLanguage === 'pt-br'
           ? 'Escreva para nós e avisaremos assim que abrirmos novas vagas.'
           : 'Escríbenos y te avisamos en cuanto abramos nuevas plazas.',

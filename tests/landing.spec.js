@@ -138,10 +138,15 @@ test('shows the events coming-soon photo when the agenda is empty', async ({
 
   await page.goto('/');
 
-  await expect(page.getByText('Próximamente nuevos eventos')).toBeVisible();
+  await expect(page.getByText('Nuevos eventos')).toBeVisible();
   await expect(
     page.locator('.event-preview-card--coming-soon img'),
   ).toHaveAttribute('src', './event-assets/proximos-eventos-playa.jpg');
+
+  const comingSoonTitleFits = await page
+    .locator('.event-preview-card--coming-soon h3')
+    .evaluate((heading) => heading.scrollWidth <= heading.clientWidth + 1);
+  expect(comingSoonTitleFits).toBe(true);
 });
 
 test('keeps key conversion pages inside the mobile viewport', async ({
@@ -188,8 +193,16 @@ test('keeps the hero headline and portrait safely framed', async ({ page }) => {
 
     const heroLayout = await page.locator('#inicio').evaluate((hero) => {
       const heading = hero.querySelector('h1').getBoundingClientRect();
-      const headlineLines = [...hero.querySelectorAll('h1 span')].map((line) =>
-        line.getBoundingClientRect(),
+      const headlineLines = [...hero.querySelectorAll('h1 span')].map(
+        (line) => {
+          const rect = line.getBoundingClientRect();
+          return {
+            left: rect.left,
+            right: rect.right,
+            clientWidth: line.clientWidth,
+            scrollWidth: line.scrollWidth,
+          };
+        },
       );
       const photo = hero
         .querySelector('.hero__background')
@@ -201,10 +214,9 @@ test('keeps the hero headline and portrait safely framed', async ({ page }) => {
       return {
         headingLeft: heading.left,
         headingRight: heading.right,
-        headlineLines: headlineLines.map((line) => ({
-          left: line.left,
-          right: line.right,
-        })),
+        headingClientWidth: hero.querySelector('h1').clientWidth,
+        headingScrollWidth: hero.querySelector('h1').scrollWidth,
+        headlineLines,
         photoLeft: photo.left,
         photoAsset: photoStyle.backgroundImage,
         photoPosition: photoStyle.backgroundPosition,
@@ -217,13 +229,18 @@ test('keeps the hero headline and portrait safely framed', async ({ page }) => {
     expect(heroLayout.headingRight).toBeLessThanOrEqual(
       heroLayout.viewportWidth,
     );
+    expect(heroLayout.headingScrollWidth).toBeLessThanOrEqual(
+      heroLayout.headingClientWidth + 1,
+    );
     expect(heroLayout.photoAsset).toContain('landing-saulo-hero.png');
+    expect(heroLayout.photoPosition).toContain('58%');
     expect(heroLayout.photoPosition).toContain('100%');
     expect(heroLayout.photoSize).toContain('auto');
 
     for (const line of heroLayout.headlineLines) {
       expect(line.left).toBeGreaterThanOrEqual(0);
       expect(line.right).toBeLessThanOrEqual(heroLayout.photoLeft - 12);
+      expect(line.scrollWidth).toBeLessThanOrEqual(line.clientWidth + 1);
     }
   }
 });

@@ -455,7 +455,7 @@ p {
 .hero__background {
   left: 54%;
   right: 0;
-  background: url('./landing-saulo-hero.png') right bottom / auto 96% no-repeat;
+  background: url('./landing-saulo-hero.png') 58% bottom / auto 96% no-repeat;
 }
 
 .hero__background::after {
@@ -467,16 +467,15 @@ p {
     linear-gradient(
       90deg,
       #050209 0%,
-      #050209 37%,
-      rgba(5, 2, 9, 0.98) 39%,
-      rgba(5, 2, 9, 0.72) 41%,
-      rgba(5, 2, 9, 0) 44%
+      rgba(5, 2, 9, 0.94) 6%,
+      rgba(5, 2, 9, 0.5) 13%,
+      rgba(5, 2, 9, 0) 24%
     ),
     linear-gradient(
       90deg,
-      rgba(5, 2, 9, 0.74) 0%,
-      rgba(5, 2, 9, 0.42) 28%,
-      rgba(5, 2, 9, 0) 42%,
+      rgba(5, 2, 9, 0.34) 0%,
+      rgba(5, 2, 9, 0.16) 18%,
+      rgba(5, 2, 9, 0) 34%,
       rgba(5, 2, 9, 0) 76%,
       rgba(5, 2, 9, 0.16) 100%
     ),
@@ -531,7 +530,7 @@ p {
 .hero__copy {
   flex: 0 1 100%;
   width: 100%;
-  max-width: 54%;
+  max-width: 59%;
   padding-inline: clamp(32px, 3.5vw, 72px);
 }
 
@@ -540,7 +539,7 @@ p {
   z-index: 2;
   display: block;
   width: 100%;
-  max-width: 9.6ch;
+  max-width: 11.4ch;
   color: #fff;
   font-size: clamp(4.8rem, 7vw, 7.3rem);
   font-weight: 900;
@@ -2282,11 +2281,12 @@ body.has-intro.intro-title-reveal .hero__background {
 }
 
 .event-preview-card--coming-soon h3 {
-  max-width: 10ch;
-  font-size: clamp(2.3rem, 4.2vw, 4.8rem);
-  line-height: 0.9;
+  max-width: none;
+  font-size: clamp(1.55rem, 2.1vw, 2.55rem);
+  line-height: 0.96;
   letter-spacing: 0;
   text-transform: uppercase;
+  overflow-wrap: anywhere;
 }
 
 .event-preview-card--coming-soon p {
@@ -3279,7 +3279,7 @@ body.has-intro.intro-title-reveal .hero__background {
 
   .hero__copy {
     flex-basis: 100%;
-    max-width: 54%;
+    max-width: 59%;
   }
 
   .hero__copy h1 {
@@ -3288,7 +3288,7 @@ body.has-intro.intro-title-reveal .hero__background {
 
   .hero__background {
     left: 54%;
-    background-position: right bottom;
+    background-position: 58% bottom;
     background-size: auto 94%;
   }
 }
@@ -3701,10 +3701,6 @@ body.has-intro.intro-title-reveal .hero__background {
 
   .event-preview-card--coming-soon .event-preview-card__image img {
     min-height: 300px;
-  }
-
-  .event-preview-card--coming-soon h3 {
-    max-width: 11ch;
   }
 
   .events-empty-state__photo {

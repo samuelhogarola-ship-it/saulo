@@ -85,7 +85,7 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   ).not.toHaveAttribute('href', '/app');
   await expect(
     page.getByText(
-      'Experiencias presenciales con fecha, plazas limitadas y una energía que no se entrena solo.',
+      'Vive el ambiente y el deporte con nuestros eventos en directo.',
     ),
   ).toBeVisible();
   await expect(

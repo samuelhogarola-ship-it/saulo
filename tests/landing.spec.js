@@ -261,7 +261,7 @@ test('keeps the hero headline and portrait safely framed', async ({ page }) => {
     expect(heroLayout.headingScrollWidth).toBeLessThanOrEqual(
       heroLayout.headingClientWidth + 1,
     );
-    expect(heroLayout.photoAsset).toContain('landing-saulo-hero.png');
+    expect(heroLayout.photoAsset).toContain('landing-saulo-torso.png');
     expect(heroLayout.photoPosition).toContain('58%');
     expect(heroLayout.photoPosition).toContain('100%');
     expect(heroLayout.photoSize).toContain('auto');

@@ -472,7 +472,7 @@ p {
 .hero__background {
   left: 44%;
   right: 0;
-  background: url('./landing-saulo-hero.png') 58% bottom / auto 96% no-repeat;
+  background: url('./landing-saulo-torso.png') 58% bottom / auto 98% no-repeat;
 }
 
 .hero__background::after {
@@ -3317,7 +3317,7 @@ body.has-intro.intro-title-reveal .hero__background {
   .hero__background {
     left: 50%;
     background-position: 58% bottom;
-    background-size: auto 94%;
+    background-size: auto 96%;
   }
 }
 
@@ -3401,7 +3401,7 @@ body.has-intro.intro-title-reveal .hero__background {
     inset: auto 0 118px;
     top: 27%;
     left: 0;
-    background-image: url('./landing-saulo-hero.png');
+    background-image: url('./landing-saulo-torso.png');
     background-position: 65% bottom;
     background-size: auto 112%;
   }

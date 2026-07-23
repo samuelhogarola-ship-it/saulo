@@ -13,6 +13,10 @@ test('renders the public landing with multipage navigation and contact CTAs', as
     page.getByRole('navigation').getByRole('link', { name: 'Inicio' }),
   ).toHaveAttribute('href', '/');
   await expect(page.locator('.site-logo')).toHaveAttribute('href', '/');
+  const logoMark = await page.locator('.site-logo').evaluate((logo) => {
+    return getComputedStyle(logo, '::after').backgroundImage;
+  });
+  expect(logoMark).toContain('saulo-logo-transparent.png');
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
     'content',
     'https://saulofitness.com/saulo-fitness-og.png',
@@ -158,6 +162,10 @@ test('keeps key conversion pages inside the mobile viewport', async ({
   await expect(page.locator('.hero__background')).toHaveCSS(
     'background-size',
     /auto/,
+  );
+  await expect(page.locator('.hero__background')).toHaveCSS(
+    'background-position',
+    /64% 100%/,
   );
 
   await page.goto('/app.html');

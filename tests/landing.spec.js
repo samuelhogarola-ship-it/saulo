@@ -171,18 +171,28 @@ test('keeps key conversion pages inside the mobile viewport', async ({
   );
   await expect(page.locator('.hero__background')).toHaveCSS(
     'background-position',
-    /66% 100%/,
+    /56% 0%/,
   );
   const heroMobileStack = await page.locator('#inicio').evaluate((hero) => {
+    const header = document
+      .querySelector('.site-header')
+      .getBoundingClientRect();
     const photo = hero
       .querySelector('.hero__background')
       .getBoundingClientRect();
     const cta = hero.querySelector('.hero__actions').getBoundingClientRect();
+    const copy = hero.querySelector('.hero__copy').getBoundingClientRect();
     return {
+      compactHeader: header.height <= 68,
+      copyStartsHigh: copy.top <= 160,
+      photoVisibleBeforeCookieZone: photo.top <= 330,
       ctaBelowPhoto: cta.top >= photo.bottom - 1,
       ctaInsideHero: cta.bottom <= hero.getBoundingClientRect().bottom,
     };
   });
+  expect(heroMobileStack.compactHeader).toBe(true);
+  expect(heroMobileStack.copyStartsHigh).toBe(true);
+  expect(heroMobileStack.photoVisibleBeforeCookieZone).toBe(true);
   expect(heroMobileStack.ctaBelowPhoto).toBe(true);
   expect(heroMobileStack.ctaInsideHero).toBe(true);
 

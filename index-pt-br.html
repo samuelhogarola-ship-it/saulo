@@ -74,12 +74,15 @@
       >
         Menu
       </button>
-      <div class="lang-switch" aria-label="Seletor de idioma">
-        <a class="lang-switch__link" href="/">🇪🇸 ES</a>
-        <a class="lang-switch__link is-active" href="./index-pt-br.html"
-          >🇧🇷 PT-BR</a
-        >
-      </div>
+      <details class="lang-switch" aria-label="Seletor de idioma">
+        <summary class="lang-switch__summary">🇧🇷 PT-BR</summary>
+        <div class="lang-switch__menu">
+          <a class="lang-switch__link" href="/">🇪🇸 ES</a>
+          <a class="lang-switch__link is-active" href="./index-pt-br.html">
+            🇧🇷 PT-BR
+          </a>
+        </div>
+      </details>
       <nav
         class="site-nav"
         id="site-nav"

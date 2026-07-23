@@ -470,7 +470,7 @@ p {
 }
 
 .hero__background {
-  left: 54%;
+  left: 44%;
   right: 0;
   background: url('./landing-saulo-hero.png') 58% bottom / auto 96% no-repeat;
 }
@@ -3315,7 +3315,7 @@ body.has-intro.intro-title-reveal .hero__background {
   }
 
   .hero__background {
-    left: 54%;
+    left: 50%;
     background-position: 58% bottom;
     background-size: auto 94%;
   }
@@ -3391,19 +3391,19 @@ body.has-intro.intro-title-reveal .hero__background {
   }
 
   .hero {
-    min-height: 720px;
+    min-height: 760px;
     margin-top: 14px;
     padding-top: 0;
     border-radius: 0 0 32px 32px;
   }
 
   .hero__background {
-    inset: auto 0 0;
-    top: 28%;
+    inset: auto 0 118px;
+    top: 27%;
     left: 0;
     background-image: url('./landing-saulo-hero.png');
-    background-position: 63% bottom;
-    background-size: auto 108%;
+    background-position: 65% bottom;
+    background-size: auto 112%;
   }
 
   .hero::after {
@@ -3413,14 +3413,28 @@ body.has-intro.intro-title-reveal .hero__background {
 
   .hero__content {
     align-items: flex-start;
-    min-height: 720px;
-    padding: 54px 0 330px;
+    min-height: 760px;
+    padding: 54px 0 180px;
   }
 
   .hero__copy {
     flex-basis: 100%;
     max-width: 100%;
     padding-inline: 18px;
+  }
+
+  .hero__actions {
+    position: absolute;
+    right: 18px;
+    bottom: 44px;
+    left: 18px;
+    z-index: 3;
+  }
+
+  .hero__actions .primary-link {
+    width: 100%;
+    max-width: 340px;
+    min-height: 58px;
   }
 
   .hero__copy h1 {
@@ -3768,8 +3782,9 @@ body.has-intro.intro-title-reveal .hero__background {
 
   .hero__background {
     top: 28%;
-    background-position: 64% bottom;
-    background-size: auto 92%;
+    bottom: 118px;
+    background-position: 66% bottom;
+    background-size: auto 96%;
   }
 
   .hero__background::after {

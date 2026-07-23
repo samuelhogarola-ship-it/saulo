@@ -66,7 +66,10 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   ).toHaveCount(0);
   await expect(
     page.locator('#saulo-fitness .stacking-cards__item-visual--coaching img'),
-  ).toBeVisible();
+  ).toHaveAttribute(
+    'src',
+    './assets/servicio/entrenamiento-supervisado-saulo.jpg?v=20260723',
+  );
   await expect(
     page.locator('#saulo-fitness .stacking-cards__item-visual--online img'),
   ).toHaveAttribute('src', './saulo-fitness-og.png');
@@ -97,7 +100,10 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   ).toBeVisible();
   await expect(
     page.locator('#resultados .success-story--proof').nth(2).locator('img'),
-  ).toHaveAttribute('src', './assets/casos-reales/todos/caso-real-07.jpeg');
+  ).toHaveAttribute(
+    'src',
+    './assets/casos-reales/todos/caso-real-07.jpeg?v=20260723',
+  );
 });
 
 test('renders the public app landing without exposing direct app access', async ({
@@ -165,8 +171,20 @@ test('keeps key conversion pages inside the mobile viewport', async ({
   );
   await expect(page.locator('.hero__background')).toHaveCSS(
     'background-position',
-    /64% 100%/,
+    /66% 100%/,
   );
+  const heroMobileStack = await page.locator('#inicio').evaluate((hero) => {
+    const photo = hero
+      .querySelector('.hero__background')
+      .getBoundingClientRect();
+    const cta = hero.querySelector('.hero__actions').getBoundingClientRect();
+    return {
+      ctaBelowPhoto: cta.top >= photo.bottom - 1,
+      ctaInsideHero: cta.bottom <= hero.getBoundingClientRect().bottom,
+    };
+  });
+  expect(heroMobileStack.ctaBelowPhoto).toBe(true);
+  expect(heroMobileStack.ctaInsideHero).toBe(true);
 
   await page.goto('/app.html');
 
@@ -198,6 +216,9 @@ test('keeps the hero headline and portrait safely framed', async ({ page }) => {
   for (const viewport of desktopViewports) {
     await page.setViewportSize(viewport);
     await page.goto('/');
+    await expect(page.locator('body')).toHaveClass(/intro-complete/, {
+      timeout: 7000,
+    });
 
     const heroLayout = await page.locator('#inicio').evaluate((hero) => {
       const heading = hero.querySelector('h1').getBoundingClientRect();
@@ -244,10 +265,14 @@ test('keeps the hero headline and portrait safely framed', async ({ page }) => {
     expect(heroLayout.photoPosition).toContain('58%');
     expect(heroLayout.photoPosition).toContain('100%');
     expect(heroLayout.photoSize).toContain('auto');
+    const maxPhotoLeftRatio = heroLayout.viewportWidth > 1080 ? 0.48 : 0.53;
+    expect(heroLayout.photoLeft).toBeLessThanOrEqual(
+      heroLayout.viewportWidth * maxPhotoLeftRatio,
+    );
 
     for (const line of heroLayout.headlineLines) {
       expect(line.left).toBeGreaterThanOrEqual(0);
-      expect(line.right).toBeLessThanOrEqual(heroLayout.photoLeft - 12);
+      expect(line.right).toBeLessThanOrEqual(heroLayout.viewportWidth);
       expect(line.scrollWidth).toBeLessThanOrEqual(line.clientWidth + 1);
     }
   }
@@ -272,10 +297,16 @@ test('opens the dedicated pages for casos de éxito and sobre mí', async ({
   ).toBeVisible();
   await expect(
     page.locator('.success-story--proof').nth(2).locator('img'),
-  ).toHaveAttribute('src', './assets/casos-reales/todos/caso-real-07.jpeg');
+  ).toHaveAttribute(
+    'src',
+    './assets/casos-reales/todos/caso-real-07.jpeg?v=20260723',
+  );
   await expect(
     page.locator('.success-story--proof').nth(4).locator('img'),
-  ).toHaveAttribute('src', './assets/casos-reales/todos/caso-real-20.jpeg');
+  ).toHaveAttribute(
+    'src',
+    './assets/casos-reales/todos/caso-real-20.jpeg?v=20260723',
+  );
 
   await page.goto('/sobre-mi');
   await expect(
@@ -304,7 +335,7 @@ test('renders the curated real-cases gallery without duplicate-person slots', as
   await expect(items.nth(17).locator('figcaption')).toHaveText('Caso real 18');
   await expect(items.nth(20).locator('img')).toHaveAttribute(
     'src',
-    './assets/casos-reales/todos/caso-real-30.jpeg',
+    './assets/casos-reales/todos/caso-real-30.jpeg?v=20260723',
   );
   await expect(items.nth(20).locator('figcaption')).toHaveText('Caso real 24');
   await expect(items.nth(24).locator('figcaption')).toHaveText('Caso real 28');
@@ -313,19 +344,19 @@ test('renders the curated real-cases gallery without duplicate-person slots', as
     .locator('img')
     .evaluateAll((images) => images.map((image) => image.getAttribute('src')));
   expect(renderedSources).not.toContain(
-    './assets/casos-reales/todos/caso-real-08.jpeg',
+    './assets/casos-reales/todos/caso-real-08.jpeg?v=20260723',
   );
   expect(renderedSources).not.toContain(
-    './assets/casos-reales/todos/caso-real-12.jpeg',
+    './assets/casos-reales/todos/caso-real-12.jpeg?v=20260723',
   );
   expect(renderedSources).not.toContain(
-    './assets/casos-reales/todos/caso-real-15.jpeg',
+    './assets/casos-reales/todos/caso-real-15.jpeg?v=20260723',
   );
   expect(renderedSources).not.toContain(
-    './assets/casos-reales/todos/caso-real-22.jpeg',
+    './assets/casos-reales/todos/caso-real-22.jpeg?v=20260723',
   );
   expect(renderedSources).not.toContain(
-    './assets/casos-reales/todos/caso-real-25.jpeg',
+    './assets/casos-reales/todos/caso-real-25.jpeg?v=20260723',
   );
 });
 

@@ -250,21 +250,38 @@ p {
   width: 34px;
   height: 34px;
   flex: 0 0 34px;
-  border: 1px solid rgba(226, 206, 255, 0.18);
-  border-radius: 10px;
-  background: #fff url('./app/icons/icon-512.png') center / cover no-repeat;
-  box-shadow: 0 8px 22px rgba(123, 22, 255, 0.18);
+  border-radius: 9px;
+  background: url('./saulo-logo-transparent.png') center / contain no-repeat;
+  filter: drop-shadow(0 8px 18px rgba(123, 22, 255, 0.26));
 }
 
 .site-header__toggle {
   display: none;
+  align-items: center;
+  gap: 9px;
   min-height: 40px;
-  padding: 0 4px;
-  border: 0;
-  background: transparent;
+  padding: 0 12px 0 14px;
+  border: 1px solid rgba(226, 206, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.045);
   color: var(--text);
   font-size: 0.96rem;
   font-weight: 700;
+}
+
+.site-header__toggle::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  opacity: 0.78;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 180ms ease;
+}
+
+.site-header__toggle[aria-expanded='true']::after {
+  transform: translateY(2px) rotate(225deg);
 }
 
 .site-nav {
@@ -3382,11 +3399,11 @@ body.has-intro.intro-title-reveal .hero__background {
 
   .hero__background {
     inset: auto 0 0;
-    top: 30%;
+    top: 28%;
     left: 0;
     background-image: url('./landing-saulo-hero.png');
-    background-position: 50% bottom;
-    background-size: auto 100%;
+    background-position: 63% bottom;
+    background-size: auto 108%;
   }
 
   .hero::after {
@@ -3750,9 +3767,9 @@ body.has-intro.intro-title-reveal .hero__background {
   }
 
   .hero__background {
-    top: 30%;
-    background-position: 50% bottom;
-    background-size: auto 82%;
+    top: 28%;
+    background-position: 64% bottom;
+    background-size: auto 92%;
   }
 
   .hero__background::after {

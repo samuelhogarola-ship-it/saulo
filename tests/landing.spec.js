@@ -72,7 +72,8 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   );
   await expect(
     page.locator('#saulo-fitness .stacking-cards__item-visual--online img'),
-  ).toHaveAttribute('src', './saulo-fitness-og.png');
+  ).toHaveAttribute('src', './saulo-logo-transparent.png');
+  await expect(page.getByText('Página en producción')).toBeVisible();
   await expect(
     page.locator('#inicio').getByRole('link', { name: 'Solicitar valoración' }),
   ).toHaveAttribute('href', 'https://wa.me/34622923988');

@@ -3,532 +3,150 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Saulo Fitness</title>
-    <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
-    <link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png" />
-    <link rel="apple-touch-icon" href="/favicon-192.png" />
+    <title>Saulo Fitness | Site em produção</title>
     <meta
       name="description"
-      content="Treinamento online premium 1:1 com acompanhamento real, critério e contato direto com Saulo Fitness."
+      content="A Saulo Fitness está preparando o novo site oficial."
     />
-    <meta property="og:title" content="Saulo Fitness" />
-    <meta
-      property="og:url"
-      content="https://saulofitness.com/index-pt-br.html"
-    />
-    <meta
-      property="og:description"
-      content="Programa premium 1:1 da Saulo Fitness com resultados, método e contato direto por WhatsApp."
-    />
+    <link rel="canonical" href="https://saulofitness.com/" />
     <meta property="og:type" content="website" />
+    <meta property="og:title" content="Saulo Fitness" />
+    <meta property="og:description" content="Site oficial em produção." />
     <meta
       property="og:image"
       content="https://saulofitness.com/saulo-fitness-og.png"
     />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Saulo Fitness" />
+    <meta name="twitter:description" content="Site oficial em produção." />
     <meta
       name="twitter:image"
       content="https://saulofitness.com/saulo-fitness-og.png"
     />
-    <link rel="canonical" href="https://saulofitness.com/index-pt-br.html" />
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Saulo Fitness",
-        "url": "https://saulofitness.com/",
-        "logo": "https://saulofitness.com/favicon-192.png"
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #07030d;
+        --panel: rgba(25, 13, 42, 0.76);
+        --line: rgba(211, 180, 255, 0.18);
+        --text: #fff;
+        --muted: rgba(250, 246, 255, 0.68);
       }
-    </script>
-    <meta name="theme-color" content="#09030f" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./core/deck-stack.css" />
-    <link rel="stylesheet" href="./core/cookies-banner.css" />
-    <link rel="stylesheet" href="./styles.css?v=20260718-intro4" />
-    <script src="./core/deck-stack.js" defer></script>
-    <script src="./core/cookies-banner.js" defer></script>
-    <script src="./landing.js?v=20260718-entry3" defer></script>
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        min-height: 100%;
+        margin: 0;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+        min-height: 100svh;
+        padding: 24px;
+        background:
+          radial-gradient(
+            circle at 50% 18%,
+            rgba(141, 55, 255, 0.28),
+            transparent 34%
+          ),
+          linear-gradient(180deg, #10051c 0%, var(--bg) 62%, #030106 100%);
+        color: var(--text);
+        font-family:
+          Montserrat,
+          Poppins,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+      }
+
+      main {
+        width: min(940px, 100%);
+        padding: clamp(38px, 7vw, 78px);
+        border: 1px solid var(--line);
+        border-radius: clamp(28px, 4vw, 48px);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 44%),
+          var(--panel);
+        text-align: center;
+        box-shadow:
+          0 34px 90px rgba(0, 0, 0, 0.42),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      img {
+        width: clamp(108px, 15vw, 156px);
+        height: clamp(108px, 15vw, 156px);
+        padding: 18px;
+        border-radius: 34px;
+        background: rgba(255, 255, 255, 0.96);
+        object-fit: contain;
+        box-shadow: 0 24px 64px rgba(111, 39, 255, 0.32);
+      }
+
+      p {
+        margin: 30px 0 0;
+        color: var(--muted);
+        font-size: clamp(0.9rem, 1.4vw, 1.04rem);
+        font-weight: 850;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 12ch;
+        margin: 18px auto 0;
+        font-size: clamp(3rem, 8.8vw, 6.8rem);
+        font-weight: 950;
+        line-height: 0.9;
+        letter-spacing: -0.08em;
+        text-transform: uppercase;
+      }
+
+      .brand {
+        display: block;
+        margin-top: 30px;
+        color: rgba(250, 246, 255, 0.82);
+        font-size: clamp(0.95rem, 2vw, 1.22rem);
+        font-weight: 900;
+        letter-spacing: 0.34em;
+        text-transform: uppercase;
+      }
+
+      @media (max-width: 520px) {
+        body {
+          padding: 16px;
+        }
+
+        main {
+          padding: 34px 22px;
+          border-radius: 30px;
+        }
+
+        h1 {
+          font-size: clamp(3rem, 16vw, 4.5rem);
+        }
+
+        .brand {
+          letter-spacing: 0.24em;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div class="intro-screen" data-intro-screen aria-hidden="true">
-      <div class="intro-screen__bg"></div>
-      <div class="intro-screen__copy">
-        <p>Bem-vindo à</p>
-        <div class="intro-screen__title">Saulo Fitness</div>
-      </div>
-    </div>
-
-    <header class="site-header">
-      <a class="site-logo" href="./index-pt-br.html">Saulo Fitness</a>
-      <button
-        class="site-header__toggle"
-        type="button"
-        aria-expanded="false"
-        aria-controls="site-nav"
-        data-nav-toggle
-      >
-        Menu
-      </button>
-      <details class="lang-switch" aria-label="Seletor de idioma">
-        <summary class="lang-switch__summary">🇧🇷 PT-BR</summary>
-        <div class="lang-switch__menu">
-          <a class="lang-switch__link" href="/">🇪🇸 ES</a>
-          <a class="lang-switch__link is-active" href="./index-pt-br.html">
-            🇧🇷 PT-BR
-          </a>
-        </div>
-      </details>
-      <nav
-        class="site-nav"
-        id="site-nav"
-        data-site-nav
-        aria-label="Navegação principal"
-      >
-        <a href="./index-pt-br.html" aria-current="page">Início</a>
-        <a href="./casos-exito-pt-br.html">Casos de sucesso</a>
-        <a href="./sobre-mi-pt-br.html">Sobre mim</a>
-        <a href="/eventos?lang=pt-br">Eventos</a>
-        <a class="site-nav__cta" href="./app-pt-br.html">App</a>
-      </nav>
-    </header>
-
-    <main class="landing-page">
-      <div class="home-clueso-stage" data-clueso-stage>
-        <div class="home-clueso-stage__sticky" aria-hidden="true">
-          <p class="home-clueso-stage__title">TRANSFORME O SEU FÍSICO</p>
-        </div>
-
-        <section class="hero hero--home" id="inicio">
-          <div class="hero__background"></div>
-          <div class="hero__overlay"></div>
-          <div class="hero__content">
-            <div class="hero__copy">
-              <h1>
-                <span>TRANSFORME O SEU FÍSICO</span>
-              </h1>
-              <p class="hero__summary">
-                Treinamento personalizado · Nutrição · Acompanhamento semanal ·
-                Coaching&nbsp;online
-              </p>
-              <div class="hero__actions">
-                <a
-                  class="primary-link"
-                  href="https://wa.me/34622923988"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Solicitar avaliação
-                </a>
-              </div>
-            </div>
-          </div>
-          <a
-            class="hero__scroll-cue"
-            href="#resultados"
-            aria-label="Ver resultados"
-          >
-            <span>Resultados</span>
-            <span class="hero__scroll-arrow" aria-hidden="true">↓</span>
-          </a>
-        </section>
-
-        <section class="trust-bar" aria-label="Pontos-chave do serviço">
-          <article class="trust-bar__item">
-            <span>Planejamento individual</span>
-            <p>Cada processo parte do seu objetivo, nível e contexto real.</p>
-          </article>
-          <article class="trust-bar__item">
-            <span>Acompanhamento real</span>
-            <p>Revisão, ajustes e controle de evolução ao longo do processo.</p>
-          </article>
-          <article class="trust-bar__item">
-            <span>Vídeos e execução</span>
-            <p>Apoio visual para treinar com mais segurança e clareza.</p>
-          </article>
-          <article class="trust-bar__item">
-            <span>Contato direto</span>
-            <p>
-              Uma relação de trabalho próxima, clara e orientada a progresso.
-            </p>
-          </article>
-        </section>
-
-        <section
-          class="content-section success-section success-section--home"
-          id="resultados"
-        >
-          <div class="section-heading section-heading--results">
-            <div>
-              <p class="section-label">Resultados</p>
-              <h2>Mudanças visíveis quando o trabalho é bem estruturado.</h2>
-            </div>
-            <p>
-              A transformação não depende de uma rotina isolada. Depende de uma
-              estrutura sólida, bom acompanhamento e consistência bem conduzida.
-            </p>
-          </div>
-
-          <div class="results-proof-strip" aria-label="Critérios de resultados">
-            <span>Casos reais</span>
-            <span>Acompanhamento individual</span>
-            <span>Processo documentado</span>
-          </div>
-
-          <div class="success-grid success-grid--home-premium">
-            <article
-              class="success-story success-story--proof success-story--featured"
-            >
-              <figure class="success-proof">
-                <img
-                  src="./assets/casos-reales/caso-01-espalda-hombre.jpeg"
-                  alt="Evolução física real de um aluno da Saulo Fitness visto de costas"
-                  loading="lazy"
-                />
-              </figure>
-              <div class="success-story__intro">
-                <span class="section-label">Caso real 01</span>
-                <h2>Mais massa muscular e presença física</h2>
-                <p class="success-story__summary">
-                  Um processo focado em força, aderência e melhora progressiva
-                  da composição corporal.
-                </p>
-              </div>
-            </article>
-
-            <article class="success-story success-story--proof">
-              <figure class="success-proof">
-                <img
-                  src="./assets/casos-reales/caso-02-frontal-mujer.jpeg"
-                  alt="Evolução física real de uma aluna da Saulo Fitness em vista frontal"
-                  loading="lazy"
-                />
-              </figure>
-              <div class="success-story__intro">
-                <span class="section-label">Caso real 02</span>
-                <h2>Definição, cintura e controle</h2>
-                <p class="success-story__summary">
-                  Treino e hábitos ajustados para alcançar uma mudança visível
-                  sem perder uma estrutura sustentável.
-                </p>
-              </div>
-            </article>
-
-            <article class="success-story success-story--proof">
-              <figure class="success-proof">
-                <img
-                  src="./assets/casos-reales/todos/caso-real-07.jpeg"
-                  alt="Evolução física real de um aluno da Saulo Fitness em vista frontal"
-                  loading="lazy"
-                />
-              </figure>
-              <div class="success-story__intro">
-                <span class="section-label">Caso real 07</span>
-                <h2>Menos gordura, mais estrutura</h2>
-                <p class="success-story__summary">
-                  Reeducação do treino e do acompanhamento para deixar de
-                  improvisar e avançar com uma direção clara.
-                </p>
-              </div>
-            </article>
-
-            <article class="success-story success-story--proof">
-              <figure class="success-proof">
-                <img
-                  src="./assets/casos-reales/caso-04-perfil-mujer.jpeg"
-                  alt="Evolução física real de uma aluna da Saulo Fitness em perfil"
-                  loading="lazy"
-                />
-              </figure>
-              <div class="success-story__intro">
-                <span class="section-label">Caso real 04</span>
-                <h2>Trabalho técnico e forma física</h2>
-                <p class="success-story__summary">
-                  Uma mudança construída com sessões bem planejadas, constância
-                  e acompanhamento próximo.
-                </p>
-              </div>
-            </article>
-          </div>
-          <div class="success-section__footer">
-            <a class="secondary-link" href="./casos-exito-pt-br.html">
-              Ver casos completos
-            </a>
-          </div>
-        </section>
-      </div>
-
-      <section
-        class="stacking-cards__collection home-stack"
-        id="saulo-fitness"
-        data-deck-stack
-        aria-label="Seções em destaque"
-      >
-        <div class="stacking-cards__list" data-deck-stack-list>
-          <article
-            class="stacking-cards__item stacking-cards__item--about"
-            data-stacking-cards-item
-            data-deck-stack-card
-          >
-            <div class="stacking-cards__item-layout">
-              <div class="stacking-cards__item-copy">
-                <p class="section-label">Treinamento e coaching presencial</p>
-                <h2>
-                  Um trabalho pessoal, guiado e ajustado à sua evolução real.
-                </h2>
-                <p>
-                  Cada sessão é conduzida com direção, técnica e atenção próxima
-                  para que você treine com intenção, segurança e uma progressão
-                  bem medida.
-                </p>
-                <ul class="deck-feature-list deck-feature-list--service">
-                  <li>Sessões ajustadas ao seu objetivo, nível e contexto.</li>
-                  <li>Correções técnicas durante o treinamento.</li>
-                  <li>Acompanhamento próximo para sustentar o progresso.</li>
-                </ul>
-                <div class="stacking-cards__item-actions">
-                  <a
-                    class="primary-link"
-                    href="https://wa.me/34622923988"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Solicitar avaliação
-                  </a>
-                  <a class="secondary-link" href="./sobre-mi-pt-br.html">
-                    Conhecer a abordagem
-                  </a>
-                </div>
-              </div>
-              <div
-                class="stacking-cards__item-visual stacking-cards__item-visual--coaching"
-                data-stacking-cards-img
-                data-deck-stack-media
-              >
-                <img
-                  src="./assets/servicio/entrenamiento-supervisado-saulo.jpg?v=20260723"
-                  alt="Saulo supervisionando a técnica durante uma sessão de treino"
-                  loading="eager"
-                />
-                <div class="deck-photo-caption">
-                  <span>Técnica supervisionada</span>
-                  <strong
-                    >Você treina com direção, critério e correções
-                    reais.</strong
-                  >
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <article
-            class="stacking-cards__item stacking-cards__item--online"
-            data-stacking-cards-item
-            data-deck-stack-card
-          >
-            <div class="stacking-cards__item-layout">
-              <div class="stacking-cards__item-copy">
-                <p class="section-label">Assessoria online</p>
-                <h2>
-                  Um acompanhamento completo para treinar com direção de
-                  qualquer lugar.
-                </h2>
-                <p>
-                  Planejamento, revisão e contato próximo para manter estrutura,
-                  ajustes e critério mesmo quando você não treina
-                  presencialmente.
-                </p>
-                <ul class="deck-feature-list deck-feature-list--service">
-                  <li>
-                    Rotinas organizadas conforme objetivo e disponibilidade.
-                  </li>
-                  <li>Revisão de progresso, sensações e aderência.</li>
-                  <li>Suporte online para tirar dúvidas e ajustar o plano.</li>
-                </ul>
-                <div class="stacking-cards__item-actions">
-                  <a
-                    class="primary-link"
-                    href="https://wa.me/34622923988"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Solicitar assessoria
-                  </a>
-                  <a class="secondary-link" href="./app.html"> Ver o app </a>
-                </div>
-              </div>
-              <div
-                class="stacking-cards__item-visual stacking-cards__item-visual--online"
-                data-stacking-cards-img
-                data-deck-stack-media
-              >
-                <div class="online-preview-card">
-                  <img
-                    src="./saulo-logo-transparent.png"
-                    alt="Logotipo da Saulo Fitness"
-                    loading="lazy"
-                  />
-                  <span>Página em produção</span>
-                  <strong
-                    >Assessoria online com estrutura e acompanhamento.</strong
-                  >
-                  <p>
-                    O acesso funciona como complemento digital para manter
-                    direção, contato e ajustes de qualquer lugar.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <article
-            class="stacking-cards__item stacking-cards__item--events"
-            data-stacking-cards-item
-            data-deck-stack-card
-          >
-            <div
-              class="stacking-cards__item-layout stacking-cards__item-layout--events"
-            >
-              <div class="stacking-cards__item-copy">
-                <p class="section-label">Eventos</p>
-                <h2>Viva o ambiente e o esporte com nossos eventos ao vivo.</h2>
-                <p>
-                  Prepare-se para a melhor experiência, conhecer gente nova e
-                  aproveitar o melhor de Fuengirola.
-                </p>
-                <div class="stacking-cards__item-actions">
-                  <a class="primary-link" href="/eventos?lang=pt-br">
-                    Ver agenda
-                  </a>
-                  <a
-                    class="secondary-link"
-                    href="https://wa.me/34622923988"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Reservar pelo WhatsApp
-                  </a>
-                </div>
-              </div>
-              <div
-                class="stacking-cards__item-visual stacking-cards__item-visual--events"
-                data-stacking-cards-img
-                data-deck-stack-media
-              >
-                <div
-                  class="events-preview"
-                  data-events-preview
-                  data-lang="pt-br"
-                >
-                  <div class="events-preview__grid" data-events-grid>
-                    <article class="event-preview-card is-loading">
-                      <div class="event-preview-card__body">
-                        <span>Carregando agenda</span>
-                      </div>
-                    </article>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="content-section process-section" id="como-funciona">
-        <div class="section-heading">
-          <p class="section-label">Como funciona</p>
-          <h2>Um processo claro desde o primeiro contato.</h2>
-          <p>
-            A entrada no programa é organizada de forma simples para começar com
-            ordem e manter o acompanhamento desde o início.
-          </p>
-        </div>
-        <div class="process-grid">
-          <article class="process-card">
-            <span>01</span>
-            <h3>Você pede informação</h3>
-            <p>Compartilha o objetivo e resolvemos as primeiras dúvidas.</p>
-          </article>
-          <article class="process-card">
-            <span>02</span>
-            <h3>É feita a avaliação</h3>
-            <p>
-              Seu ponto de partida é revisto antes de estruturar o trabalho.
-            </p>
-          </article>
-          <article class="process-card">
-            <span>03</span>
-            <h3>Você recebe o plano</h3>
-            <p>Definimos a rotina, a estrutura e o modelo de acompanhamento.</p>
-          </article>
-          <article class="process-card">
-            <span>04</span>
-            <h3>Começa o acompanhamento</h3>
-            <p>O processo segue com revisão, ajustes e contato direto.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="content-section">
-        <div class="closing-panel">
-          <div class="closing-panel__copy">
-            <h2>
-              Conte-me o seu objetivo e avaliamos como estruturar o seu processo
-              pessoal.
-            </h2>
-            <p>
-              Uma conversa clara para entender o seu ponto de partida e definir
-              o próximo passo.
-            </p>
-          </div>
-          <div class="closing-panel__actions">
-            <a
-              class="primary-link closing-panel__main-cta"
-              href="https://wa.me/34622923988"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Fale comigo
-            </a>
-            <a
-              class="secondary-link"
-              href="https://www.instagram.com/saulofitness/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Instagram
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <footer class="site-footer-bar">
-        <div class="site-footer-bar__legal">
-          <a href="/eventos?lang=pt-br">Eventos</a>
-          <a href="./legal-pt-br.html#aviso-legal">Aviso legal</a>
-          <a href="./legal-pt-br.html#privacidade">Privacidade</a>
-          <a href="./legal-pt-br.html#cookies">Cookies</a>
-        </div>
-        <p>
-          by
-          <a href="https://webfuengirola.com" target="_blank" rel="noreferrer">
-            Web Fuengirola Studio
-          </a>
-        </p>
-      </footer>
+    <main aria-labelledby="production-title">
+      <img src="./saulo-logo-transparent.png" alt="Logotipo da Saulo Fitness" />
+      <p>Novo site oficial</p>
+      <h1 id="production-title">Site em produção</h1>
+      <span class="brand">Saulo Fitness</span>
     </main>
-    <a
-      class="floating-whatsapp"
-      href="https://wa.me/34622923988"
-      target="_blank"
-      rel="noreferrer"
-      aria-label="Abrir WhatsApp de Saulo Fitness"
-    >
-      WhatsApp
-    </a>
   </body>
 </html>

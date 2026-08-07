@@ -302,6 +302,10 @@ test('keeps the hero headline and portrait safely framed', async ({ page }) => {
     expect(heroLayout.photoPosition).toContain('58%');
     expect(heroLayout.photoPosition).toContain('100%');
     expect(heroLayout.photoSize).toContain('auto');
+    const maxPhotoLeftRatio = heroLayout.viewportWidth > 1080 ? 0.48 : 0.53;
+    expect(heroLayout.photoLeft).toBeLessThanOrEqual(
+      heroLayout.viewportWidth * maxPhotoLeftRatio,
+    );
 
     for (const line of heroLayout.headlineLines) {
       expect(line.left).toBeGreaterThanOrEqual(0);

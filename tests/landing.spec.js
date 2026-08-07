@@ -284,6 +284,7 @@ test('keeps the hero headline and portrait safely framed', async ({ page }) => {
       heroLayout.viewportWidth * maxPhotoLeftRatio,
     );
     expect(heroLayout.photoAsset).toContain('landing-saulo-hero.png');
+    expect(heroLayout.photoPosition).toContain('58%');
     expect(heroLayout.photoPosition).toContain('100%');
     expect(heroLayout.photoSize).toContain('auto');
 

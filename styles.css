@@ -520,9 +520,17 @@ p {
 }
 
 .hero__background {
-  left: 44%;
+  left: 22%;
   right: 0;
-  background: url('./landing-saulo-torso.png') 58% bottom / auto 98% no-repeat;
+  background: url('./landing-saulo-hero.png') 42% bottom / auto 98% no-repeat;
+  mask-image:
+    linear-gradient(90deg, transparent 0%, #000 18%, #000 48%, transparent 67%),
+    linear-gradient(180deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0%, #000 18%, #000 48%, transparent 67%),
+    linear-gradient(180deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+  -webkit-mask-composite: source-in;
 }
 
 .hero__background::after {
@@ -530,40 +538,28 @@ p {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background:
-    linear-gradient(
-      90deg,
-      #050209 0%,
-      rgba(5, 2, 9, 0.94) 6%,
-      rgba(5, 2, 9, 0.5) 13%,
-      rgba(5, 2, 9, 0) 24%
-    ),
-    linear-gradient(
-      90deg,
-      rgba(5, 2, 9, 0.34) 0%,
-      rgba(5, 2, 9, 0.16) 18%,
-      rgba(5, 2, 9, 0) 34%,
-      rgba(5, 2, 9, 0) 76%,
-      rgba(5, 2, 9, 0.16) 100%
-    ),
-    linear-gradient(180deg, rgba(5, 2, 9, 0.08) 0%, transparent 18%);
+  background: radial-gradient(
+    ellipse at 52% 44%,
+    rgba(120, 48, 220, 0.07),
+    transparent 60%
+  );
 }
 
 .hero__overlay {
   background:
     linear-gradient(
       90deg,
-      rgba(5, 2, 9, 0.995) 0%,
-      rgba(5, 2, 9, 0.97) 34%,
-      rgba(5, 2, 9, 0.54) 48%,
-      rgba(5, 2, 9, 0.12) 63%,
-      rgba(5, 2, 9, 0) 82%
+      rgba(5, 2, 9, 0.998) 0%,
+      rgba(5, 2, 9, 0.98) 26%,
+      rgba(5, 2, 9, 0.66) 36%,
+      rgba(5, 2, 9, 0.16) 48%,
+      rgba(5, 2, 9, 0) 64%
     ),
-    linear-gradient(180deg, rgba(5, 2, 9, 0) 56%, rgba(5, 2, 9, 0.68) 100%),
+    linear-gradient(180deg, rgba(5, 2, 9, 0) 54%, rgba(5, 2, 9, 0.74) 100%),
     radial-gradient(
-      circle at 78% 14%,
-      rgba(124, 54, 212, 0.09),
-      transparent 24%
+      circle at 72% 16%,
+      rgba(124, 54, 212, 0.11),
+      transparent 28%
     );
 }
 
@@ -3419,8 +3415,8 @@ body.has-intro.intro-title-reveal .hero__background {
   }
 
   .hero__background {
-    left: 50%;
-    background-position: 58% bottom;
+    left: 32%;
+    background-position: 44% bottom;
     background-size: auto 96%;
   }
 }
@@ -3536,6 +3532,8 @@ body.has-intro.intro-title-reveal .hero__background {
     background-image: url('./landing-saulo-torso.png');
     background-position: 56% top;
     background-size: auto 118%;
+    mask: none;
+    -webkit-mask: none;
   }
 
   .hero::after {
@@ -3922,6 +3920,8 @@ body.has-intro.intro-title-reveal .hero__background {
     bottom: 102px;
     background-position: 56% top;
     background-size: auto 118%;
+    mask: none;
+    -webkit-mask: none;
   }
 
   .hero__background::after {

@@ -119,6 +119,11 @@
             <p class="brand-kicker">Experiencia alumno</p>
             <h2 id="topbar-title">Rutinas del alumno</h2>
           </div>
+          <div class="topbar-meta">
+            <span class="section-badge" id="student-client-chip">
+              Cliente activo
+            </span>
+          </div>
         </header>
 
         <nav
@@ -144,11 +149,11 @@
             <article class="routine-panel">
               <div class="routine-heading" id="routine-day-panel">
                 <div>
-                  <p class="brand-kicker" id="routine-day-label">Día 1</p>
+                  <p class="brand-kicker" id="routine-day-label">Lunes</p>
                   <h4 id="routine-day-title">Pierna + glúteo</h4>
                 </div>
                 <span class="section-badge" id="routine-day-meta">
-                  Semana actual
+                  Rutina activa
                 </span>
               </div>
 
@@ -159,8 +164,8 @@
                   Entrenamiento finalizado
                 </button>
                 <p class="routine-helper">
-                  Al finalizar se genera un resumen y se guarda en Mensajes >
-                  Enviados con su fecha.
+                  Al finalizar se envía un resumen al entrenador y se guarda en
+                  Mensajes > Enviados.
                 </p>
               </div>
             </article>
@@ -181,8 +186,8 @@
 
           <div class="messages-note">
             <p>
-              Los mensajes se revisan martes y viernes de cada semana. Mientras
-              tanto, resuelve tus dudas con nuestro chat.
+              Tus mensajes se sincronizan con el panel del entrenador y los
+              recordatorios se actualizan según tu suscripción y check-in.
             </p>
             <a href="#" id="support-chat-trigger"> Abrir chat personalizado </a>
           </div>
@@ -273,17 +278,19 @@
           <div class="info-grid">
             <article class="info-card" id="subscription-start-card">
               <span>Estado actual</span>
-              <strong>Membresía activa</strong>
-              <p>Acceso completo a rutina, mensajes y seguimiento.</p>
+              <strong id="subscription-status-value">Membresía activa</strong>
+              <p id="subscription-status-copy">
+                Acceso completo a rutina, mensajes y seguimiento.
+              </p>
             </article>
             <article class="info-card" id="subscription-plan-card">
               <span>Válida hasta</span>
-              <strong>30 de junio de 2026</strong>
+              <strong id="subscription-end-value">30 de junio de 2026</strong>
               <p>Renovación prevista antes de la fecha de corte.</p>
             </article>
             <article class="info-card" id="subscription-end-card">
               <span>Fin del plan</span>
-              <strong>8 de julio de 2026</strong>
+              <strong id="plan-end-value">8 de julio de 2026</strong>
               <p>Última semana activa del bloque de entrenamiento actual.</p>
             </article>
           </div>
@@ -304,20 +311,26 @@
           <div class="profile-grid">
             <article class="info-card" id="profile-age-card">
               <span>Edad</span>
-              <strong>31 años</strong>
+              <strong id="profile-age-value">31 años</strong>
             </article>
             <article class="info-card" id="profile-weight-card">
               <span>Peso</span>
-              <strong>63,4 kg</strong>
+              <strong id="profile-weight-value">63,4 kg</strong>
             </article>
             <article class="info-card" id="profile-goal-card">
               <span>Objetivo</span>
-              <strong>Bajar grasa y mantener fuerza</strong>
+              <strong id="profile-goal-value">
+                Bajar grasa y mantener fuerza
+              </strong>
             </article>
             <article class="info-card info-card-wide">
               <span>Notas de perfil</span>
-              <strong>Adherencia alta con feedback rápido</strong>
-              <p>Practica natación y cuida la rodilla tras una lesión.</p>
+              <strong id="profile-note-title">
+                Adherencia alta con feedback rápido
+              </strong>
+              <p id="profile-note-copy">
+                Practica natación y cuida la rodilla tras una lesión.
+              </p>
             </article>
             <article class="info-card info-card-wide" id="profile-photos-card">
               <span>Fotos mensuales</span>

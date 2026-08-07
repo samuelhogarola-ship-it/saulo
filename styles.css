@@ -3093,6 +3093,11 @@ body.has-intro.intro-title-reveal .hero__background {
   .field-row {
     grid-template-columns: 1fr;
   }
+
+  body.is-production-hold .footer-credit {
+    justify-self: center;
+    text-align: center;
+  }
 }
 
 .events-hero__script {

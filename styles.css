@@ -3640,8 +3640,12 @@ body.has-intro.intro-title-reveal .hero__background {
   }
 
   .hero__copy h1 {
-    max-width: 12ch;
+    max-width: none;
     white-space: normal;
+  }
+
+  .hero__scroll-cue {
+    display: none;
   }
 
   .hero__summary {
@@ -3884,7 +3888,7 @@ body.has-intro.intro-title-reveal .hero__background {
   }
 
   .hero__copy h1 {
-    font-size: clamp(2.85rem, 12vw, 3.6rem);
+    font-size: clamp(2.6rem, 11.5vw, 3.6rem);
     line-height: 0.92;
     letter-spacing: 0;
   }

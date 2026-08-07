@@ -149,6 +149,22 @@ function consumeIntroSkipOnce() {
   }
 }
 
+function readIntroFlag() {
+  try {
+    return window.localStorage.getItem(INTRO_KEY) === 'true';
+  } catch (_error) {
+    return false;
+  }
+}
+
+function writeIntroFlag() {
+  try {
+    window.localStorage.setItem(INTRO_KEY, 'true');
+  } catch (_error) {
+    // Ignore storage failures and keep the intro working for this visit.
+  }
+}
+
 async function loadFeaturedEvents() {
   if (isFilePreview) {
     renderEventsFallback(

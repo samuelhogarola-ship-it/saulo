@@ -46,6 +46,16 @@ app.use((req, res, next) => {
 
   next();
 });
+
+app.use((req, res, next) => {
+  if (isPublicProductionPlaceholderRequest(req)) {
+    res.sendFile(path.join(publicDir, getProductionPlaceholderFile(req)));
+    return;
+  }
+
+  next();
+});
+
 app.use(express.static(publicDir, { extensions: ['html'] }));
 
 app.get('/', (_req, res) => {
@@ -540,6 +550,65 @@ app.listen(port, host, () => {
     );
   }
 });
+
+function isPublicProductionPlaceholderRequest(req) {
+  if (!['GET', 'HEAD'].includes(req.method)) {
+    return false;
+  }
+
+  if (!req.accepts('html')) {
+    return false;
+  }
+
+  const normalizedPath = req.path.replace(/\/+$/, '') || '/';
+
+  if (normalizedPath === '/') {
+    return true;
+  }
+
+  if (
+    normalizedPath.startsWith('/app/') ||
+    normalizedPath === '/app' ||
+    normalizedPath.startsWith('/trainer') ||
+    normalizedPath.startsWith('/api') ||
+    normalizedPath.startsWith('/sala') ||
+    normalizedPath.startsWith('/acceso') ||
+    normalizedPath.startsWith('/demo')
+  ) {
+    return false;
+  }
+
+  if (normalizedPath.startsWith('/eventos')) {
+    return true;
+  }
+
+  return new Set([
+    '/app.html',
+    '/app-pt-br.html',
+    '/casos-exito',
+    '/casos-exito.html',
+    '/casos-exito-pt-br',
+    '/casos-exito-pt-br.html',
+    '/casos-reales',
+    '/casos-reales.html',
+    '/casos-reales-pt-br',
+    '/casos-reales-pt-br.html',
+    '/index-pt-br',
+    '/index-pt-br.html',
+    '/legal',
+    '/legal.html',
+    '/legal-pt-br',
+    '/legal-pt-br.html',
+    '/sobre-mi',
+    '/sobre-mi.html',
+    '/sobre-mi-pt-br',
+    '/sobre-mi-pt-br.html',
+  ]).has(normalizedPath);
+}
+
+function getProductionPlaceholderFile(req) {
+  return req.path.includes('pt-br') ? 'index-pt-br.html' : 'index.html';
+}
 
 function getStudentAccessToken(req) {
   const authorization = req.headers.authorization || '';

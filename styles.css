@@ -520,16 +520,16 @@ p {
 }
 
 .hero__background {
-  left: 38%;
+  left: 50%;
   right: 0;
-  background: url('./landing-saulo-hero.png') 42% bottom / auto 98% no-repeat;
+  background: url('./landing-saulo-hero.png') 20% bottom / auto 112% no-repeat;
   mask-image:
-    linear-gradient(90deg, transparent 0%, #000 12%, #000 52%, transparent 70%),
-    linear-gradient(180deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    linear-gradient(90deg, transparent 0%, #000 10%, #000 58%, transparent 76%),
+    linear-gradient(180deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
   mask-composite: intersect;
   -webkit-mask-image:
-    linear-gradient(90deg, transparent 0%, #000 12%, #000 52%, transparent 70%),
-    linear-gradient(180deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    linear-gradient(90deg, transparent 0%, #000 10%, #000 58%, transparent 76%),
+    linear-gradient(180deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
   -webkit-mask-composite: source-in;
 }
 
@@ -593,8 +593,8 @@ p {
 .hero__copy {
   flex: 0 1 100%;
   width: 100%;
-  max-width: 59%;
-  padding-inline: clamp(32px, 3.5vw, 72px);
+  max-width: 56%;
+  padding-inline: clamp(48px, 5vw, 108px);
 }
 
 .hero__copy h1 {
@@ -602,12 +602,12 @@ p {
   z-index: 2;
   display: block;
   width: 100%;
-  max-width: 11.4ch;
+  max-width: 12ch;
   color: #fff;
-  font-size: clamp(4.8rem, 7vw, 7.3rem);
+  font-size: clamp(5.2rem, 8vw, 8.8rem);
   font-weight: 900;
   line-height: 0.86;
-  letter-spacing: 0;
+  letter-spacing: -0.01em;
   text-shadow: 0 18px 44px rgba(5, 2, 9, 0.56);
   text-transform: uppercase;
   white-space: normal;
@@ -861,7 +861,7 @@ body.has-intro.intro-title-reveal .hero__background {
 }
 
 .content-section {
-  padding: 40px 0 0;
+  padding: 56px 0 0;
 }
 
 .trust-bar {
@@ -2880,6 +2880,73 @@ body.has-intro.intro-title-reveal .hero__background {
   text-transform: uppercase;
 }
 
+/* ── White sections ────────────────────────────────────────────── */
+
+.process-section {
+  background: #fff;
+  padding: 96px clamp(48px, 5.5vw, 112px) 80px;
+}
+
+.process-section .section-label {
+  color: #8b3cf7;
+}
+
+.process-section .section-heading h2 {
+  color: #0f0a1a;
+}
+
+.process-section .section-heading p {
+  color: #4a3b5c;
+}
+
+.process-section .process-card {
+  background: #f5f3fb;
+  border-color: rgba(139, 60, 247, 0.1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+}
+
+.process-section .process-card span {
+  color: #8b3cf7;
+}
+
+.process-section .process-card h3 {
+  color: #0f0a1a;
+}
+
+.process-section .process-card p {
+  color: #5a4a70;
+}
+
+.content-section:has(.closing-panel) {
+  background: #fff;
+  padding: 80px clamp(48px, 5.5vw, 112px);
+}
+
+.content-section:has(.closing-panel) .closing-panel {
+  background: linear-gradient(
+    135deg,
+    rgba(139, 60, 247, 0.06),
+    rgba(169, 60, 255, 0.03)
+  );
+  border-color: rgba(139, 60, 247, 0.15);
+}
+
+.content-section:has(.closing-panel) .closing-panel__copy h2 {
+  color: #0f0a1a;
+}
+
+.content-section:has(.closing-panel) .closing-panel__copy p {
+  color: #4a3b5c;
+}
+
+.content-section:has(.closing-panel) .secondary-link {
+  border-color: rgba(15, 10, 26, 0.18);
+  background: transparent;
+  color: #0f0a1a;
+}
+
+/* ───────────────────────────────────────────────────────────────── */
+
 .events-admin-page .site-header {
   display: none;
 }
@@ -3415,9 +3482,9 @@ body.has-intro.intro-title-reveal .hero__background {
   }
 
   .hero__background {
-    left: 44%;
-    background-position: 44% bottom;
-    background-size: auto 96%;
+    left: 50%;
+    background-position: 22% bottom;
+    background-size: auto 108%;
   }
 }
 

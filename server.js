@@ -525,6 +525,121 @@ app.use((error, _req, res, _next) => {
   });
 });
 
+app.get(
+  '/eventos',
+  asyncHandler(async (req, res) => {
+    const lang = normalizePublicLanguage(req.query.lang);
+    const events = await eventsStore.listPublicEvents();
+    res.send(renderEventsListPage({ events, lang }));
+  }),
+);
+
+app.get(
+  '/eventos/:slug',
+  asyncHandler(async (req, res) => {
+    const lang = normalizePublicLanguage(req.query.lang);
+    const event = await eventsStore.getPublicEventBySlug(req.params.slug);
+    res.send(renderEventDetailPage({ event, lang }));
+  }),
+);
+
+app.get('/admin/eventos', (_req, res) => {
+  res.redirect(302, '/app/eventos');
+});
+
+app.get(
+  '/api/public/events',
+  asyncHandler(async (req, res) => {
+    const limit =
+      req.query.limit == null
+        ? undefined
+        : Number.parseInt(req.query.limit, 10);
+    const events = await eventsStore.listPublicEvents({
+      limit: Number.isFinite(limit) ? limit : undefined,
+    });
+    res.json({ events });
+  }),
+);
+
+app.post(
+  '/api/public/events/:slug/registrations',
+  asyncHandler(async (req, res) => {
+    const registration = await eventsStore.createPublicRegistration(
+      req.params.slug,
+      req.body || {},
+    );
+    res.status(201).json({
+      ok: true,
+      registration,
+      message: 'Solicitud recibida. Te contactaremos para confirmar tu plaza.',
+    });
+  }),
+);
+
+app.post(
+  '/api/trainer/login',
+  asyncHandler(async (req, res) => {
+    const session = await loginTrainer(req.body || {});
+    res.status(201).json({ ok: true, session });
+  }),
+);
+
+app.post(
+  '/api/trainer/refresh',
+  asyncHandler(async (req, res) => {
+    const session = await refreshTrainerSession(req.body || {});
+    res.status(201).json({ ok: true, session });
+  }),
+);
+
+app.get(
+  '/api/admin/events',
+  asyncHandler(async (req, res) => {
+    const events = await eventsStore.listAdminEvents(getTrainerAuth(req));
+    res.json({ events });
+  }),
+);
+
+app.get(
+  '/api/admin/events/:eventId',
+  asyncHandler(async (req, res) => {
+    const event = await eventsStore.getAdminEvent(
+      getTrainerAuth(req),
+      req.params.eventId,
+    );
+    res.json({ event });
+  }),
+);
+
+app.post(
+  '/api/admin/events',
+  asyncHandler(async (req, res) => {
+    const event = await eventsStore.createAdminEvent(
+      getTrainerAuth(req),
+      req.body || {},
+    );
+    res.status(201).json({ ok: true, event });
+  }),
+);
+
+app.patch(
+  '/api/admin/events/:eventId',
+  asyncHandler(async (req, res) => {
+    const event = await eventsStore.updateAdminEvent(
+      getTrainerAuth(req),
+      req.params.eventId,
+      req.body || {},
+    );
+    res.json({ ok: true, event });
+  }),
+);
+
+app.use((error, _req, res, _next) => {
+  const status = Number.isFinite(error?.status) ? error.status : 500;
+  const message = error?.message || 'Error interno del servidor.';
+  res.status(status).json({ ok: false, message });
+});
+
 app.listen(port, host, () => {
   const networkUrls = getNetworkUrls(port);
 

@@ -323,6 +323,14 @@ test('redirects the explicit index page to the clean home URL', async ({
   await expect(page).toHaveURL(/\/$/);
 });
 
+test('redirects the explicit index page to the clean home URL', async ({
+  page,
+}) => {
+  await page.goto('/index.html');
+
+  await expect(page).toHaveURL(/\/$/);
+});
+
 test('opens the dedicated pages for casos de éxito and sobre mí', async ({
   page,
 }) => {

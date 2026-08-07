@@ -520,15 +520,15 @@ p {
 }
 
 .hero__background {
-  left: 22%;
+  left: 38%;
   right: 0;
   background: url('./landing-saulo-hero.png') 42% bottom / auto 98% no-repeat;
   mask-image:
-    linear-gradient(90deg, transparent 0%, #000 18%, #000 48%, transparent 67%),
+    linear-gradient(90deg, transparent 0%, #000 12%, #000 52%, transparent 70%),
     linear-gradient(180deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
   mask-composite: intersect;
   -webkit-mask-image:
-    linear-gradient(90deg, transparent 0%, #000 18%, #000 48%, transparent 67%),
+    linear-gradient(90deg, transparent 0%, #000 12%, #000 52%, transparent 70%),
     linear-gradient(180deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
   -webkit-mask-composite: source-in;
 }
@@ -539,7 +539,7 @@ p {
   inset: 0;
   pointer-events: none;
   background: radial-gradient(
-    ellipse at 52% 44%,
+    ellipse at 48% 44%,
     rgba(120, 48, 220, 0.07),
     transparent 60%
   );
@@ -550,10 +550,10 @@ p {
     linear-gradient(
       90deg,
       rgba(5, 2, 9, 0.998) 0%,
-      rgba(5, 2, 9, 0.98) 26%,
-      rgba(5, 2, 9, 0.66) 36%,
-      rgba(5, 2, 9, 0.16) 48%,
-      rgba(5, 2, 9, 0) 64%
+      rgba(5, 2, 9, 0.98) 32%,
+      rgba(5, 2, 9, 0.72) 42%,
+      rgba(5, 2, 9, 0.18) 54%,
+      rgba(5, 2, 9, 0) 70%
     ),
     linear-gradient(180deg, rgba(5, 2, 9, 0) 54%, rgba(5, 2, 9, 0.74) 100%),
     radial-gradient(
@@ -3415,7 +3415,7 @@ body.has-intro.intro-title-reveal .hero__background {
   }
 
   .hero__background {
-    left: 32%;
+    left: 44%;
     background-position: 44% bottom;
     background-size: auto 96%;
   }

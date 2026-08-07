@@ -75,6 +75,9 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   ).toHaveAttribute('src', './saulo-logo-transparent.png');
   await expect(page.getByText('Página en producción')).toBeVisible();
   await expect(
+    page.locator('#saulo-fitness .stacking-cards__item-visual--online img'),
+  ).toHaveAttribute('src', './saulo-fitness-og.png');
+  await expect(
     page.locator('#inicio').getByRole('link', { name: 'Solicitar valoración' }),
   ).toHaveAttribute('href', 'https://wa.me/34622923988');
   await expect(
@@ -280,6 +283,9 @@ test('keeps the hero headline and portrait safely framed', async ({ page }) => {
     expect(heroLayout.photoLeft).toBeLessThanOrEqual(
       heroLayout.viewportWidth * maxPhotoLeftRatio,
     );
+    expect(heroLayout.photoAsset).toContain('landing-saulo-hero.png');
+    expect(heroLayout.photoPosition).toContain('100%');
+    expect(heroLayout.photoSize).toContain('auto');
 
     for (const line of heroLayout.headlineLines) {
       expect(line.left).toBeGreaterThanOrEqual(0);

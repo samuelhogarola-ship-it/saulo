@@ -3478,7 +3478,12 @@ body.has-intro.intro-title-reveal .hero__background {
   }
 
   .hero__copy h1 {
-    font-size: clamp(4.1rem, 6.4vw, 6.2rem);
+    font-size: clamp(4.1rem, 6.4vw, 7rem);
+  }
+
+  .hero__copy {
+    max-width: 54%;
+    padding-inline: clamp(32px, 3.5vw, 72px);
   }
 
   .hero__background {

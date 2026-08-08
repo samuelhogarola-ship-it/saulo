@@ -357,22 +357,10 @@ p {
   margin-bottom: 10px;
 }
 
-.hero__brand-name {
-  font-size: 4rem;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #fff;
-  line-height: 1;
-}
-
-.hero__brand-tag {
-  font-size: 1.1rem;
-  font-weight: 600;
-  letter-spacing: 0.44em;
-  text-transform: uppercase;
-  color: #fff;
-  margin-top: 6px;
+.hero__brand-text {
+  width: 280px;
+  height: auto;
+  margin-top: 12px;
 }
 
 .hero__overlay {

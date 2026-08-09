@@ -1,6 +1,7 @@
 const crypto = require('node:crypto');
 const os = require('node:os');
 const path = require('node:path');
+const express = require('express');
 
 const { appName, delivery, runtime } = require('./lib/config');
 const { createEventsStore } = require('./lib/events-store');

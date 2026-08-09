@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>App | Saulo Fitness</title>
+    <meta name="description" content="App de Saulo Fitness." />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="site-nav" aria-label="Navegación principal">
+        <a class="nav-brand" href="./index.html" aria-label="Saulo Fitness">
+          <img
+            src="./branding.png?v=20260808-1514"
+            alt="Saulo Fitness"
+            class="nav-brand-logo"
+          />
+        </a>
+        <div class="nav-links">
+          <a class="nav-link" href="./index.html">INICIO</a>
+          <a class="nav-link" href="./casos-de-exito.html">CASOS DE ÉXITO</a>
+          <a class="nav-link" href="./sobre-mi.html">SOBRE MÍ</a>
+          <a class="nav-link" href="./eventos.html">EVENTOS</a>
+        </div>
+        <div class="nav-actions">
+          <a class="nav-app is-active" href="./app.html">APP</a>
+          <a
+            class="nav-lang"
+            href="./index-pt.html"
+            aria-label="Ver versión en portugués"
+            ><span>🇪🇸</span><span>ES</span><span class="lang-arrow">▼</span></a
+          >
+          <button
+            class="nav-menu"
+            type="button"
+            aria-label="Abrir menú"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+        <div class="mobile-menu" id="mobile-menu" hidden>
+          <a href="./index.html">INICIO</a>
+          <a href="./casos-de-exito.html">CASOS DE ÉXITO</a>
+          <a href="./sobre-mi.html">SOBRE MÍ</a>
+          <a href="./eventos.html">EVENTOS</a>
+        </div>
+      </nav>
+    </header>
+    <main class="page-main">
+      <section class="page-hero" aria-labelledby="page-title">
+        <div class="page-copy">
+          <p class="page-kicker">Saulo Fitness</p>
+          <h1 class="page-title" id="page-title">App</h1>
+          <p class="page-description">
+            Página preparada para integrar la experiencia de la aplicación.
+          </p>
+        </div>
+      </section>
+    </main>
+    <a
+      class="whatsapp-sticky"
+      href="https://wa.me/34695578960"
+      target="_blank"
+      rel="noreferrer"
+      aria-label="Contactar por WhatsApp"
+    >
+      <span aria-hidden="true">☎</span>
+    </a>
+    <script src="./script.js"></script>
+  </body>
+</html>

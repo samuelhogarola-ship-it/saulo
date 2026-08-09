@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Saulo Fitness</title>
+
+    <meta
+      name="description"
+      content="Saulo Fitness: entrenamiento personalizado, nutrición y coaching online."
+    />
+
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <nav class="site-nav" aria-label="Navegación principal">
+        <a class="nav-brand" href="./index.html" aria-label="Saulo Fitness">
+          <img
+            src="./branding.png?v=20260808-1514"
+            alt="Saulo Fitness"
+            class="nav-brand-logo"
+          />
+        </a>
+
+        <div class="nav-links">
+          <a class="nav-link is-active" href="./index.html"> INICIO </a>
+
+          <a class="nav-link" href="./casos-de-exito.html"> CASOS DE ÉXITO </a>
+
+          <a class="nav-link" href="./sobre-mi.html"> SOBRE MÍ </a>
+
+          <a class="nav-link" href="./eventos.html"> EVENTOS </a>
+        </div>
+
+        <div class="nav-actions">
+          <a class="nav-app" href="./app.html"> APP </a>
+
+          <a
+            class="nav-lang"
+            href="./index-pt.html"
+            aria-label="Ver versión en portugués"
+          >
+            <span>🇪🇸</span>
+            <span>ES</span>
+            <span class="lang-arrow">▼</span>
+          </a>
+
+          <button
+            class="nav-menu"
+            type="button"
+            aria-label="Abrir menú"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+
+        <div class="mobile-menu" id="mobile-menu" hidden>
+          <a class="is-active" href="./index.html">INICIO</a>
+          <a href="./casos-de-exito.html">CASOS DE ÉXITO</a>
+          <a href="./sobre-mi.html">SOBRE MÍ</a>
+          <a href="./eventos.html">EVENTOS</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-inner">
+          <!-- COPY -->
+
+          <div class="hero-content">
+            <h1 id="hero-title" class="hero-title">
+              TRANSFORMA
+              <br />
+              TU CUERPO
+            </h1>
+
+            <p class="hero-description">
+              Entrenamiento personalizado · Nutrición
+              <br />
+              · Seguimiento semanal · Coaching online
+            </p>
+
+            <a class="hero-cta" href="#"> Solicitar valoración </a>
+          </div>
+
+          <!-- FLOATING BRAND SYMBOL -->
+
+          <div class="hero-brand" aria-hidden="true">
+            <img
+              class="hero-brand-symbol"
+              src="./logo.negro.png?v=20260808-1514"
+              alt=""
+            />
+            <img
+              class="hero-brand-wordmark"
+              src="./branding.png?v=20260808-1514"
+              alt=""
+            />
+          </div>
+
+          <!-- SAULO -->
+
+          <div class="hero-person">
+            <img src="./saulo%20h1.png?v=20260808-1514" alt="Saulo Fitness" />
+          </div>
+        </div>
+
+        <a
+          href="#resultados"
+          class="scroll-indicator"
+          aria-label="Ir a resultados"
+        >
+          <span>RESULTADOS</span>
+
+          <span class="scroll-circle"> ↓ </span>
+        </a>
+      </section>
+
+      <section
+        class="content-band content-band--white home-results-intro"
+        aria-labelledby="results-title"
+      >
+        <div class="home-results-intro__inner">
+          <h2 id="results-title">RESULTADOS</h2>
+
+          <div
+            class="home-deck"
+            data-deck-stack
+            aria-label="Qué sigue después de la valoración"
+          >
+            <div class="home-deck__list" data-deck-stack-list>
+              <article
+                class="home-deck-card home-deck-card--training"
+                data-deck-stack-card
+              >
+                <div class="home-deck-card__top">
+                  <span>Saulo Fitness</span>
+                  <span>01 / 03</span>
+                </div>
+                <div class="home-deck-card__layout">
+                  <div class="home-deck-card__copy">
+                    <p>Entrenamiento</p>
+                    <h3>Rutinas para ti.<br />Progreso medible</h3>
+                    <span
+                      >Con un plan personalizado, controlamos las cargas y
+                      ajustamos según tu evolución.</span
+                    >
+                  </div>
+                  <figure class="home-deck-card__media" data-deck-stack-media>
+                    <img
+                      src="./assets/servicio/entrenamiento-supervisado-saulo.jpg"
+                      alt="Saulo supervisando un entrenamiento"
+                    />
+                  </figure>
+                </div>
+              </article>
+
+              <article
+                class="home-deck-card home-deck-card--events"
+                data-deck-stack-card
+              >
+                <div class="home-deck-card__top">
+                  <span>Saulo Fitness</span>
+                  <span>02 / 03</span>
+                </div>
+                <div class="home-deck-card__layout">
+                  <div class="home-deck-card__copy">
+                    <p>Experiencia</p>
+                    <h3>Participa también en nuestros eventos presenciales.</h3>
+                    <span
+                      >Ven a divertirte, conoce gente nueva y vive el
+                      deporte.</span
+                    >
+                  </div>
+                  <figure class="home-deck-card__media" data-deck-stack-media>
+                    <img
+                      src="./event-assets/proximos-eventos-playa.jpg"
+                      alt="Evento de entrenamiento de Saulo Fitness en la playa"
+                    />
+                  </figure>
+                </div>
+              </article>
+
+              <article
+                class="home-deck-card home-deck-card--coaching"
+                data-deck-stack-card
+              >
+                <div class="home-deck-card__top">
+                  <span>Saulo Fitness</span>
+                  <span>03 / 03</span>
+                </div>
+                <div class="home-deck-card__layout">
+                  <div class="home-deck-card__copy">
+                    <p>Coaching online</p>
+                    <h3>Puedes tener coaching online.</h3>
+                    <span
+                      >Con una aplicación propia, comunicación directa y un
+                      método único, conseguirás tus objetivos.</span
+                    >
+                  </div>
+                  <figure
+                    class="home-deck-card__media home-deck-card__media--app"
+                    data-deck-stack-media
+                  >
+                    <div
+                      class="app-phone"
+                      aria-label="Aplicación Saulo Fitness con vídeo de una rutina"
+                    >
+                      <div class="app-phone__speaker" aria-hidden="true"></div>
+                      <div class="app-phone__screen">
+                        <div class="app-phone__statusbar">
+                          <span>9:41</span>
+                          <span>SAULO FITNESS</span>
+                        </div>
+                        <div class="app-phone__video">
+                          <div
+                            class="app-phone__video-placeholder"
+                            aria-label="Placeholder del vídeo de rutina"
+                          >
+                            <img
+                              class="app-phone__video-logo"
+                              src="./logo.negro.png"
+                              alt=""
+                            />
+                            <span class="app-phone__video-brand"
+                              >SAULO FITNESS</span
+                            >
+                            <span class="app-phone__video-title"
+                              >VÍDEO DE RUTINA</span
+                            >
+                            <span
+                              class="app-phone__video-play"
+                              aria-hidden="true"
+                              >▶</span
+                            >
+                            <span class="app-phone__video-label"
+                              >Hip thrust · Ver ejecución</span
+                            >
+                          </div>
+                        </div>
+                        <div class="app-phone__routine">
+                          <span class="app-phone__eyebrow">Rutina activa</span>
+                          <strong>Hip thrust</strong>
+                          <dl class="app-phone__metrics">
+                            <div>
+                              <dt>Series</dt>
+                              <dd>4</dd>
+                            </div>
+                            <div>
+                              <dt>Repeticiones</dt>
+                              <dd>12</dd>
+                            </div>
+                            <div>
+                              <dt>% de fuerza máxima</dt>
+                              <dd>X</dd>
+                            </div>
+                            <div>
+                              <dt>Sensaciones</dt>
+                              <dd
+                                class="app-phone__message-field"
+                                aria-label="Campo de mensaje para escribir sensaciones"
+                              >
+                                <span>Escribe cómo te has sentido...</span
+                                ><b aria-hidden="true">↑</b>
+                              </dd>
+                            </div>
+                          </dl>
+                        </div>
+                        <div class="app-phone__nav" aria-hidden="true">
+                          <span class="is-active">Rutinas</span>
+                          <span>Mensajes</span>
+                          <span>Perfil</span>
+                        </div>
+                      </div>
+                    </div>
+                  </figure>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cases-showcase" aria-labelledby="cases-title">
+        <div class="cases-showcase__inner">
+          <div class="cases-showcase__heading">
+            <p class="cases-showcase__eyebrow">Saulo Fitness</p>
+            <h2 id="cases-title">CASOS REALES</h2>
+            <p>
+              Procesos reales, objetivos distintos y una evolución construida
+              con método.
+            </p>
+          </div>
+
+          <div class="cases-showcase__grid">
+            <article class="case-card">
+              <figure class="case-card__media">
+                <img
+                  src="./assets/casos-reales/caso-01-espalda-hombre.jpeg"
+                  alt="Caso real de un alumno de Saulo Fitness visto de espalda"
+                />
+              </figure>
+              <div class="case-card__body">
+                <span>CASO REAL 01</span>
+                <h3>Fuerza y composición corporal</h3>
+                <p>
+                  Entrenamiento personalizado y seguimiento para avanzar con una
+                  dirección clara.
+                </p>
+              </div>
+            </article>
+
+            <article class="case-card">
+              <figure class="case-card__media">
+                <img
+                  src="./assets/casos-reales/caso-02-frontal-mujer.jpeg"
+                  alt="Caso real de una alumna de Saulo Fitness vista de frente"
+                />
+              </figure>
+              <div class="case-card__body">
+                <span>CASO REAL 02</span>
+                <h3>Definición y control</h3>
+                <p>
+                  Hábitos, cargas y ajustes semanales adaptados a la evolución
+                  de cada persona.
+                </p>
+              </div>
+            </article>
+
+            <article class="case-card">
+              <figure class="case-card__media">
+                <img
+                  src="./assets/casos-reales/caso-03-perfil-hombre.jpeg"
+                  alt="Caso real de un alumno de Saulo Fitness visto de perfil"
+                />
+              </figure>
+              <div class="case-card__body">
+                <span>CASO REAL 03</span>
+                <h3>Progreso sostenible</h3>
+                <p>
+                  Un proceso medible, constante y diseñado para sostener el
+                  cambio en el tiempo.
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <a class="cases-showcase__link" href="./casos-reales.html"
+            >Ver todos los casos reales <span aria-hidden="true">→</span></a
+          >
+        </div>
+      </section>
+
+      <dialog
+        class="cases-lightbox"
+        id="cases-lightbox"
+        aria-labelledby="cases-lightbox-title"
+      >
+        <div class="cases-lightbox__frame">
+          <button
+            class="cases-lightbox__close"
+            type="button"
+            aria-label="Cerrar imagen"
+          >
+            ×
+          </button>
+          <img id="cases-lightbox-image" src="" alt="" />
+          <p id="cases-lightbox-title"></p>
+        </div>
+      </dialog>
+
+      <section class="featured-event" aria-labelledby="featured-event-title">
+        <div class="featured-event__inner">
+          <div class="featured-event__copy">
+            <p class="featured-event__eyebrow">Evento principal · 01</p>
+            <h2 id="featured-event-title">RESET DE VERANO</h2>
+            <p class="featured-event__summary">
+              Sesión guiada para retomar rutina, foco y disciplina con una hoja
+              clara para seguir.
+            </p>
+            <dl class="featured-event__meta">
+              <div>
+                <dt>8 agosto 2026</dt>
+                <dd>10:00</dd>
+              </div>
+              <div>
+                <dt>Mijas Costa</dt>
+                <dd>Studio privado</dd>
+              </div>
+              <div>
+                <dt>Acceso</dt>
+                <dd>Plantilla de seguimiento</dd>
+              </div>
+            </dl>
+            <a class="featured-event__cta" href="./eventos.html"
+              >Ver evento y apuntarte <span aria-hidden="true">→</span></a
+            >
+          </div>
+          <figure class="featured-event__media">
+            <img
+              src="./event-assets/proximos-eventos-playa.jpg"
+              alt="Entrenamiento presencial de Saulo Fitness"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <footer class="site-footer-bar">
+        <div class="site-footer-bar__legal">
+          <a href="./eventos.html">Eventos</a>
+          <a href="./legal.html#aviso-legal">Aviso legal</a>
+          <a href="./legal.html#privacidad">Privacidad</a>
+          <a href="./legal.html#cookies">Cookies</a>
+        </div>
+        <a
+          class="whatsapp-contact"
+          href="https://wa.me/34695578960"
+          target="_blank"
+          rel="noreferrer"
+        >
+          WhatsApp · +34 695 57 89 60
+        </a>
+        <p>
+          by
+          <a href="https://webfuengirola.com" target="_blank" rel="noreferrer">
+            Web Fuengirola Studio
+          </a>
+        </p>
+      </footer>
+    </main>
+
+    <a
+      class="whatsapp-sticky"
+      href="https://wa.me/34695578960"
+      target="_blank"
+      rel="noreferrer"
+      aria-label="Contactar por WhatsApp"
+    >
+      <span aria-hidden="true">☎</span>
+    </a>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

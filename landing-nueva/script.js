@@ -148,6 +148,28 @@ if (lightbox && lightboxImage && lightboxTitle && lightboxClose) {
 
 const allCasesGrid = document.querySelector('#all-cases-grid');
 
+const successCasesGrid = document.querySelector('#success-cases-grid');
+
+if (successCasesGrid) {
+  const successCaseImages = Array.from(
+    { length: 30 },
+    (_, index) => `caso-real-${String(index + 1).padStart(2, '0')}.jpeg`,
+  );
+
+  successCasesGrid.innerHTML = successCaseImages
+    .map(
+      (image, index) => `
+        <article class="success-page-card">
+          <img src="./assets/casos-reales/todos/${image}" alt="Caso real ${index + 1} de Saulo Fitness" loading="lazy">
+          <span>Caso real ${String(index + 1).padStart(2, '0')}</span>
+          <h2>Proceso real de evolución</h2>
+          <p>Entrenamiento, seguimiento y ajustes adaptados al objetivo de cada persona.</p>
+        </article>
+      `,
+    )
+    .join('');
+}
+
 if (allCasesGrid) {
   const featuredCases = [
     'caso-01-espalda-hombre.jpeg',

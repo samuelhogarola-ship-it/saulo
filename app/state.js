@@ -212,7 +212,7 @@
       ],
       sent: [
         {
-          title: 'Consulta nutrición',
+          title: 'Consulta sobre entrenamiento',
           tag: 'Enviado',
           date: 'Ayer · 20:15',
           source: 'Email',

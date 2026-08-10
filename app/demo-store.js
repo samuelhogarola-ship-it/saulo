@@ -840,8 +840,8 @@
           sent: [
             createMessage({
               id: 'lucia-sent-1',
-              title: 'Consulta nutrición',
-              body: 'Pregunté si mover carbohidratos al pre-entreno.',
+              title: 'Consulta sobre entrenamiento',
+              body: 'Pregunté cómo ajustar la rutina de entrenamiento.',
               source: 'Email',
               direction: 'sent',
               createdAt: '2026-06-15T20:15:00.000Z',

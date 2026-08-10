@@ -82,7 +82,7 @@ test('renders the public landing with multipage navigation and contact CTAs', as
   ).toHaveAttribute('href', 'https://wa.me/34622923988');
   await expect(
     page.getByText(
-      'Entrenamiento personalizado · Nutrición · Seguimiento semanal · Coaching online',
+      'Entrenamiento personalizado · Seguimiento semanal · Coaching online',
     ),
   ).toBeVisible();
   await expect(page.locator('[data-events-grid]')).toHaveCount(1);

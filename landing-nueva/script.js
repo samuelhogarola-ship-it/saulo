@@ -219,6 +219,6 @@ if (!document.querySelector('.whatsapp-sticky')) {
   whatsappSticky.target = '_blank';
   whatsappSticky.rel = 'noreferrer';
   whatsappSticky.setAttribute('aria-label', 'Contactar por WhatsApp');
-  whatsappSticky.innerHTML = '<span aria-hidden="true">☎</span>';
+  whatsappSticky.innerHTML = '<span aria-hidden="true">📱</span>';
   document.body.append(whatsappSticky);
 }

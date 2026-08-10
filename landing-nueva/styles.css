@@ -761,6 +761,7 @@ img {
 }
 
 .site-footer-bar {
+  position: relative;
   display: grid;
   gap: 14px;
   padding: 52px 24px 34px;
@@ -782,11 +783,20 @@ img {
 }
 
 .site-footer-bar p {
-  justify-self: center;
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
   margin: 0;
   color: rgba(250, 246, 255, 0.58);
   font-size: 0.84rem;
   text-align: center;
+}
+
+@media (max-width: 900px) {
+  .site-footer-bar p {
+    position: static;
+    justify-self: center;
+  }
 }
 
 .site-footer-bar p a {

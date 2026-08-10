@@ -782,11 +782,11 @@ img {
 }
 
 .site-footer-bar p {
-  justify-self: end;
+  justify-self: center;
   margin: 0;
   color: rgba(250, 246, 255, 0.58);
   font-size: 0.84rem;
-  text-align: right;
+  text-align: center;
 }
 
 .site-footer-bar p a {
@@ -812,7 +812,7 @@ img {
 .whatsapp-sticky {
   position: fixed;
   right: 18px;
-  bottom: 18px;
+  bottom: 52px;
   z-index: 60;
   display: grid;
   width: 44px;

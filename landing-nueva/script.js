@@ -152,7 +152,7 @@ const successCasesGrid = document.querySelector('#success-cases-grid');
 
 if (successCasesGrid) {
   const successCaseImages = Array.from(
-    { length: 30 },
+    { length: 32 },
     (_, index) => `caso-real-${String(index + 1).padStart(2, '0')}.jpeg`,
   );
 

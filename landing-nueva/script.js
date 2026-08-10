@@ -119,7 +119,7 @@ if (lightbox && lightboxImage && lightboxTitle && lightboxClose) {
   document.querySelectorAll('.case-card__media img').forEach((image) => {
     image.tabIndex = 0;
     image.setAttribute('role', 'button');
-    image.setAttribute('aria-label', 'Ampliar imagen del caso real');
+    image.setAttribute('aria-label', 'Ampliar imagen del proceso');
 
     const openLightbox = () => {
       lightboxImage.src = image.currentSrc || image.src;
@@ -151,33 +151,61 @@ const allCasesGrid = document.querySelector('#all-cases-grid');
 const successCasesGrid = document.querySelector('#success-cases-grid');
 
 if (successCasesGrid) {
-  const successCaseImages = Array.from(
-    { length: 32 },
-    (_, index) => `caso-real-${String(index + 1).padStart(2, '0')}.jpeg`,
-  );
+  const orientationGroups = [
+    {
+      label: 'De frente',
+      images: ['caso-02-frontal-mujer.jpeg', 'caso-06-hombre-competicion.jpeg'],
+    },
+    {
+      label: 'De perfil',
+      images: ['caso-03-perfil-hombre.jpeg', 'caso-04-perfil-mujer.jpeg'],
+    },
+    {
+      label: 'De espalda',
+      images: ['caso-01-espalda-hombre.jpeg', 'caso-05-espalda-mujer.jpeg'],
+    },
+  ];
 
-  successCasesGrid.innerHTML = successCaseImages
+  const renderCard = (image, label, index, folder = '') => `
+    <article class="success-page-card">
+      <img src="./assets/casos-reales/${folder}${image}" alt="Proceso de evolución física de Saulo Fitness" loading="lazy">
+      <span>${label}</span>
+      <h2>Proceso de evolución</h2>
+      <p>Entrenamiento, seguimiento y ajustes adaptados al objetivo de cada persona.</p>
+    </article>
+  `;
+
+  const groupedMarkup = orientationGroups
     .map(
-      (image, index) => `
-        <article class="success-page-card">
-          <img src="./assets/casos-reales/todos/${image}" alt="Caso real ${index + 1} de Saulo Fitness" loading="lazy">
-          <span>Caso real ${String(index + 1).padStart(2, '0')}</span>
-          <h2>Proceso real de evolución</h2>
-          <p>Entrenamiento, seguimiento y ajustes adaptados al objetivo de cada persona.</p>
-        </article>
+      (group) => `
+        <h2 class="success-case-group-title">${group.label}</h2>
+        ${group.images.map((image, index) => renderCard(image, group.label, index)).join('')}
       `,
     )
     .join('');
+
+  const additionalCaseImages = Array.from(
+    { length: 26 },
+    (_, index) => `caso-real-${String(index + 7).padStart(2, '0')}.jpeg`,
+  );
+
+  successCasesGrid.innerHTML = `
+    ${groupedMarkup}
+    <h2 class="success-case-group-title">Más procesos</h2>
+    ${additionalCaseImages
+      .map((image, index) => renderCard(image, 'Proceso', index, 'todos/'))
+      .join('')}
+  `;
 }
 
 if (allCasesGrid) {
   const featuredCases = [
-    'caso-01-espalda-hombre.jpeg',
-    'caso-02-frontal-mujer.jpeg',
-    'caso-03-perfil-hombre.jpeg',
-    'caso-04-perfil-mujer.jpeg',
-    'caso-05-espalda-mujer.jpeg',
-    'caso-06-hombre-competicion.jpeg',
+    { image: 'caso-01-espalda-hombre.jpeg', label: 'De espalda' },
+    { image: 'caso-02-frontal-mujer.jpeg', label: 'De frente' },
+    { image: 'caso-03-perfil-hombre.jpeg', label: 'De perfil' },
+    { image: 'caso-04-perfil-mujer.jpeg', label: 'De perfil' },
+    { image: 'caso-05-espalda-mujer.jpeg', label: 'De espalda' },
+    { image: 'caso-06-hombre-competicion.jpeg', label: 'De frente' },
   ];
 
   const additionalCases = Array.from(
@@ -185,18 +213,18 @@ if (allCasesGrid) {
     (_, index) => `caso-real-${String(index + 1).padStart(2, '0')}.jpeg`,
   );
 
-  featuredCases.forEach((featuredImage, caseIndex) => {
+  featuredCases.forEach((featuredCase, caseIndex) => {
     const extraImages = additionalCases.slice(caseIndex * 5, caseIndex * 5 + 5);
     const card = document.createElement('article');
     card.className = 'all-case-card';
     card.innerHTML = `
       <div class="all-case-card__main">
         <figure class="all-case-card__image">
-          <img src="./assets/casos-reales/${featuredImage}" alt="Caso real ${caseIndex + 1} de Saulo Fitness">
+          <img src="./assets/casos-reales/${featuredCase.image}" alt="Proceso de evolución física de Saulo Fitness">
         </figure>
         <div class="all-case-card__content">
-          <span>CASO REAL ${String(caseIndex + 1).padStart(2, '0')}</span>
-          <h2>Proceso real de evolución</h2>
+          <span>${featuredCase.label}</span>
+          <h2>Proceso de evolución</h2>
           <p>Seguimiento, entrenamiento y ajustes adaptados al objetivo de cada persona.</p>
         </div>
       </div>
@@ -209,7 +237,7 @@ if (allCasesGrid) {
           ${extraImages
             .map(
               (image, imageIndex) => `
-            <img src="./assets/casos-reales/todos/${image}" alt="Imagen ${imageIndex + 1} del caso real ${caseIndex + 1}">
+            <img src="./assets/casos-reales/todos/${image}" alt="Imagen ${imageIndex + 1} del proceso ${caseIndex + 1}">
           `,
             )
             .join('')}

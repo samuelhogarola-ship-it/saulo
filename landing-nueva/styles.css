@@ -1540,6 +1540,18 @@ img {
   gap: 22px;
 }
 
+.success-case-group-title {
+  grid-column: 1 / -1;
+  margin: 28px 0 0;
+  color: #b54cff;
+  font-size: clamp(28px, 3vw, 46px);
+  line-height: 1;
+}
+
+.success-case-group-title:first-child {
+  margin-top: 0;
+}
+
 .success-page-card {
   overflow: hidden;
   padding-bottom: 24px;

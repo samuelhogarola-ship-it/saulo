@@ -220,6 +220,6 @@ if (!document.querySelector('.whatsapp-sticky')) {
   whatsappSticky.rel = 'noreferrer';
   whatsappSticky.setAttribute('aria-label', 'Contactar por WhatsApp');
   whatsappSticky.innerHTML =
-    '<span class="whatsapp-mark" aria-hidden="true"></span>';
+    '<span class="whatsapp-mark" aria-hidden="true"><img src="./assets/icons/whatsapp.svg" alt=""></span>';
   document.body.append(whatsappSticky);
 }

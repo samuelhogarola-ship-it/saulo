@@ -835,27 +835,21 @@ img {
   height: 24px;
   place-items: center;
   border-radius: 50%;
-  background: #ffffff;
-  color: #1db954;
+  background: transparent;
 }
 
 .whatsapp-mark::before {
-  content: '☎';
-  font-size: 0.9rem;
-  font-weight: 900;
-  line-height: 1;
-  transform: rotate(-18deg);
+  content: none;
 }
 
 .whatsapp-mark::after {
-  content: '';
-  position: absolute;
-  right: 1px;
-  bottom: 1px;
-  width: 6px;
-  height: 6px;
-  background: #ffffff;
-  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  content: none;
+}
+
+.whatsapp-mark img {
+  display: block;
+  width: 17px;
+  height: 17px;
 }
 
 .whatsapp-sticky:hover,

@@ -166,10 +166,10 @@ if (successCasesGrid) {
     },
   ];
 
-  const renderCard = (image, label, index, folder = '') => `
+  const renderCard = (image, folder = '') => `
     <article class="success-page-card">
       <img src="./assets/casos-reales/${folder}${image}" alt="Proceso de evolución física de Saulo Fitness" loading="lazy">
-      <span>${label}</span>
+      <span>SAULO FITNESS</span>
       <h2>Proceso de evolución</h2>
       <p>Entrenamiento, seguimiento y ajustes adaptados al objetivo de cada persona.</p>
     </article>
@@ -179,7 +179,7 @@ if (successCasesGrid) {
     .map(
       (group) => `
         <h2 class="success-case-group-title">${group.label}</h2>
-        ${group.images.map((image, index) => renderCard(image, group.label, index)).join('')}
+        ${group.images.map((image) => renderCard(image)).join('')}
       `,
     )
     .join('');
@@ -192,9 +192,7 @@ if (successCasesGrid) {
   successCasesGrid.innerHTML = `
     ${groupedMarkup}
     <h2 class="success-case-group-title">Más procesos</h2>
-    ${additionalCaseImages
-      .map((image, index) => renderCard(image, 'Proceso', index, 'todos/'))
-      .join('')}
+    ${additionalCaseImages.map((image) => renderCard(image, 'todos/')).join('')}
   `;
 }
 
@@ -223,7 +221,7 @@ if (allCasesGrid) {
           <img src="./assets/casos-reales/${featuredCase.image}" alt="Proceso de evolución física de Saulo Fitness">
         </figure>
         <div class="all-case-card__content">
-          <span>${featuredCase.label}</span>
+          <span>SAULO FITNESS</span>
           <h2>Proceso de evolución</h2>
           <p>Seguimiento, entrenamiento y ajustes adaptados al objetivo de cada persona.</p>
         </div>

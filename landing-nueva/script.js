@@ -150,6 +150,29 @@ const allCasesGrid = document.querySelector('#all-cases-grid');
 
 const successCasesGrid = document.querySelector('#success-cases-grid');
 
+const uniqueAdditionalCaseImages = [
+  'caso-real-07.jpeg',
+  'caso-real-09.jpeg',
+  'caso-real-10.jpeg',
+  'caso-real-11.jpeg',
+  'caso-real-12.jpeg',
+  'caso-real-13.jpeg',
+  'caso-real-15.jpeg',
+  'caso-real-16.jpeg',
+  'caso-real-17.jpeg',
+  'caso-real-18.jpeg',
+  'caso-real-19.jpeg',
+  'caso-real-20.jpeg',
+  'caso-real-21.jpeg',
+  'caso-real-23.jpeg',
+  'caso-real-24.jpeg',
+  'caso-real-25.jpeg',
+  'caso-real-26.jpeg',
+  'caso-real-27.jpeg',
+  'caso-real-29.jpeg',
+  'caso-real-30.jpeg',
+];
+
 if (successCasesGrid) {
   const orientationGroups = [
     {
@@ -184,15 +207,10 @@ if (successCasesGrid) {
     )
     .join('');
 
-  const additionalCaseImages = Array.from(
-    { length: 26 },
-    (_, index) => `caso-real-${String(index + 7).padStart(2, '0')}.jpeg`,
-  );
-
   successCasesGrid.innerHTML = `
     ${groupedMarkup}
     <h2 class="success-case-group-title">Más procesos</h2>
-    ${additionalCaseImages.map((image) => renderCard(image, 'todos/')).join('')}
+    ${uniqueAdditionalCaseImages.map((image) => renderCard(image, 'todos/')).join('')}
   `;
 }
 
@@ -206,13 +224,15 @@ if (allCasesGrid) {
     { image: 'caso-06-hombre-competicion.jpeg', label: 'De frente' },
   ];
 
-  const additionalCases = Array.from(
-    { length: 30 },
-    (_, index) => `caso-real-${String(index + 1).padStart(2, '0')}.jpeg`,
-  );
-
   featuredCases.forEach((featuredCase, caseIndex) => {
-    const extraImages = additionalCases.slice(caseIndex * 5, caseIndex * 5 + 5);
+    const extraStart = Math.floor(
+      (caseIndex * uniqueAdditionalCaseImages.length) / featuredCases.length,
+    );
+    const extraEnd = Math.floor(
+      ((caseIndex + 1) * uniqueAdditionalCaseImages.length) /
+        featuredCases.length,
+    );
+    const extraImages = uniqueAdditionalCaseImages.slice(extraStart, extraEnd);
     const card = document.createElement('article');
     card.className = 'all-case-card';
     card.innerHTML = `

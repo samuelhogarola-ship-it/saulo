@@ -1,0 +1,4 @@
+RewriteEngine On
+
+# Serve the landing internally while keeping the public URL at the domain root.
+RewriteRule ^$ landing-nueva/index.html [L]

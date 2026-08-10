@@ -321,6 +321,12 @@ img {
   max-width: 680px;
 }
 
+.cases-showcase__heading-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
 .cases-showcase__eyebrow {
   margin: 0 0 16px;
   color: #8b35e8;

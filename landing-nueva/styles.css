@@ -2264,18 +2264,23 @@ img {
   }
 
   .hero-content {
-    position: static;
-    z-index: 8;
+    position: relative;
+    z-index: 30;
     padding: 0;
   }
 
   .hero-title {
     position: relative;
-    z-index: 8;
+    z-index: 31;
     max-width: none;
     margin-bottom: 20px;
     font-size: 30px;
     line-height: 0.91;
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    color: #ffffff;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
   }
 
   .hero-description {

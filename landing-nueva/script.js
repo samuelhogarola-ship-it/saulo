@@ -283,7 +283,7 @@ if (allCasesGrid) {
 if (!document.querySelector('.whatsapp-sticky')) {
   const whatsappSticky = document.createElement('a');
   whatsappSticky.className = 'whatsapp-sticky';
-  whatsappSticky.href = 'https://wa.me/34622923988';
+  whatsappSticky.href = 'https://wa.me/34695578960';
   whatsappSticky.target = '_blank';
   whatsappSticky.rel = 'noreferrer';
   whatsappSticky.setAttribute('aria-label', 'Contactar por WhatsApp');

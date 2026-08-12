@@ -3,137 +3,225 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Offline</title>
+    <title>En desarrollo</title>
     <meta name="robots" content="noindex, nofollow, noarchive" />
     <meta name="color-scheme" content="dark" />
     <style>
       :root {
         color-scheme: dark;
         --bg: #08080c;
-        --fg: #f2f2f2;
-        --muted: #a2a2ab;
-        --line: rgba(255, 255, 255, 0.12);
+        --panel: rgba(10, 10, 16, 0.76);
+        --fg: #f5f5f7;
+        --muted: rgba(245, 245, 247, 0.72);
+        --line: rgba(255, 255, 255, 0.1);
+        --accent: #8b5cf6;
       }
+
+      * {
+        box-sizing: border-box;
+      }
+
       html,
       body {
         margin: 0;
         min-height: 100%;
-        background: radial-gradient(circle at top, #1b1024 0%, var(--bg) 55%);
+        background:
+          radial-gradient(
+            circle at 50% 18%,
+            rgba(139, 92, 246, 0.28),
+            transparent 32%
+          ),
+          radial-gradient(
+            circle at 50% 82%,
+            rgba(255, 255, 255, 0.08),
+            transparent 26%
+          ),
+          linear-gradient(180deg, #06060a 0%, var(--bg) 100%);
         color: var(--fg);
         font-family: Arial, Helvetica, sans-serif;
       }
+
       body {
         min-height: 100vh;
         display: grid;
         place-items: center;
         padding: 24px;
-        box-sizing: border-box;
+        overflow: hidden;
       }
+
+      body::before {
+        content: '';
+        position: fixed;
+        inset: -10%;
+        background: url('./wf-logo.png') center/60vw no-repeat;
+        opacity: 0.04;
+        filter: blur(8px);
+        pointer-events: none;
+        transform: scale(1.15);
+      }
+
       main {
-        width: min(720px, 100%);
+        position: relative;
+        width: min(860px, 100%);
         border: 1px solid var(--line);
-        border-radius: 24px;
-        padding: 40px 28px 32px;
-        background: rgba(8, 8, 12, 0.72);
-        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+        border-radius: 28px;
+        padding: 34px 30px 28px;
+        background: var(--panel);
+        box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(14px);
       }
-      .offline-logos {
-        display: flex;
+
+      .stage {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 22px;
         align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        margin-bottom: 28px;
+        justify-items: center;
+        text-align: center;
       }
-      .offline-logo {
-        flex: 1 1 0;
-        display: flex;
-        align-items: center;
-      }
-      .offline-logo img {
-        display: block;
-        max-width: 100%;
-        height: auto;
-        object-fit: contain;
-      }
-      .offline-logo--left img {
-        max-height: 72px;
-      }
-      .offline-logo--right {
-        justify-content: flex-end;
-      }
-      .offline-logo--right img {
-        max-height: 72px;
-      }
-      .offline-divider {
-        width: 1px;
-        height: 72px;
-        background: linear-gradient(
-          to bottom,
-          transparent,
-          var(--line),
-          transparent
-        );
-        flex: 0 0 auto;
-      }
-      h1 {
-        margin: 0 0 12px;
-        font-size: clamp(2rem, 6vw, 3.5rem);
-        line-height: 0.95;
-        letter-spacing: -0.04em;
-      }
-      p {
+
+      .eyebrow {
         margin: 0;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        font-size: 0.75rem;
         color: var(--muted);
-        font-size: clamp(1rem, 2.5vw, 1.125rem);
-        line-height: 1.6;
       }
-      .offline-copy strong {
-        color: var(--fg);
-        font-weight: 700;
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2.4rem, 6vw, 4.8rem);
+        line-height: 0.92;
+        letter-spacing: -0.05em;
       }
-      .offline-copy {
+
+      .copy {
+        max-width: 42rem;
+        margin: 0;
+        font-size: clamp(1.02rem, 2.2vw, 1.2rem);
+        line-height: 1.65;
+        color: var(--muted);
         text-wrap: balance;
       }
+
+      .hero-bot {
+        position: relative;
+        width: min(340px, 72vw);
+        aspect-ratio: 1 / 1;
+        display: grid;
+        place-items: center;
+        margin-top: 6px;
+      }
+
+      .hero-bot img {
+        position: relative;
+        width: 100%;
+        height: auto;
+        display: block;
+        filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.36));
+        animation: float 3.2s ease-in-out infinite;
+      }
+
+      .offline-byline {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 10px;
+        color: rgba(255, 255, 255, 0.82);
+        text-decoration: none;
+        font-size: 0.95rem;
+        letter-spacing: 0.02em;
+        transition: opacity 0.2s ease;
+      }
+
+      .offline-byline:hover {
+        opacity: 1;
+      }
+
+      .offline-byline span {
+        color: rgba(255, 255, 255, 0.52);
+      }
+
+      .offline-byline strong {
+        color: #fff;
+        font-weight: 700;
+      }
+
+      .offline-watermark {
+        position: absolute;
+        right: 22px;
+        bottom: 18px;
+        width: 128px;
+        opacity: 0.06;
+        filter: blur(2px);
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .offline-watermark img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-1deg);
+        }
+        50% {
+          transform: translateY(-10px) rotate(1deg);
+        }
+      }
+
       @media (max-width: 560px) {
+        body {
+          padding: 18px;
+        }
+
         main {
-          padding: 28px 18px 24px;
+          padding: 26px 18px 20px;
+          border-radius: 22px;
         }
-        .offline-logos {
-          gap: 12px;
-          margin-bottom: 22px;
+
+        .hero-bot {
+          width: min(270px, 76vw);
         }
-        .offline-logo--left img,
-        .offline-logo--right img {
-          max-height: 52px;
-        }
-        .offline-divider {
-          height: 52px;
+
+        .offline-watermark {
+          width: 96px;
+          right: 12px;
+          bottom: 12px;
         }
       }
     </style>
   </head>
   <body>
     <main>
-      <div class="offline-logos" aria-hidden="true">
-        <div class="offline-logo offline-logo--left">
-          <img src="./landing-nueva/branding.png" alt="" />
+      <div class="stage">
+        <h1>Esta web está en desarrollo.</h1>
+        <p class="copy">
+          Estamos preparando una nueva versión del proyecto. Volveremos pronto.
+        </p>
+
+        <div class="hero-bot" aria-hidden="true">
+          <img src="./offline-bot.gif" alt="" />
         </div>
-        <div class="offline-divider"></div>
+
         <a
-          class="offline-logo offline-logo--right"
+          class="offline-byline"
           href="https://webfuengirola.com"
           target="_blank"
           rel="noreferrer"
-          aria-label="WF-Studio"
         >
-          <img src="./wf-logo.png" alt="" />
+          <span>by</span>
+          <strong>WF-Studio</strong>
         </a>
       </div>
-      <h1>Offline</h1>
-      <p class="offline-copy">
-        <strong>Saulo Fitness</strong> y <strong>WF-Studio</strong> han
-        pospuesto este proyecto. Volveremos pronto.
-      </p>
+
+      <div class="offline-watermark" aria-hidden="true">
+        <img src="./wf-logo.png" alt="" />
+      </div>
     </main>
   </body>
 </html>

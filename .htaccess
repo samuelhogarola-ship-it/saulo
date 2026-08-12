@@ -2,3 +2,6 @@ RewriteEngine On
 
 # Serve the landing internally while keeping the public URL at the domain root.
 RewriteRule ^$ landing-nueva/index.html [L]
+
+# Keep secondary pages parked while only the main landing is public.
+RewriteRule ^landing-nueva/(casos-de-exito|casos-reales|sobre-mi|eventos|app|legal|index-pt)\.html$ landing-nueva/en-produccion.html [L]
